@@ -1,0 +1,106 @@
+struct ComponentTemplate {
+    std::string type;
+    std::unordered_map<std::string, std::string> properties;
+};
+
+struct EntityTemplate {
+    EntityID id;
+    EntityID parentID = INVALID_ID;
+    std::vector<ComponentTemplate> components;
+};
+
+class Parser {
+public:
+    std::vector<EntityTemplate> Parse(const std::vector<std::string>& lines) {
+        std::vector<EntityTemplate> entities;
+        std::stack<EntityTemplate*> entity_stack;
+        ComponentTemplate* current_component = nullptr;
+        int depth = 0;
+        bool expect_component = false;
+
+        for (const auto& line : lines) {
+            if (line.empty() || line.find("//") == 0) continue;
+
+            std::string trimmed = Trim(line);
+            auto tokens = Tokenize(trimmed);
+
+            if (tokens.empty()) continue;
+
+            for (size_t i = 0; i < tokens.size(); ++i) {
+                const auto& token = tokens[i];
+
+                if (token == "Entity" && i + 1 < tokens.size()) {
+                    // Обработка объявления Entity
+                    if (!IsNumber(tokens[i + 1])) {
+                        throw std::runtime_error("ESDL: Invalid Entity ID: " + tokens[i + 1]);
+                    }
+
+                    entities.emplace_back();
+                    entities.back().id = std::stoi(tokens[i + 1]);
+                    entity_stack.push(&entities.back());
+                    current_component = nullptr;
+                    expect_component = true;
+                    i++; // Пропускаем ID
+                }
+                else if (token == "{") {
+                    if (entity_stack.empty()) {
+                        throw std::runtime_error("ESDL: Unexpected '{' without Entity");
+                    }
+
+                    if (expect_component && current_component) {
+                        // Открываем блок компонента
+                        depth++;
+                    }
+                    else {
+                        // Пустой блок компонента
+                        if (!expect_component) {
+                            throw std::runtime_error("ESDL: Unexpected '{'");
+                        }
+                        depth++;
+                    }
+                }
+                else if (token == "}") {
+                    if (depth > 0) {
+                        depth--;
+                        if (depth == 0) {
+                            current_component = nullptr;
+                            expect_component = false;
+                        }
+                    }
+                    else {
+                        throw std::runtime_error("ESDL: Unexpected '}'");
+                    }
+                }
+                else if (expect_component && current_component == nullptr) {
+                    // Обработка имени компонента (без двоеточия)
+                    entity_stack.top()->components.emplace_back();
+                    current_component = &entity_stack.top()->components.back();
+                    current_component->type = token;
+                }
+                else if (current_component && i + 1 < tokens.size() && tokens[i + 1] == ":") {
+                    // Обработка свойства компонента
+                    std::string key = token;
+                    std::string value;
+
+                    // Собираем все токены после ":" в значение
+                    for (size_t j = i + 2; j < tokens.size(); ++j) {
+                        if (!value.empty()) value += " ";
+                        value += tokens[j];
+                    }
+
+                    current_component->properties[key] = value;
+                    break; // Переходим к следующей строке
+                }
+                else if (!token.empty() && token != "{" && token != "}") {
+                    // Неожиданный токен
+                    throw std::runtime_error("ESDL: Unexpected token: " + token);
+                }
+            }
+        }
+
+        return entities;
+    }
+
+private:
+    
+};
