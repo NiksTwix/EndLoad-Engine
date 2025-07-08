@@ -1,4 +1,4 @@
-# Зависимости и настройка проект
+# Зависимости и настройка проекта
 
 Движок написан на Visual C++ под платформу Windows, использовалась среда разработки Visual Studio 2022.
 
@@ -38,9 +38,11 @@
 
 
 Свойства конфигурации->Компоновщик
-Дополнительные каталоги библиотек:
+Общие->Дополнительные каталоги библиотек:
 1) Libraries\glew220\lib\Release\x64
 2) Libraries\glfw34WIN64\lib-vc2022
 3) Libraries\freetype2133\lib
 4) Libraries\audiere-1.9.4\lib64
 5) Libraries\Assimp.3.0.0\build\native\lib\x64
+Ввод->Дополнительные зависимости: glew32s.lib;assimp.lib;opengl32.lib;glfw3.lib;audiere.lib;freetype.lib;
+
