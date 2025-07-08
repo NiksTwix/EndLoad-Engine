@@ -34,5 +34,13 @@
 
 Свойства конфигурации->С/С++->Препроцессор
 Определения препроцессора:
-1)GLEW_STATIC;
+1) GLEW_STATIC
 
+
+Свойства конфигурации->Компоновщик
+Дополнительные каталоги библиотек:
+1) Libraries\glew220\lib\Release\x64
+2) Libraries\glfw34WIN64\lib-vc2022
+3) Libraries\freetype2133\lib
+4) Libraries\audiere-1.9.4\lib64
+5) Libraries\Assimp.3.0.0\build\native\lib\x64
