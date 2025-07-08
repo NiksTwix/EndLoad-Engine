@@ -1,17 +1,18 @@
-# EndLoad-Engine
+# EndLoad Engine
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Windows](https://img.shields.io/badge/platform-Windows-0078d7.svg)]()
+[![Visual Studio 2022](https://img.shields.io/badge/IDE-Visual%20Studio%202022-5c2d91.svg)]()
 
-EndLoad Engine - игровой движок, основанный на OpenGL и ECS. Находится на стадии ранней разработки.
+Игровой движок на базе OpenGL и ECS-архитектуры. Находится в активной разработке.
 
-Написан на Visual C++ в VS 2022.
+## 🔥 Особенности
+- Entity-Component-System (ECS) архитектура
+- Поддержка ассетов через Assimp
+- Поддержка шрифтов (FreeType)
 
-## Зависимости
-См. [ThirdParty.md](ThirdParty.md) для инструкций по установке.
-
-## Лицензия
-MIT License (см. [LICENSE](LICENSE))
-
-
-## Документация
-В будущем.
+## 🚀 Быстрый старт
+1. Установите зависимости ([см. ThirdParty.md](ThirdParty.md))
+2. Клонируйте репозиторий:
+   ```bash
+   git clone https://github.com/NiksTwix/EndLoad-Engine.git
