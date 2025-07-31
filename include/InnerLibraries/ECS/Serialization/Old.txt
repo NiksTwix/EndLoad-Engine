@@ -1,0 +1,89 @@
+class SerializationManager 
+{
+public:
+	static void Deserialise(EntitySpace& e_space, const std::string& text) //Deserializes entities
+	{
+		if (e_space.GetAllEntities().size() != 0) e_space.ClearAllEntities();
+		DeserialiseFromLines(e_space, ESDL::Strings::SplitString(text, '\n'));
+	}
+	static void DeserialiseFromLines(EntitySpace& e_space, const std::vector<std::string>& lines) 
+	{
+		auto result = ESDL::ESDLParser::ParseFromLines(lines);
+		
+		ComponentServiceLocator& csl = e_space.GetServiceLocator();
+
+		std::unordered_map<EntityID, EntityID> child_parent;		//Хранилище ребёнок-родитель
+
+		e_space.UpdateAllServices(); //Обновляем все сервисы на всякий случай
+
+		std::unordered_map<std::string, IComponentService*> strTService;
+
+		for (auto* s : csl.GetAllServices())	//Строим strTService;
+		{
+			strTService[s->GetStringComponentType()] = s;
+		}
+		for (auto entity : result.entities) 
+		{
+			auto entity_ = e_space.CreateEntityWithID(entity.id);		//Проверка на валидность
+
+			if (entity.parentID != INVALID_ID) child_parent.insert({ entity.id, entity.parentID });
+
+			//Создаём компоненты
+
+			for (auto component : entity.components) 
+			{
+				std::string type = component.type;
+
+				if (strTService.count(type) == 0) 
+				{
+					throw std::runtime_error("ECS deserialization error: entity with id " + std::to_string(entity.id) + " and component type " + type + " havent deserializer.");
+				}
+
+				strTService[type]->AddComponentByFields(entity.id, component.properties);		//Добавляем компонент через сервис
+			}
+
+		}
+		for (auto family : child_parent) 
+		{
+			e_space.AddEntity(family.first, family.second);
+		}
+	}
+
+	static std::vector<std::string> SerializeToLines(EntitySpace& e_space) //Serializes entities
+	{
+		//std::vector<std::string> используется, чтобы потом можно было добавить табы
+		std::vector<std::string> result;
+
+		auto entities = e_space.GetAllEntities();
+
+		for (auto entity: entities)
+		{
+			auto parent = e_space.GetTree().GetParent(entity);
+
+			std::string str;
+
+			str = "Entity " + std::to_string(entity);
+			if (parent != ROOT_ID) str + ":" + std::to_string(parent);
+
+			result.push_back(str);
+
+			result.push_back("{");
+
+			for (auto* service : e_space.GetServiceLocator().GetAllServices()) 
+			{
+				if (!e_space.GetRegistry().HasByTypeIndex(service->GetComponentType(), entity)) continue;
+				result.push_back(ESDL::Strings::GetTrimByDepth(1) + service->GetStringComponentType());
+				result.push_back(ESDL::Strings::GetTrimByDepth(1) + '{');
+
+				for (auto field : service->GetComponentFields(e_space.GetRegistry().GetByTypeIndex(service->GetComponentType(), entity)))
+				{
+					result.push_back(ESDL::Strings::GetTrimByDepth(2) + field.first + " : " + ESDL::ValueParser::ToString(field.second));
+				}
+				result.push_back(ESDL::Strings::GetTrimByDepth(1) + '}');
+			}
+			result.push_back("}");
+			result.push_back("\n"); // Перенос для красоты
+		}
+		return result;
+	}
+};

@@ -1,0 +1,11 @@
+#pragma once
+#include <Components\ComponentTags.hpp>
+#include <Components\Basic\CameraComponent.hpp>
+#include <Components\Basic\AABB.hpp>
+#include <Components\Graphical\MaterialComponent.hpp>
+#include <Components\Graphical\MeshComponent.hpp>
+#include <Components\Basic\ScriptComponent.hpp>
+#include <Components\Basic\TransformComponent.hpp>
+#include <Components\Graphical\SpriteComponent.hpp>
+#include <Components\UI\UIElementComponent.hpp>
+#include <Components\UI\TextRenderComponent.hpp>
