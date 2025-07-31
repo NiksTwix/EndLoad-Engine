@@ -1,0 +1,43 @@
+NAME OGLMeshShader
+LANGUAGE GLSL
+
+VERTEX
+#version 450 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 nPos;
+layout (location = 2) in vec2 tPos;
+
+uniform mat4 ViewMatrix;
+uniform mat4 ProjectionMatrix;
+uniform mat4 WorldMatrix;
+
+out vec2 TextureCoords;
+
+
+void main() {
+    gl_Position = ProjectionMatrix*ViewMatrix*WorldMatrix*vec4(aPos, 1.0);    
+    TextureCoords = tPos;
+}
+END
+
+FRAGMENT
+#version 450 core
+out vec4 FragColor;
+
+in vec2 TextureCoords;
+
+uniform sampler2D texture1;
+
+
+
+void main() {
+
+    float depth = gl_FragCoord.z; // Диапазон [0,1]
+	
+    vec2 coords = vec2(TextureCoords.x,1 - TextureCoords.y);
+    vec3 color = vec3(texture(texture1,coords));
+
+    FragColor = vec4(color,1.0f);//vec4(color,1.0f);
+    //FragColor = vec4(dist/10.0f, 0.3, 0.2, 1.0); // Оранжевый
+}
+END

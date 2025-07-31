@@ -1,0 +1,42 @@
+NAME OGLTextShader
+LANGUAGE GLSL
+
+
+VERTEX
+#version 460 core
+
+layout (location = 0) in vec3 aPos;       
+layout (location = 2) in vec2 aTexCoord; 
+
+out vec2 vTexCoord;
+out vec2 vWorldPos;
+
+uniform mat4 ProjectionMatrix;
+
+void main() {
+    vec4 worldPos = vec4(aPos.xy, 0.0, 1.0);
+    gl_Position = ProjectionMatrix * worldPos;
+    vTexCoord = aTexCoord;
+    vWorldPos = worldPos.xy;
+}
+END
+
+FRAGMENT
+#version 460 core
+
+in vec2 vTexCoord;
+in vec2 vWorldPos;
+
+out vec4 oColor;
+
+uniform sampler2D Texture;
+uniform vec4 Color;
+
+void main() {
+    float alpha = texture(Texture, vTexCoord).r;
+    oColor = Color * vec4(1.0, 1.0, 1.0, alpha);
+    
+    // Опционально: отсечение прозрачных пикселей
+    if (oColor.a < 0.01) discard;
+}
+END
