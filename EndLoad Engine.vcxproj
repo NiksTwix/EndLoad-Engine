@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{90fb02e4-1d32-428f-abf4-fb365a7f9e99}</ProjectGuid>
+    <RootNamespace>EndLoadEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>Engine\include;Engine\Libraries\Assimp.3.0.0\build\native\include;Engine\Libraries\audiere-1.9.4\include;Engine\Libraries\freetype2133\include;Engine\Libraries\glew220\include;Engine\Libraries\glfw34WIN64\include;TestAssets;Engine\Libraries\glm.1.0.1\build\native\include;Engine\Libraries\stb-master\;Engine\include\InnerLibraries\;Engine\Libraries\lua_x64-windows\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glew32s.lib;assimp.lib;opengl32.lib;glfw3.lib;audiere.lib;freetype.lib;lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>Engine\Libraries\glew220\lib\Release\x64;Engine\Libraries\glfw34WIN64\lib-vc2022;Engine\Libraries\freetype2133\lib;Engine\Libraries\audiere-1.9.4\lib64;Engine\Libraries\Assimp.3.0.0\build\native\lib\x64;Engine\Libraries\lua_x64-windows\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="EndLoad Engine.cpp" />
+    <ClCompile Include="Engine\src\Components\Basic\CameraComponent.cpp" />
+    <ClCompile Include="Engine\src\Components\Basic\ScriptComponent.cpp" />
+    <ClCompile Include="Engine\src\Components\Basic\TransformComponent.cpp" />
+    <ClCompile Include="Engine\src\Components\Graphical\MaterialComponent.cpp" />
+    <ClCompile Include="Engine\src\Components\Graphical\MeshComponent.cpp" />
+    <ClCompile Include="Engine\src\Components\Graphical\SpriteComponent.cpp" />
+    <ClCompile Include="Engine\src\Components\UI\TextRenderComponent.cpp" />
+    <ClCompile Include="Engine\src\Components\UI\UIElementComponent.cpp" />
+    <ClCompile Include="Engine\src\Core\Core.cpp" />
+    <ClCompile Include="Engine\src\Core\Logger.cpp" />
+    <ClCompile Include="Engine\src\InnerLibraries\Math\MathFunctions.cpp" />
+    <ClCompile Include="Engine\src\InnerLibraries\Math\Matrix4x4.cpp" />
+    <ClCompile Include="Engine\src\InnerLibraries\Math\Quaternion.cpp" />
+    <ClCompile Include="Engine\src\InnerLibraries\Math\Vector2.cpp" />
+    <ClCompile Include="Engine\src\InnerLibraries\Math\Vector3.cpp" />
+    <ClCompile Include="Engine\src\InnerLibraries\Math\Vector4.cpp" />
+    <ClCompile Include="Engine\src\Resources\FontResource.cpp" />
+    <ClCompile Include="Engine\src\Resources\GLShader.cpp" />
+    <ClCompile Include="Engine\src\Resources\MeshResource.cpp" />
+    <ClCompile Include="Engine\src\Resources\ReadyShaderTexts.cpp" />
+    <ClCompile Include="Engine\src\Resources\ShaderResource.cpp" />
+    <ClCompile Include="Engine\src\Resources\TextResource.cpp" />
+    <ClCompile Include="Engine\src\Resources\TextureResource.cpp" />
+    <ClCompile Include="Engine\src\Services\Debug\DebugDraw.cpp" />
+    <ClCompile Include="Engine\src\Services\Debug\OGLDebugDraw.cpp" />
+    <ClCompile Include="Engine\src\Services\Resources\ResourсeManager.cpp" />
+    <ClCompile Include="Engine\src\Services\Scene\SceneLoader.cpp" />
+    <ClCompile Include="Engine\src\Services\Scene\SceneManager.cpp" />
+    <ClCompile Include="Engine\src\Services\Serialization\SerializationService.cpp" />
+    <ClCompile Include="Engine\src\Services\Utility\Functions.cpp" />
+    <ClCompile Include="Engine\src\Systems\Input\Input.cpp" />
+    <ClCompile Include="Engine\src\Systems\Modules\MeshRenderModule.cpp" />
+    <ClCompile Include="Engine\src\Systems\Modules\SpriteRenderModule.cpp" />
+    <ClCompile Include="Engine\src\Systems\Modules\UIRenderModule.cpp" />
+    <ClCompile Include="Engine\src\Systems\Physics\Physics.cpp" />
+    <ClCompile Include="Engine\src\Systems\Render\Contexts\IRenderContext.cpp" />
+    <ClCompile Include="Engine\src\Systems\Render\Contexts\OpenGLContext.cpp" />
+    <ClCompile Include="Engine\src\Systems\Render\Drawings.cpp" />
+    <ClCompile Include="Engine\src\Systems\Render\Render.cpp" />
+    <ClCompile Include="Engine\src\Systems\Render\Viewport.cpp" />
+    <ClCompile Include="Engine\src\Systems\Window\GLFWWindow.cpp" />
+    <ClCompile Include="Engine\src\Systems\Window\Window.cpp" />
+    <ClCompile Include="Engine\src\Systems\Window\WindowManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Engine\include\Components\Basic\AABB.hpp" />
+    <ClInclude Include="Engine\include\Components\Basic\CameraComponent.hpp" />
+    <ClInclude Include="Engine\include\Components\Basic\ScriptComponent.hpp" />
+    <ClInclude Include="Engine\include\Components\Basic\TransformComponent.hpp" />
+    <ClInclude Include="Engine\include\Components\Components.hpp" />
+    <ClInclude Include="Engine\include\Components\ComponentTags.hpp" />
+    <ClInclude Include="Engine\include\Components\Graphical\MaterialComponent.hpp" />
+    <ClInclude Include="Engine\include\Components\Graphical\MeshComponent.hpp" />
+    <ClInclude Include="Engine\include\Components\Graphical\SpriteComponent.hpp" />
+    <ClInclude Include="Engine\include\Components\UI\TextRenderComponent.hpp" />
+    <ClInclude Include="Engine\include\Components\UI\UIElementComponent.hpp" />
+    <ClInclude Include="Engine\include\Core\Core.hpp" />
+    <ClInclude Include="Engine\include\Core\GL.hpp" />
+    <ClInclude Include="Engine\include\Core\IService.hpp" />
+    <ClInclude Include="Engine\include\Core\IServices.hpp" />
+    <ClInclude Include="Engine\include\Core\ISystem.hpp" />
+    <ClInclude Include="Engine\include\Core\Logger.hpp" />
+    <ClInclude Include="Engine\include\Core\ServiceLocator.hpp" />
+    <ClInclude Include="Engine\include\EngineMUHF.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ComponentPool\ComponentPool.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ComponentPool\TypedComponentPool.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ComponentServices\ComponentServiceLocator.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ComponentServices\IComponentService.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ECS.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ESDL\ESDLDBParser.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ESDL\ESDLEntityParser.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ESDL\ESDLParser.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ESDL\ESDLStrings.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ESDL\ESDLStructs.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ESDL\ESDLValueParser.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Events\EntityEventsBinding.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Events\Events.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Events\EventsManager.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Main\EntitySpace.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Registry\Registry.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Registry\TypeRegistry.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Serialization\SerializationManager.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\SparseSet\SparseSet.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Tree\HierarchyTree.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Utility\ComponentSmartPointer.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Utility\Definitions.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\View\View.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\Math\MathFunctions.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\Math\Matrix4x4.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\Math\Quaternion.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\Math\Vector2.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\Math\Vector3.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\Math\Vector4.hpp" />
+    <ClInclude Include="Engine\include\InnerLibraries\Math\Vertex.hpp" />
+    <ClInclude Include="Engine\include\Resources\FontResource.hpp" />
+    <ClInclude Include="Engine\include\Resources\GLShader.hpp" />
+    <ClInclude Include="Engine\include\Resources\IResource.hpp" />
+    <ClInclude Include="Engine\include\Resources\MeshResource.hpp" />
+    <ClInclude Include="Engine\include\Resources\ReadyShaderTexts.hpp" />
+    <ClInclude Include="Engine\include\Resources\Shader.hpp" />
+    <ClInclude Include="Engine\include\Resources\ShaderResource.hpp" />
+    <ClInclude Include="Engine\include\Resources\TextResource.hpp" />
+    <ClInclude Include="Engine\include\Resources\TextureResource.hpp" />
+    <ClInclude Include="Engine\include\Services\Debug\DebugDraw.hpp" />
+    <ClInclude Include="Engine\include\Services\Debug\FPSCounter.hpp" />
+    <ClInclude Include="Engine\include\Services\Debug\OGLDebugDraw.hpp" />
+    <ClInclude Include="Engine\include\Services\Events\Event.hpp" />
+    <ClInclude Include="Engine\include\Services\Events\EventManager.hpp" />
+    <ClInclude Include="Engine\include\Services\Resources\ResourceManager.hpp" />
+    <ClInclude Include="Engine\include\Services\Scene\SceneContext.hpp" />
+    <ClInclude Include="Engine\include\Services\Scene\SceneLoader.hpp" />
+    <ClInclude Include="Engine\include\Services\Scene\SceneManager.hpp" />
+    <ClInclude Include="Engine\include\Services\Serialization\SerializationService.hpp" />
+    <ClInclude Include="Engine\include\Services\Settings\SettingsManager.hpp" />
+    <ClInclude Include="Engine\include\Services\Utility\Functions.hpp" />
+    <ClInclude Include="Engine\include\Services\Utility\ThreadPool.hpp" />
+    <ClInclude Include="Engine\include\Systems\Input\Input.hpp" />
+    <ClInclude Include="Engine\include\Systems\Modules\IModule.hpp" />
+    <ClInclude Include="Engine\include\Systems\Modules\MeshRenderModule.hpp" />
+    <ClInclude Include="Engine\include\Systems\Modules\Modules.hpp" />
+    <ClInclude Include="Engine\include\Systems\Modules\SpriteRenderModule.hpp" />
+    <ClInclude Include="Engine\include\Systems\Modules\UIRenderModule.hpp" />
+    <ClInclude Include="Engine\include\Systems\Physics\Physics.hpp" />
+    <ClInclude Include="Engine\include\Systems\Render\Contexts\IRenderContext.hpp" />
+    <ClInclude Include="Engine\include\Systems\Render\Contexts\OpenGLContext.hpp" />
+    <ClInclude Include="Engine\include\Systems\Render\Drawings.hpp" />
+    <ClInclude Include="Engine\include\Systems\Render\Render.hpp" />
+    <ClInclude Include="Engine\include\Systems\Render\Viewport.hpp" />
+    <ClInclude Include="Engine\include\Systems\Window\GLFWWindow.hpp" />
+    <ClInclude Include="Engine\include\Systems\Window\Window.hpp" />
+    <ClInclude Include="Engine\include\Systems\Window\WindowManager.hpp" />
+    <ClInclude Include="TestAssets\CameraScript.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ItemGroup>
+    <Content Include="EngineAssets\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

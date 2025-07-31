@@ -1,0 +1,500 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="TestAssets">
+      <UniqueIdentifier>{14205ef0-e21a-4751-9d43-722800bb7632}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include">
+      <UniqueIdentifier>{95087321-3492-48cf-a45c-0b8ef2e269f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\source">
+      <UniqueIdentifier>{14ac082b-c2af-4fb5-aac3-4c1c5d6529c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Libraries">
+      <UniqueIdentifier>{d511605a-3db4-43da-a893-2a1e1ee703cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Libraries\ECS">
+      <UniqueIdentifier>{2f6f2536-4d3e-4b68-89b7-438323016ffb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Libraries\Math">
+      <UniqueIdentifier>{72d07479-5d0c-4d67-8deb-ce34b9948423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Components">
+      <UniqueIdentifier>{1429af32-cfef-4dcc-8e68-f4db7aef3c64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Core">
+      <UniqueIdentifier>{0067a6b2-1a51-43ea-a6a7-b4d5066adfa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Resources">
+      <UniqueIdentifier>{36402f0c-2fb5-40c2-8e30-b6f63161cbba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Debug">
+      <UniqueIdentifier>{41af2302-6146-4f46-b2f1-764d7509c788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Scene">
+      <UniqueIdentifier>{1a4ee40c-5885-4d76-a06f-ff75be453941}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Window">
+      <UniqueIdentifier>{14654875-d89a-4875-9340-e6013feb3c98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Event">
+      <UniqueIdentifier>{63dfb03b-4260-4945-a1bb-5a2d56372090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Render">
+      <UniqueIdentifier>{daa89e51-960f-4582-839c-5fb0d5820db2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Other">
+      <UniqueIdentifier>{11ed15f7-589c-4b90-a6f2-aeb281dd3300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\source\Components">
+      <UniqueIdentifier>{c9adc816-289a-4179-a493-66e8784687a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\source\Core">
+      <UniqueIdentifier>{eaf8dd5e-54a4-45d9-9c1b-55c81a1062db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\source\Libraries">
+      <UniqueIdentifier>{43639268-4758-4e5f-b672-a32cd085ca5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\source\Libraries\Math">
+      <UniqueIdentifier>{88031ac6-635c-4376-8325-38351dbc469f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\source\Resources">
+      <UniqueIdentifier>{5db0a4d2-bdc7-4e24-acbe-af5eb8cc6ccc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\source\Render">
+      <UniqueIdentifier>{798d1960-4a01-4527-9f21-6276f5f21d59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\source\Scene">
+      <UniqueIdentifier>{42bad97a-6f00-4230-92ab-3aee4d22c4a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\source\Window">
+      <UniqueIdentifier>{df3a5f7b-da5c-412c-997b-cc2b60fcd7cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\source\Debug">
+      <UniqueIdentifier>{0a71c590-3264-430f-86a9-b4f90bb1b9f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\source\Other">
+      <UniqueIdentifier>{5b9df7ca-94d3-4f81-844b-1a5044449e8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Modules">
+      <UniqueIdentifier>{1d320062-e2cf-4c3c-b420-69240a4f9c93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\source\Modules">
+      <UniqueIdentifier>{73d04911-d85c-40e9-ae3c-0cf9a270b7b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Libraries\ECS\ESDL">
+      <UniqueIdentifier>{0bbdde44-0993-42f3-9522-0c98d35bddfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Libraries\ECS\Events">
+      <UniqueIdentifier>{faa6e1bd-4ea4-4f81-bb45-07416f290cbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Libraries\ECS\Components">
+      <UniqueIdentifier>{8f1e54a6-dd7b-4e7e-aa64-4eb4fe0ba6d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\source\Components\Graphical">
+      <UniqueIdentifier>{9540044c-aa42-45f5-bdeb-864a3565154d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы ресурсов\include\Components\Graphical">
+      <UniqueIdentifier>{28887f4b-433e-48e7-87b8-18f71d724e6f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EndLoad Engine.cpp" />
+    <ClCompile Include="Engine\src\Core\Core.cpp">
+      <Filter>Файлы ресурсов\source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\InnerLibraries\Math\Vector4.cpp">
+      <Filter>Файлы ресурсов\source\Libraries\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\InnerLibraries\Math\Vector3.cpp">
+      <Filter>Файлы ресурсов\source\Libraries\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\InnerLibraries\Math\Vector2.cpp">
+      <Filter>Файлы ресурсов\source\Libraries\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Core\Logger.cpp">
+      <Filter>Файлы ресурсов\source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\InnerLibraries\Math\MathFunctions.cpp">
+      <Filter>Файлы ресурсов\source\Libraries\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\InnerLibraries\Math\Matrix4x4.cpp">
+      <Filter>Файлы ресурсов\source\Libraries\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\InnerLibraries\Math\Quaternion.cpp">
+      <Filter>Файлы ресурсов\source\Libraries\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Systems\Render\Contexts\OpenGLContext.cpp">
+      <Filter>Файлы ресурсов\source\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Systems\Render\Contexts\IRenderContext.cpp">
+      <Filter>Файлы ресурсов\source\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Systems\Render\Render.cpp">
+      <Filter>Файлы ресурсов\source\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Systems\Render\Viewport.cpp">
+      <Filter>Файлы ресурсов\source\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Services\Scene\SceneLoader.cpp">
+      <Filter>Файлы ресурсов\source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Services\Scene\SceneManager.cpp">
+      <Filter>Файлы ресурсов\source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Systems\Window\WindowManager.cpp">
+      <Filter>Файлы ресурсов\source\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Systems\Window\Window.cpp">
+      <Filter>Файлы ресурсов\source\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Systems\Window\GLFWWindow.cpp">
+      <Filter>Файлы ресурсов\source\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Services\Debug\DebugDraw.cpp">
+      <Filter>Файлы ресурсов\source\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Services\Debug\OGLDebugDraw.cpp">
+      <Filter>Файлы ресурсов\source\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Systems\Render\Drawings.cpp">
+      <Filter>Файлы ресурсов\source\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Services\Utility\Functions.cpp">
+      <Filter>Файлы ресурсов\source\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Systems\Input\Input.cpp">
+      <Filter>Файлы ресурсов\source\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Systems\Physics\Physics.cpp">
+      <Filter>Файлы ресурсов\source\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Services\Serialization\SerializationService.cpp">
+      <Filter>Файлы ресурсов\source\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Systems\Modules\MeshRenderModule.cpp">
+      <Filter>Файлы ресурсов\source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Systems\Modules\SpriteRenderModule.cpp">
+      <Filter>Файлы ресурсов\source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Components\Basic\ScriptComponent.cpp">
+      <Filter>Файлы ресурсов\source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Components\Basic\TransformComponent.cpp">
+      <Filter>Файлы ресурсов\source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Components\UI\UIElementComponent.cpp">
+      <Filter>Файлы ресурсов\source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Systems\Modules\UIRenderModule.cpp">
+      <Filter>Файлы ресурсов\source\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Components\UI\TextRenderComponent.cpp">
+      <Filter>Файлы ресурсов\source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Components\Graphical\MaterialComponent.cpp">
+      <Filter>Файлы ресурсов\source\Components\Graphical</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Components\Graphical\MeshComponent.cpp">
+      <Filter>Файлы ресурсов\source\Components\Graphical</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Components\Graphical\SpriteComponent.cpp">
+      <Filter>Файлы ресурсов\source\Components\Graphical</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Components\Basic\CameraComponent.cpp">
+      <Filter>Файлы ресурсов\source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Resources\FontResource.cpp">
+      <Filter>Файлы ресурсов\source\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Resources\GLShader.cpp">
+      <Filter>Файлы ресурсов\source\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Resources\MeshResource.cpp">
+      <Filter>Файлы ресурсов\source\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Resources\ReadyShaderTexts.cpp">
+      <Filter>Файлы ресурсов\source\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Resources\ShaderResource.cpp">
+      <Filter>Файлы ресурсов\source\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Resources\TextResource.cpp">
+      <Filter>Файлы ресурсов\source\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Resources\TextureResource.cpp">
+      <Filter>Файлы ресурсов\source\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\src\Services\Resources\ResourсeManager.cpp">
+      <Filter>Файлы ресурсов\source\Resources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestAssets\CameraScript.h">
+      <Filter>TestAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\EngineMUHF.hpp">
+      <Filter>Файлы ресурсов\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ECS.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Tree\HierarchyTree.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\Math\Quaternion.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Registry\Registry.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\SparseSet\SparseSet.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\Math\Vector2.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\Math\Vector3.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\Math\Vector4.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\View\View.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\Math\Matrix4x4.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\Math\MathFunctions.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ComponentPool\TypedComponentPool.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Utility\Definitions.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Core\Core.hpp">
+      <Filter>Файлы ресурсов\include\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Core\GL.hpp">
+      <Filter>Файлы ресурсов\include\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Core\Logger.hpp">
+      <Filter>Файлы ресурсов\include\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Settings\SettingsManager.hpp">
+      <Filter>Файлы ресурсов\include\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Core\ServiceLocator.hpp">
+      <Filter>Файлы ресурсов\include\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Core\IServices.hpp">
+      <Filter>Файлы ресурсов\include\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Core\IService.hpp">
+      <Filter>Файлы ресурсов\include\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Debug\DebugDraw.hpp">
+      <Filter>Файлы ресурсов\include\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Debug\OGLDebugDraw.hpp">
+      <Filter>Файлы ресурсов\include\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Scene\SceneManager.hpp">
+      <Filter>Файлы ресурсов\include\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Scene\SceneContext.hpp">
+      <Filter>Файлы ресурсов\include\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Scene\SceneLoader.hpp">
+      <Filter>Файлы ресурсов\include\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Window\Window.hpp">
+      <Filter>Файлы ресурсов\include\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Window\WindowManager.hpp">
+      <Filter>Файлы ресурсов\include\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Window\GLFWWindow.hpp">
+      <Filter>Файлы ресурсов\include\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Events\Event.hpp">
+      <Filter>Файлы ресурсов\include\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Events\EventManager.hpp">
+      <Filter>Файлы ресурсов\include\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Render\Contexts\IRenderContext.hpp">
+      <Filter>Файлы ресурсов\include\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Render\Contexts\OpenGLContext.hpp">
+      <Filter>Файлы ресурсов\include\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Render\Render.hpp">
+      <Filter>Файлы ресурсов\include\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Render\Drawings.hpp">
+      <Filter>Файлы ресурсов\include\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Render\Viewport.hpp">
+      <Filter>Файлы ресурсов\include\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Debug\FPSCounter.hpp">
+      <Filter>Файлы ресурсов\include\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Utility\Functions.hpp">
+      <Filter>Файлы ресурсов\include\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Input\Input.hpp">
+      <Filter>Файлы ресурсов\include\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Physics\Physics.hpp">
+      <Filter>Файлы ресурсов\include\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Serialization\SerializationService.hpp">
+      <Filter>Файлы ресурсов\include\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Utility\ThreadPool.hpp">
+      <Filter>Файлы ресурсов\include\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Modules\IModule.hpp">
+      <Filter>Файлы ресурсов\include\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Modules\MeshRenderModule.hpp">
+      <Filter>Файлы ресурсов\include\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Modules\Modules.hpp">
+      <Filter>Файлы ресурсов\include\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Modules\SpriteRenderModule.hpp">
+      <Filter>Файлы ресурсов\include\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\Math\Vertex.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Main\EntitySpace.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ComponentServices\IComponentService.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Core\ISystem.hpp">
+      <Filter>Файлы ресурсов\include\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ESDL\ESDLParser.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS\ESDL</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ESDL\ESDLStructs.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS\ESDL</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ESDL\ESDLStrings.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS\ESDL</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ESDL\ESDLEntityParser.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS\ESDL</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ESDL\ESDLDBParser.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS\ESDL</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ESDL\ESDLValueParser.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS\ESDL</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Serialization\SerializationManager.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Events\EntityEventsBinding.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Events\Events.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Events\EventsManager.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ComponentPool\ComponentPool.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\ComponentServices\ComponentServiceLocator.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Utility\ComponentSmartPointer.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Basic\CameraComponent.hpp">
+      <Filter>Файлы ресурсов\include\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Basic\ScriptComponent.hpp">
+      <Filter>Файлы ресурсов\include\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Basic\TransformComponent.hpp">
+      <Filter>Файлы ресурсов\include\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Components.hpp">
+      <Filter>Файлы ресурсов\include\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\InnerLibraries\ECS\Registry\TypeRegistry.hpp">
+      <Filter>Файлы ресурсов\include\Libraries\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\UI\UIElementComponent.hpp">
+      <Filter>Файлы ресурсов\include\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Modules\UIRenderModule.hpp">
+      <Filter>Файлы ресурсов\include\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\ComponentTags.hpp">
+      <Filter>Файлы ресурсов\include\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\UI\TextRenderComponent.hpp">
+      <Filter>Файлы ресурсов\include\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Basic\AABB.hpp">
+      <Filter>Файлы ресурсов\include\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Graphical\MaterialComponent.hpp">
+      <Filter>Файлы ресурсов\include\Components\Graphical</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Graphical\MeshComponent.hpp">
+      <Filter>Файлы ресурсов\include\Components\Graphical</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Graphical\SpriteComponent.hpp">
+      <Filter>Файлы ресурсов\include\Components\Graphical</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\ReadyShaderTexts.hpp">
+      <Filter>Файлы ресурсов\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\Shader.hpp">
+      <Filter>Файлы ресурсов\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\ShaderResource.hpp">
+      <Filter>Файлы ресурсов\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\TextResource.hpp">
+      <Filter>Файлы ресурсов\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\TextureResource.hpp">
+      <Filter>Файлы ресурсов\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\FontResource.hpp">
+      <Filter>Файлы ресурсов\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\GLShader.hpp">
+      <Filter>Файлы ресурсов\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\IResource.hpp">
+      <Filter>Файлы ресурсов\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\MeshResource.hpp">
+      <Filter>Файлы ресурсов\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Resources\ResourceManager.hpp">
+      <Filter>Файлы ресурсов\include\Resources</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
