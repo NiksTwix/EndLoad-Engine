@@ -13,10 +13,93 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{a0dd312f-bf26-41b9-95dd-a9b6b6cc9f2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include">
+      <UniqueIdentifier>{8ce05a4d-94f2-4857-8fd8-8b25ecb21a6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source">
+      <UniqueIdentifier>{aad7b278-d10a-4727-bed0-0f39e03ae932}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Systems">
+      <UniqueIdentifier>{ec2db5ee-c065-4632-9e55-69f8dcb9c284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Systems\Graphics">
+      <UniqueIdentifier>{902bbaa0-fdfb-4c80-88d4-3c23264ea22b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Systems\Graphics\Windows">
+      <UniqueIdentifier>{47a83a50-a6ce-4fbd-a345-81fb53387e1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Systems\Graphics\Rendering">
+      <UniqueIdentifier>{0ac9eb96-cb1c-4c7a-b9b3-6150177b79af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Systems\Graphics\GraphicsDevice">
+      <UniqueIdentifier>{1cf7ec8f-9b0d-4f13-92fb-ef16894140c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\SpecialHeaders">
+      <UniqueIdentifier>{e78c5cfa-5fd7-487e-ba2e-56506cfb919e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Systems\Graphics\GraphicsDevice\OpenGL">
+      <UniqueIdentifier>{0465f9e0-12ff-4855-97af-8a017e44f755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Systems">
+      <UniqueIdentifier>{16f1a013-94ac-44ae-adc3-fd6e80a08197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Systems\Graphics">
+      <UniqueIdentifier>{357c7e13-8827-4f92-a0af-c63f9ab084b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Systems\Graphics\GraphicsDevice">
+      <UniqueIdentifier>{fd775ba7-8493-4025-9568-704fe369376e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Systems\Graphics\GraphicsDevice\OpenGL">
+      <UniqueIdentifier>{b3dfa91b-6e39-4892-965f-502364de7b3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Systems\Graphics\Windows">
+      <UniqueIdentifier>{f5046176-cdd7-4d1c-a70a-2ee07bc3fa76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Core">
+      <UniqueIdentifier>{48f24688-4e66-4b8c-8f7d-521f30bb7d09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndLoad Engine.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\source\Systems\Graphics\GraphicsDevice\OpenGL\OpenGLDevice.cpp">
+      <Filter>Engine\source\Systems\Graphics\GraphicsDevice\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Systems\Graphics\Windows\Window.cpp">
+      <Filter>Engine\source\Systems\Graphics\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Systems\Graphics\Windows\WindowsManager.cpp">
+      <Filter>Engine\source\Systems\Graphics\Windows</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Engine\include\Systems\Graphics\GraphicsDevice\GraphicsData.hpp">
+      <Filter>Engine\include\Systems\Graphics\GraphicsDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Graphics\GraphicsDevice\IGraphicsDevice.hpp">
+      <Filter>Engine\include\Systems\Graphics\GraphicsDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\SpecialHeaders\Definitions.hpp">
+      <Filter>Engine\include\SpecialHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Graphics\GraphicsDevice\OpenGL\OpenGLDevice.hpp">
+      <Filter>Engine\include\Systems\Graphics\GraphicsDevice\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\SpecialHeaders\GL.hpp">
+      <Filter>Engine\include\SpecialHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Graphics\Windows\Window.hpp">
+      <Filter>Engine\include\Systems\Graphics\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Graphics\Windows\WindowsManager.hpp">
+      <Filter>Engine\include\Systems\Graphics\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Core\IServices.hpp">
+      <Filter>Engine\include\Core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

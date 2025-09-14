@@ -1,14 +1,21 @@
 #pragma once
 #include <unordered_map>
 #include <vector>
-#include <assert>
+#include <assert.h>
 #include <memory>
+#include <limits.h>
+
 //This file contains constant and other values
 
 //Type templates
 
-using uint = unsigned int;
+namespace Definitions {
 
-//Constants
-constexpr float EngineVersion = 0.2f;
-constexpr float EngineName = "EndLoad Engine";
+	using uint = unsigned int;
+
+	using identificator = size_t;
+
+	//Constants
+	constexpr float EngineVersion = 0.2f;
+	constexpr identificator InvalidID = SIZE_MAX;
+}

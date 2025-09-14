@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>Engine\libs\glm.1.0.1\build\native\include;Engine\libs;$(IncludePath)</IncludePath>
+    <IncludePath>Engine\libs\glm.1.0.1\build\native\include;Engine\libs;Engine\include;Engine\libs\glew220\include\;Engine\libs\glfw34WIN64\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -103,13 +103,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;GLEW_STATIC%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>Engine\libs\ELMath\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>Engine\libs\ELMath\lib\;Engine\libs\glew220\lib\Release\x64\;Engine\libs\glfw34WIN64\lib-vc2022\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>ELMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -129,6 +131,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EndLoad Engine.cpp" />
+    <ClCompile Include="Engine\source\Systems\Graphics\GraphicsDevice\OpenGL\OpenGLDevice.cpp" />
+    <ClCompile Include="Engine\source\Systems\Graphics\Windows\Window.cpp" />
+    <ClCompile Include="Engine\source\Systems\Graphics\Windows\WindowsManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Engine\include\Core\IServices.hpp" />
+    <ClInclude Include="Engine\include\SpecialHeaders\Definitions.hpp" />
+    <ClInclude Include="Engine\include\SpecialHeaders\GL.hpp" />
+    <ClInclude Include="Engine\include\Systems\Graphics\GraphicsDevice\GraphicsData.hpp" />
+    <ClInclude Include="Engine\include\Systems\Graphics\GraphicsDevice\IGraphicsDevice.hpp" />
+    <ClInclude Include="Engine\include\Systems\Graphics\GraphicsDevice\OpenGL\OpenGLDevice.hpp" />
+    <ClInclude Include="Engine\include\Systems\Graphics\Windows\Window.hpp" />
+    <ClInclude Include="Engine\include\Systems\Graphics\Windows\WindowsManager.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

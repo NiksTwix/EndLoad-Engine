@@ -5,40 +5,7 @@
 
 namespace Graphics 
 {
-	enum class GDSettings
-	{
-		DEPTH_TEST,
-		BLEND,
-		BLEND_MODE,
-		POLYGON_MODE,
-		UNPACK_ALIGNMENT
-	};
-	enum class GDSettingsValues
-	{
-		NONE = 0,
-		FALSE,
-		TRUE,
-		//BLEND_MODE
-		SRC_ALPHA,
-		ONE_MINUS_SRC_ALPHA,
-		//POLYGON_MODE
-		POINTS,
-		LINES,
-		FILL,
-
-		//bytes
-
-		ONE_BYTE,
-		TREE_BYTES,
-		FOUR_BYTES
-	};
-
-	enum class GDBufferModes
-	{
-		STATIC,
-		DYNAMIC,
-		STREAM
-	};
+	
 
 	class Viewport;	//He is linked with ECS::CameraComponent, for clearly structure i use premature declaration
 
@@ -75,6 +42,7 @@ namespace Graphics
 
 		virtual MeshID CreateMesh(const MeshData& data) = 0;
 		virtual void BindMesh(const MeshID& id) = 0;
+		virtual void UpdateMesh(const MeshID& id, const MeshData& data) = 0;
 		virtual void DeleteMesh(const MeshID& id) = 0;
 
 		//Texture working
@@ -95,7 +63,7 @@ namespace Graphics
 		}
 		virtual void BindShader(const ShaderID& id) 
 		{
-			auto shader = GetShader();
+			auto shader = GetShader(id);
 			if (shader != nullptr) {
 				shader->Bind();
 			}

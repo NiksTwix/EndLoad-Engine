@@ -8,10 +8,44 @@
 namespace Graphics
 {
     
-    using MeshID = uint;
-    using TextureID = uint;
-    using ShaderID = uint;
+    using MeshID = Definitions::identificator;
+    using TextureID = Definitions::identificator;
+    using ShaderID = Definitions::identificator;
+    
+    enum class GDSettings
+    {
+        DEPTH_TEST,
+        BLEND,
+        BLEND_MODE,
+        POLYGON_MODE,
+        UNPACK_ALIGNMENT
+    };
+    enum class GDSettingsValues
+    {
+        NONE = 0,
+        FALSE,
+        TRUE,
+        //BLEND_MODE
+        SRC_ALPHA,
+        ONE_MINUS_SRC_ALPHA,
+        //POLYGON_MODE
+        POINTS,
+        LINES,
+        FILL,
 
+        //bytes
+
+        ONE_BYTE,
+        TREE_BYTES,
+        FOUR_BYTES
+    };
+
+    enum class GDBufferModes
+    {
+        STATIC,
+        DYNAMIC,
+        STREAM
+    };
 
     struct UniformValue
     {
@@ -31,7 +65,7 @@ namespace Graphics
         {
             bool boolValue;
             int intValue;
-            uint uintValue;
+            Definitions::uint uintValue;
             float floatValue;
         };
 
@@ -43,7 +77,7 @@ namespace Graphics
         // Constructor for every type
         UniformValue(bool value) : boolValue(value), type(ValueType::BOOL) {}
         UniformValue(int value) : intValue(value), type(ValueType::INT) {}
-        UniformValue(uint value) : uintValue(value), type(ValueType::UINT) {}
+        UniformValue(Definitions::uint value) : uintValue(value), type(ValueType::UINT) {}
         UniformValue(float value) : floatValue(value), type(ValueType::FLOAT) {}
 
         UniformValue(const Math::Vector2& value)
@@ -74,7 +108,7 @@ namespace Graphics
             assert(type == ValueType::INT);
             return intValue;
         }
-        uint GetUInt() const {
+        Definitions::uint GetUInt() const {
             assert(type == ValueType::UINT);
             return uintValue;
         }
@@ -105,24 +139,27 @@ namespace Graphics
     struct MeshData
     {
         std::vector<Math::Vertex> vertices;
-        std::vector<uint> indices;
+        std::vector<Definitions::uint> indices;
 
-        MeshData(std::vector<Math::Vertex> verts, std::vector<uint> inds)
+        GDBufferModes buffer_mode;      // <- STATIC, DYNAMIC, STREAM
+
+
+        MeshData(std::vector<Math::Vertex> verts, std::vector<Definitions::uint> inds, GDBufferModes buffer_mode = GDBufferModes::STATIC)
             : vertices(std::move(verts))
-            , indices(std::move(inds))
+            , indices(std::move(inds)), buffer_mode(buffer_mode)
         {
         }
-		uint GetVertexCount() const { return vertices.size(); }
-		uint GetIndexCount() const { return indices.size(); }
+        Definitions::uint GetVertexCount() const { return vertices.size(); }
+        Definitions::uint GetIndexCount() const { return indices.size(); }
 	};
 
     struct TextureData
     {
         const void* pixels;
         Math::Vector2 size;
-        uint bytes_per_pixel;
+        Definitions::uint bytes_per_pixel;
 
-        TextureData(const void* pixels, Math::Vector2 size, uint bytes_per_pixel)
+        TextureData(const void* pixels, Math::Vector2 size, Definitions::uint bytes_per_pixel)
             : pixels(pixels)
             , size(size), bytes_per_pixel(bytes_per_pixel)
         {
@@ -134,7 +171,7 @@ namespace Graphics
         MeshID mesh_id;
         ShaderID shader_id;
 
-        std::vector<std::pair<TextureID, uint>> textures; // Texture + slot (0-16)
+        std::vector<std::pair<TextureID, Definitions::uint>> textures; // Texture + slot (0-16)
         std::unordered_map<std::string, UniformValue> uniforms;
     };
 
