@@ -61,6 +61,18 @@
     <Filter Include="Engine\include\Core">
       <UniqueIdentifier>{48f24688-4e66-4b8c-8f7d-521f30bb7d09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\include\Services">
+      <UniqueIdentifier>{4be49374-028b-47ab-bd30-c92c1fdb265e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Services">
+      <UniqueIdentifier>{1194ba61-262b-41f7-8236-9c7eaa391db1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Services\Diagnostics">
+      <UniqueIdentifier>{b75f4114-f9f7-4204-b185-95cf8b021deb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Services\Diagnostics">
+      <UniqueIdentifier>{ea95a6ad-5dbd-4719-8e17-b95fba5b95d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndLoad Engine.cpp">
@@ -74,6 +86,12 @@
     </ClCompile>
     <ClCompile Include="Engine\source\Systems\Graphics\Windows\WindowsManager.cpp">
       <Filter>Engine\source\Systems\Graphics\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Services\Diagnostics\Logger\Logger.cpp">
+      <Filter>Engine\source\Services\Diagnostics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Services\Diagnostics\ProcessObserver\ProcessObserver.cpp">
+      <Filter>Engine\source\Services\Diagnostics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +117,15 @@
       <Filter>Engine\include\Systems\Graphics\Windows</Filter>
     </ClInclude>
     <ClInclude Include="Engine\include\Core\IServices.hpp">
+      <Filter>Engine\include\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Diagnostics\Logger\Logger.hpp">
+      <Filter>Engine\include\Services\Diagnostics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Diagnostics\ProcessObserver\ProcessObserver.hpp">
+      <Filter>Engine\include\Services\Diagnostics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Core\ServiceLocator.hpp">
       <Filter>Engine\include\Core</Filter>
     </ClInclude>
   </ItemGroup>

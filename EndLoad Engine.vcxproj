@@ -131,12 +131,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EndLoad Engine.cpp" />
+    <ClCompile Include="Engine\source\Services\Diagnostics\Logger\Logger.cpp" />
+    <ClCompile Include="Engine\source\Services\Diagnostics\ProcessObserver\ProcessObserver.cpp" />
     <ClCompile Include="Engine\source\Systems\Graphics\GraphicsDevice\OpenGL\OpenGLDevice.cpp" />
     <ClCompile Include="Engine\source\Systems\Graphics\Windows\Window.cpp" />
     <ClCompile Include="Engine\source\Systems\Graphics\Windows\WindowsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\include\Core\IServices.hpp" />
+    <ClInclude Include="Engine\include\Core\ServiceLocator.hpp" />
+    <ClInclude Include="Engine\include\Services\Diagnostics\Logger\Logger.hpp" />
+    <ClInclude Include="Engine\include\Services\Diagnostics\ProcessObserver\ProcessObserver.hpp" />
     <ClInclude Include="Engine\include\SpecialHeaders\Definitions.hpp" />
     <ClInclude Include="Engine\include\SpecialHeaders\GL.hpp" />
     <ClInclude Include="Engine\include\Systems\Graphics\GraphicsDevice\GraphicsData.hpp" />
