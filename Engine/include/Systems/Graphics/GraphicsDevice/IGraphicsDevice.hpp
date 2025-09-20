@@ -5,7 +5,7 @@
 
 namespace Graphics 
 {
-	
+
 
 	class Viewport;	//He is linked with ECS::CameraComponent, for clearly structure i use premature declaration
 
@@ -13,21 +13,23 @@ namespace Graphics
 	{
 	protected:
 		bool m_IsValid = false;
-		std::string m_Name = "GraphicsDevice";
+		std::string m_Name = "GraphicsDevice";		//OpenGL, Vulkan
+
+		GraphicsAPI api = GraphicsAPI::None;
 
 		Viewport* m_CurrentViewport;		//Current render viewport. Pointer is observer
 
 		std::unordered_map<GDSettings, GDSettingsValues> m_Settings;		//Settings of render
 		std::unordered_map<ShaderID, ShaderPtr> m_Shaders;
 	public:
-
+		IGraphicsDevice() = default;
 		~IGraphicsDevice() = default;
 
 		virtual void Init() = 0;
 
 		bool IsValid() const { return m_IsValid; }
 		const std::string& GetName() const { return m_Name; }
-
+		GraphicsAPI GetAPIType() const { return api; }
 		//State
 
 		virtual void ClearState() = 0; // Clear all data

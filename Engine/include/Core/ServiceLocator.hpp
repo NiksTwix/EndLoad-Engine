@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "IServices.hpp"
+#include <Services/Diagnostics/Logger/Logger.hpp>
 #include <typeindex>
 #include <mutex>
 
@@ -17,10 +18,10 @@ namespace Core
             static_assert(std::is_base_of_v<IService, T>, "T must inherit from IService");
 
             if constexpr (std::is_base_of_v<ISystem, T>) {
-                return GetSystem<T>();
+                return dynamic_cast<T*>(GetSystemPtr<T>()); // Добавить dynamic_cast
             }
-            else if constexpr (std::is_base_of_v<IService, T>) {
-                return GetServicePtr<T>();
+            else if  constexpr (std::is_base_of_v<IService, T>) {
+                return dynamic_cast<T*>(GetServicePtr<T>()); // Добавить dynamic_cast
             }
             else {
                 return nullptr;
@@ -61,7 +62,6 @@ namespace Core
 
         static void Shutdown()
         {
-            //auto logger = Get<Logger>();
             auto list_ = GetSystemList();
 
 
@@ -74,7 +74,7 @@ namespace Core
             {
                 service->Shutdown();
             }
-            //logger->Log("(ServiceLocator): All services shutdown.", Logger::Level::Success);
+            Diagnostics::Logger::Get().SendMessage("(ServiceLocator): All services shutdown.", Diagnostics::MessageType::Info);
             GetSystems().clear();
             GetServices().clear();
         }
@@ -135,8 +135,8 @@ namespace Core
         }
 
         template<typename T>
-        static T* GetHelperService() {
-            static_assert(std::is_base_of_v<IHelperService, T>, "T must be IHelperService");
+        static T* GetService() {
+            static_assert(std::is_base_of_v<IService, T>, "T must be IService");
             auto ptr = GetServicePtr<T>();
             return static_cast<T*>(ptr);
         }

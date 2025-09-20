@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <algorithm>
 
+
 namespace Core
 {
     //IService
@@ -72,6 +73,7 @@ namespace Core
                 }
             );
         }
+
     public:
         virtual void Update() {}
 
@@ -123,6 +125,11 @@ namespace Core
             for (auto m_module : m_modules) {
                 m_module->Update();
             }
+        }
+
+        virtual bool IsNeedAsync() 
+        {
+            return false;
         }
     };
 

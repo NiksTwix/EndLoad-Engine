@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -112,7 +112,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>Engine\libs\ELMath\lib\;Engine\libs\glew220\lib\Release\x64\;Engine\libs\glfw34WIN64\lib-vc2022\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ELMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ELMath.lib;glew32s.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,24 +131,35 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EndLoad Engine.cpp" />
+    <ClCompile Include="Engine\source\Core\EngineCore.cpp" />
     <ClCompile Include="Engine\source\Services\Diagnostics\Logger\Logger.cpp" />
     <ClCompile Include="Engine\source\Services\Diagnostics\ProcessObserver\ProcessObserver.cpp" />
+    <ClCompile Include="Engine\source\Services\ResourcesManager\ResourceManager.cpp" />
     <ClCompile Include="Engine\source\Systems\Graphics\GraphicsDevice\OpenGL\OpenGLDevice.cpp" />
+    <ClCompile Include="Engine\source\Systems\Graphics\Rendering\RenderSystem.cpp" />
     <ClCompile Include="Engine\source\Systems\Graphics\Windows\Window.cpp" />
     <ClCompile Include="Engine\source\Systems\Graphics\Windows\WindowsManager.cpp" />
+    <ClCompile Include="Engine\source\Systems\Input\InputSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\include\Core\EngineCore.hpp" />
     <ClInclude Include="Engine\include\Core\IServices.hpp" />
     <ClInclude Include="Engine\include\Core\ServiceLocator.hpp" />
+    <ClInclude Include="Engine\include\Multithreading\ThreadPool.hpp" />
+    <ClInclude Include="Engine\include\Resources\IResource.hpp" />
     <ClInclude Include="Engine\include\Services\Diagnostics\Logger\Logger.hpp" />
     <ClInclude Include="Engine\include\Services\Diagnostics\ProcessObserver\ProcessObserver.hpp" />
+    <ClInclude Include="Engine\include\Services\ResourcesManager\ResourceManager.hpp" />
     <ClInclude Include="Engine\include\SpecialHeaders\Definitions.hpp" />
     <ClInclude Include="Engine\include\SpecialHeaders\GL.hpp" />
     <ClInclude Include="Engine\include\Systems\Graphics\GraphicsDevice\GraphicsData.hpp" />
     <ClInclude Include="Engine\include\Systems\Graphics\GraphicsDevice\IGraphicsDevice.hpp" />
     <ClInclude Include="Engine\include\Systems\Graphics\GraphicsDevice\OpenGL\OpenGLDevice.hpp" />
+    <ClInclude Include="Engine\include\Systems\Graphics\Rendering\RenderSystem.hpp" />
+    <ClInclude Include="Engine\include\Systems\Graphics\Windows\GLFWContextManager.hpp" />
     <ClInclude Include="Engine\include\Systems\Graphics\Windows\Window.hpp" />
     <ClInclude Include="Engine\include\Systems\Graphics\Windows\WindowsManager.hpp" />
+    <ClInclude Include="Engine\include\Systems\Input\InputSystem.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -106,6 +106,14 @@ namespace Math
 			}
 			return result;
 		}
+
+		static Matrix4x4 Zero() 
+		{
+			return Matrix4x4(0, 0, 0, 0,
+				0, 0, 0, 0,
+				0, 0, 0, 0,
+				0, 0, 0, 0);
+		}
 	};
 
 }

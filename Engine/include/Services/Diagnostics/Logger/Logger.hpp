@@ -1,5 +1,5 @@
 #pragma once
-#include <Services\Diagnostics\\ProcessObserver\ProcessObserver.hpp>
+#include <Services\Diagnostics\ProcessObserver\ProcessObserver.hpp>
 #include <functional>
 #include <string>
 #include <mutex>
@@ -17,10 +17,8 @@ namespace Diagnostics
 	{
 		std::string text;
 		MessageType type = MessageType::Info;
-		uclock::time_point time = null_time_point;
+		sclock::time_point time = null_time_point_s;
 	};
-
-	using log_function = std::function<void(const Message& message)>;	//void(const Message&)
 
 	class Logger : public Core::IService
 	{
@@ -28,9 +26,8 @@ namespace Diagnostics
 		const size_t m_maxMessages = 50;
 		std::vector<Message> m_logTrace;		//Array for logging in file, if messages > max_messages (or ~Logger or WriteToFile) then we write to log file with program start time in name
 
-		//m_logTrace.reserve(m_maxMessages)
-
-		std::unordered_map<Definitions::identificator, log_function> m_handlers;
+		using LogCallback = std::function<void(const Message& message)>;	//void(const Message&)
+		std::unordered_map<Definitions::identificator, LogCallback> m_handlers;
 
 		static Definitions::identificator m_nextHandlerID;
 
@@ -39,15 +36,21 @@ namespace Diagnostics
 		std::mutex m_logMutex;
 
 		void WriteToConsole(const Message& message);
-
-	public:
 		Logger();
+	public:
+		
+		static Logger& Get() 
+		{
+			static Logger logger;
+			return logger;
+		}
+
 		//basic
 		void Init() override;
 		void Shutdown() override;
 
 		//work with handlers
-		Definitions::identificator AddLogHandler(log_function log_handler);
+		Definitions::identificator AddLogHandler(LogCallback log_handler);
 		bool DeleteLogHandler(Definitions::identificator log_handler_id);
 		//settings
 		void SetConsoleOutput(bool value) { m_consoleOutputEnable = value; }

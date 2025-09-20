@@ -6,14 +6,23 @@
 namespace Diagnostics 
 {
 
-	using uclock = std::chrono::steady_clock;
-	constexpr auto null_time_point = uclock::time_point();
-	class ProcessObserver
+	using stclock = std::chrono::steady_clock;
+	using sclock = std::chrono::system_clock;
+	constexpr auto null_time_point_st = stclock::time_point();
+	constexpr auto null_time_point_s = sclock::time_point();
+
+	enum class TimeFormat
 	{
-		uclock::time_point m_programStartTime = uclock::now();
+		System,
+		Program
+	};
+
+	class ProcessObserver : public Core::IService
+	{
+		stclock::time_point m_programStartTime = stclock::now();
 
 		//FPS
-		uclock::time_point m_lastTime;
+		stclock::time_point m_lastTime;
 		float m_fps = 0.0f;
 		float m_smoothFPS = 60.0f;
 		float m_frameTime = 0.0f;
@@ -25,8 +34,9 @@ namespace Diagnostics
 
 		void ResetStartTime();	//startProgram will be now time
 
-		uclock::time_point GetStartTime() const;
-		uclock::time_point GetCurrentTime() const;
+		stclock::time_point GetStartTime() const;
+		stclock::time_point GetCurrentTime() const;
+		sclock::time_point GetCurrentSystemTime() const;
 
 		float GetProgramTimeMS() const;
 

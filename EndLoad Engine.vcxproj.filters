@@ -31,9 +31,6 @@
     <Filter Include="Engine\include\Systems\Graphics\Windows">
       <UniqueIdentifier>{47a83a50-a6ce-4fbd-a345-81fb53387e1f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\include\Systems\Graphics\Rendering">
-      <UniqueIdentifier>{0ac9eb96-cb1c-4c7a-b9b3-6150177b79af}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\include\Systems\Graphics\GraphicsDevice">
       <UniqueIdentifier>{1cf7ec8f-9b0d-4f13-92fb-ef16894140c5}</UniqueIdentifier>
     </Filter>
@@ -73,6 +70,30 @@
     <Filter Include="Engine\source\Services\Diagnostics">
       <UniqueIdentifier>{ea95a6ad-5dbd-4719-8e17-b95fba5b95d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\source\Core">
+      <UniqueIdentifier>{927de146-8dc2-4243-a1c9-70ed6a1fc61b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Multithreading">
+      <UniqueIdentifier>{3ea3033a-b883-4aec-9084-e5474425aff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Systems\Input">
+      <UniqueIdentifier>{9fc9a4a9-f8e8-45cf-93d4-0d7bef30208e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Systems\Input">
+      <UniqueIdentifier>{5c4b627e-b058-41c2-9fa4-0e12fb6b9801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Resources">
+      <UniqueIdentifier>{353ab172-7ab0-4d97-9484-29927d6f745d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Resources">
+      <UniqueIdentifier>{cc3af7d2-12d9-4938-b4a6-2eef328a3e4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Systems\Rendering">
+      <UniqueIdentifier>{cf2df70e-57a7-4834-ad18-63685038bcf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Systems\Graphics\Rendering">
+      <UniqueIdentifier>{233633c8-2d57-49d7-9c3b-6c7a2de33679}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndLoad Engine.cpp">
@@ -92,6 +113,18 @@
     </ClCompile>
     <ClCompile Include="Engine\source\Services\Diagnostics\ProcessObserver\ProcessObserver.cpp">
       <Filter>Engine\source\Services\Diagnostics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Core\EngineCore.cpp">
+      <Filter>Engine\source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Systems\Input\InputSystem.cpp">
+      <Filter>Engine\source\Systems\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Services\ResourcesManager\ResourceManager.cpp">
+      <Filter>Engine\source\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Systems\Graphics\Rendering\RenderSystem.cpp">
+      <Filter>Engine\source\Systems\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +160,27 @@
     </ClInclude>
     <ClInclude Include="Engine\include\Core\ServiceLocator.hpp">
       <Filter>Engine\include\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Graphics\Windows\GLFWContextManager.hpp">
+      <Filter>Engine\include\Systems\Graphics\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Core\EngineCore.hpp">
+      <Filter>Engine\include\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Multithreading\ThreadPool.hpp">
+      <Filter>Engine\include\Multithreading</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Input\InputSystem.hpp">
+      <Filter>Engine\include\Systems\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\IResource.hpp">
+      <Filter>Engine\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\ResourcesManager\ResourceManager.hpp">
+      <Filter>Engine\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Graphics\Rendering\RenderSystem.hpp">
+      <Filter>Engine\include\Systems\Graphics\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

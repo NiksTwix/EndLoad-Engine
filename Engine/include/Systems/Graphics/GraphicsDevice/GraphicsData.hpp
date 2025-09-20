@@ -7,7 +7,13 @@
 
 namespace Graphics
 {
-    
+    enum class GraphicsAPI {
+        None,
+        OpenGL,
+        Vulkan,
+        //DirectX11,
+        // ...
+    };
     using MeshID = Definitions::identificator;
     using TextureID = Definitions::identificator;
     using ShaderID = Definitions::identificator;
@@ -207,4 +213,5 @@ namespace Graphics
         virtual bool Compile(const std::vector<ShaderSource>& sources) = 0;
     };
     using ShaderPtr = std::shared_ptr<IShader>;
+
 }

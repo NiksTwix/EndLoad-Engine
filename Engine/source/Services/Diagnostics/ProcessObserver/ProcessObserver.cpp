@@ -3,7 +3,8 @@
 
 Diagnostics::ProcessObserver::ProcessObserver()
 {
-	m_programStartTime = Diagnostics::uclock::now();
+	Init();
+	m_programStartTime = Diagnostics::stclock::now();
 }
 
 Diagnostics::ProcessObserver& Diagnostics::ProcessObserver::Get()
@@ -14,29 +15,34 @@ Diagnostics::ProcessObserver& Diagnostics::ProcessObserver::Get()
 
 void Diagnostics::ProcessObserver::ResetStartTime()
 {
-	m_programStartTime = uclock::now();
+	m_programStartTime = stclock::now();
 }
 
-Diagnostics::uclock::time_point Diagnostics::ProcessObserver::GetStartTime() const
+Diagnostics::stclock::time_point Diagnostics::ProcessObserver::GetStartTime() const
 {
 	return m_programStartTime;
 }
 
-Diagnostics::uclock::time_point Diagnostics::ProcessObserver::GetCurrentTime() const
+Diagnostics::stclock::time_point Diagnostics::ProcessObserver::GetCurrentTime() const
 {
-	return uclock::now();
+	return stclock::now();
+}
+
+Diagnostics::sclock::time_point Diagnostics::ProcessObserver::GetCurrentSystemTime() const
+{
+	return sclock::now();
 }
 
 float Diagnostics::ProcessObserver::GetProgramTimeMS() const
 {
-	auto now = uclock::now();
+	auto now = stclock::now();
 	auto delta = now - m_programStartTime;
 	return std::chrono::duration<float>(delta).count() * 1000;
 }
 
 void Diagnostics::ProcessObserver::CalculateDelta()
 {
-	auto now = uclock::now();
+	auto now = stclock::now();
 	auto delta = now - m_lastTime;
 	m_lastTime = now;
 

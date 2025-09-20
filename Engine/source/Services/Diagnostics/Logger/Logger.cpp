@@ -1,4 +1,3 @@
-#include <Core\ServiceLocator.hpp>
 #include <Services/Diagnostics/Logger/Logger.hpp>
 #include <iostream>
 #include <filesystem>
@@ -14,16 +13,16 @@ void Diagnostics::Logger::WriteToConsole(const Message& message)
 	switch (message.type)
 	{
 	case MessageType::Info:
-		std::cout << strtime << "\x1b[37m" << message.text << "\x1b[0m" << std::endl;
+		std::cout << strtime << "\x1b[37m " << message.text << "\x1b[0m" << std::endl;
 		break;
 	case MessageType::Warning:
 		std::cout << strtime << "\x1b[33m" << message.text << "\x1b[0m" << std::endl;
 		break;
 	case MessageType::Error:
-		std::cout << strtime << "\x1b[31m" << message.text << "\x1b[0m" << std::endl;
+		std::cout << strtime << "\x1b[31m " << message.text << "\x1b[0m" << std::endl;
 		break;
 	default:
-		std::cout << strtime << "\x1b[37m" << message.text << "\x1b[0m" << std::endl;
+		std::cout << strtime << "\x1b[37m " << message.text << "\x1b[0m" << std::endl;
 		break;
 	}
 }
@@ -49,7 +48,7 @@ void Diagnostics::Logger::Shutdown()
 	m_isValid = false;
 }
 
-Definitions::identificator Diagnostics::Logger::AddLogHandler(log_function log_handler)
+Definitions::identificator Diagnostics::Logger::AddLogHandler(LogCallback log_handler)
 {
 	std::lock_guard<std::mutex> lock(m_logMutex);
 	auto id = m_nextHandlerID++;
@@ -80,9 +79,11 @@ void Diagnostics::Logger::SaveLogTrace()
 	std::filesystem::create_directories("Diagnostics/Logs");
 
 	// Ôמנלטנףול טלÿ פאיכא
-	auto now = std::chrono::system_clock::now();
-	std::string filename = std::format("Diagnostics/Logs/log_{0:%Y-%m-%d_%H-%M-%S}.txt", now);
-
+	auto now = ProcessObserver::Get().GetCurrentSystemTime();;
+	//std::time_t t = std::chrono::system_clock::to_time_t(now);
+	//std::tm tm = *std::localtime(&t);
+	std::string filename = std::format("Diagnostics/Logs/log_{:%Y-%m-%d_%H-%M-%S}.txt",
+		now);
 	// Ïטרול ג פאיכ
 	std::ofstream file(filename);
 	for (const auto& msg : m_logTrace) {
@@ -97,8 +98,8 @@ void Diagnostics::Logger::SendMessage(std::string text, MessageType type)
 	Message message;
 	message.text = text;
 	message.type = type;
-	auto process_observer = ProcessObserver::Get();
-	message.time = process_observer.GetCurrentTime();	//In another case Message:time = null_time_point
+	auto& process_observer = ProcessObserver::Get();
+	message.time = process_observer.GetCurrentSystemTime();	//In another case Message:time = null_time_point
 
 	SendMessage(message);
 }

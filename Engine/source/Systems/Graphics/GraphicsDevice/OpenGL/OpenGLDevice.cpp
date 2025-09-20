@@ -3,6 +3,14 @@
 
 namespace Graphics 
 {
+
+	bool OpenGLDevice::m_glewInitialized = false;
+
+	OpenGLDevice::OpenGLDevice()
+	{
+		api = GraphicsAPI::OpenGL;
+	}
+
 	void OpenGLDevice::Init()
 	{
 	}

@@ -5,9 +5,9 @@
 #include "..\include\Matrix4x4.hpp"
 #include "..\include\Vertex.hpp"
 #include "..\include\Quaternion.hpp"
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+//#include <glm/glm.hpp>
+//#include <glm/gtc/matrix_transform.hpp>
+//#include <glm/gtc/type_ptr.hpp>
 
 namespace Math
 {
@@ -67,10 +67,10 @@ namespace Math
     Matrix4x4 Ortho2D(float left, float right, float bottom, float top);
     Matrix4x4 LookAt(const Vector3& eye, const Vector3& target, const Vector3& up);
 
-    glm::vec3 ToGLM(const Vector3& v);
-    glm::mat4 ToGLM(const Matrix4x4& m);
-    Vector3 FromGLM(const glm::vec3& v);
-    Matrix4x4 FromGLM(const glm::mat4& m);
+    //glm::vec3 ToGLM(const Vector3& v);
+    //glm::mat4 ToGLM(const Matrix4x4& m);
+    //Vector3 FromGLM(const glm::vec3& v);
+    //Matrix4x4 FromGLM(const glm::mat4& m);
 
 
     Vector2 Min(const Vector2& v1, const Vector2& v2);
