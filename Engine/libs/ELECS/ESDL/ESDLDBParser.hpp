@@ -1,6 +1,6 @@
 #pragma once
-#include <ECS\Utility\Definitions.hpp>
-#include <ECS\ESDL\ESDLValueParser.hpp>
+#include "..\Utility\Definitions.hpp"
+#include "ESDLValueParser.hpp"
 
 
 namespace ECS

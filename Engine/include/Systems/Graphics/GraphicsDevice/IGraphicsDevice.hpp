@@ -1,14 +1,15 @@
 #pragma once
 #include "GraphicsData.hpp"
 
+namespace Viewports 
+{
+
+	class Viewport;	//He is linked with ECS::CameraComponent, for clearly structure i use premature declaration
+}
 
 
 namespace Graphics 
 {
-
-
-	class Viewport;	//He is linked with ECS::CameraComponent, for clearly structure i use premature declaration
-
 	class IGraphicsDevice 
 	{
 	protected:
@@ -17,10 +18,52 @@ namespace Graphics
 
 		GraphicsAPI api = GraphicsAPI::None;
 
-		Viewport* m_CurrentViewport;		//Current render viewport. Pointer is observer
+		Viewports::Viewport* m_CurrentViewport;		//Current render viewport. Pointer is observer
 
 		std::unordered_map<GDSettings, GDSettingsValues> m_Settings;		//Settings of render
 		std::unordered_map<ShaderID, ShaderPtr> m_Shaders;
+
+		enum class IDType 
+		{
+			Mesh,
+			Texture,
+			Shader
+		};
+
+		Definitions::identificator GetNextID(IDType type) const
+		{
+			static MeshID nextMI = 1;
+			static TextureID nextTI = 1;
+			static ShaderID nextSI = 1;
+
+			switch (type)
+			{
+			case Graphics::IGraphicsDevice::IDType::Mesh:
+				return nextMI++;
+				break;
+			case Graphics::IGraphicsDevice::IDType::Texture:
+				return nextTI++;
+				break;
+			case Graphics::IGraphicsDevice::IDType::Shader:
+				return nextSI++;
+				break;
+			default:
+				break;
+			}
+
+			return Definitions::InvalidID;
+		}
+
+
+		inline bool CheckValid() const {
+			if (!m_IsValid) {
+				Diagnostics::Logger::Get().SendMessage("(IGraphicsDevice) device not initialized.", Diagnostics::MessageType::Error);
+				return false;
+			}
+			return true;
+		}
+
+
 	public:
 		IGraphicsDevice() = default;
 		~IGraphicsDevice() = default;
@@ -45,13 +88,13 @@ namespace Graphics
 		virtual MeshID CreateMesh(const MeshData& data) = 0;
 		virtual void BindMesh(const MeshID& id) = 0;
 		virtual void UpdateMesh(const MeshID& id, const MeshData& data) = 0;
-		virtual void DeleteMesh(const MeshID& id) = 0;
+		virtual void DestroyMesh(const MeshID& id) = 0;
 
 		//Texture working
 
 		virtual TextureID CreateTexture(const TextureData& data) = 0;
-		virtual void BindTexture(const TextureID& id) = 0;
-		virtual void DeleteTexture(const TextureID& id) = 0;
+		virtual void BindTexture(Definitions::uint slot,const TextureID& id) = 0;
+		virtual void DestroyTexture(const TextureID& id) = 0;
 
 		//Shader working
 
@@ -72,8 +115,8 @@ namespace Graphics
 		};
 		//Viewport working
 
-		void SetRenderViewport(Viewport* viewport) { m_CurrentViewport = viewport; }
-		Viewport* GetRenderViewport() const { return m_CurrentViewport; }
+		virtual void SetRenderViewport(Viewports::Viewport* viewport) { m_CurrentViewport = viewport; }
+		Viewports::Viewport* GetRenderViewport() const { return m_CurrentViewport; }
 
 		//Draw
 

@@ -1,10 +1,10 @@
 #pragma once
-#include <ECS\Utility\Definitions.hpp>
+#include "..\Utility\Definitions.hpp"
 #include <typeindex>
 #include <string>
 #include <vector>
 #include <memory>
-#include <ECS/ESDL/ESDLStructs.hpp>
+#include "../ESDL/ESDLStructs.hpp"
 
 namespace ECS 
 {

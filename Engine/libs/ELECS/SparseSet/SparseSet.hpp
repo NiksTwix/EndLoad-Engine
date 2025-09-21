@@ -2,7 +2,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
-#include "ECS\Utility\Definitions.hpp"
+#include "..\Utility\Definitions.hpp"
 
 
 namespace ECS 

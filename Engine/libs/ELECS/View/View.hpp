@@ -1,7 +1,7 @@
 #pragma once
 #include <tuple>
 #include <functional>
-#include "ECS\Registry\Registry.hpp"
+#include "..\Registry\Registry.hpp"
 
 namespace ECS
 {

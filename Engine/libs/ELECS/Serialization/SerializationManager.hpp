@@ -1,6 +1,6 @@
 #pragma once
-#include <ECS\ESDL\ESDLParser.hpp>
-#include <ECS\Main\EntitySpace.hpp>
+#include "..\ESDL\ESDLParser.hpp"
+#include "..\Main\EntitySpace.hpp"
 
 
 

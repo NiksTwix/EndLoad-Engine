@@ -1,5 +1,5 @@
 #pragma once
-#include "ECS\Utility\Definitions.hpp"
+#include "..\Utility\Definitions.hpp"
 #include <vector>
 #include <typeindex>
 namespace ECS 

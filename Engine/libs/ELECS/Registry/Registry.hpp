@@ -4,9 +4,9 @@
 #include <typeindex>
 #include <functional>
 #include <shared_mutex>
-#include "ECS\Utility\Definitions.hpp"
-#include "ECS\ComponentPool\TypedComponentPool.hpp"
-#include "ECS\Utility\ComponentSmartPointer.hpp"
+#include "..\Utility\Definitions.hpp"
+#include "..\ComponentPool\TypedComponentPool.hpp"
+#include "..\Utility\ComponentSmartPointer.hpp"
 
 
 namespace ECS

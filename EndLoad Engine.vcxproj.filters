@@ -94,6 +94,18 @@
     <Filter Include="Engine\include\Systems\Graphics\Rendering">
       <UniqueIdentifier>{233633c8-2d57-49d7-9c3b-6c7a2de33679}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\include\Systems\Graphics\Viewports">
+      <UniqueIdentifier>{c8dc89c3-7f48-4944-9cb3-302fc2d514e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Systems\Graphics\Viewports">
+      <UniqueIdentifier>{e7fd8437-ec7f-4d53-8259-9e91e3fd8086}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Services\Scenes">
+      <UniqueIdentifier>{02dedc2a-23f4-4689-978e-8fe7f6ca97ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Services\Scenes">
+      <UniqueIdentifier>{d462365e-2810-43ea-b4d5-73080be39e46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndLoad Engine.cpp">
@@ -125,6 +137,12 @@
     </ClCompile>
     <ClCompile Include="Engine\source\Systems\Graphics\Rendering\RenderSystem.cpp">
       <Filter>Engine\source\Systems\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Systems\Graphics\Viewports\Viewport.cpp">
+      <Filter>Engine\source\Systems\Graphics\Viewports</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Services\Scenes\SceneManager.cpp">
+      <Filter>Engine\source\Services\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +199,15 @@
     </ClInclude>
     <ClInclude Include="Engine\include\Systems\Graphics\Rendering\RenderSystem.hpp">
       <Filter>Engine\include\Systems\Graphics\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Graphics\Viewports\Viewport.hpp">
+      <Filter>Engine\include\Systems\Graphics\Viewports</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Scenes\SceneManager.hpp">
+      <Filter>Engine\include\Services\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\Scenes\SceneContext.hpp">
+      <Filter>Engine\include\Services\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

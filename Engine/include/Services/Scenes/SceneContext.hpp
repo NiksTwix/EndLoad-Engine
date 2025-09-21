@@ -1,0 +1,80 @@
+#pragma once
+#include <memory>
+#include <typeindex> 
+#include <ELECS\ECS.hpp>
+#include <Systems\Graphics\Viewports\Viewport.hpp>
+/*
+	SceneContext controls scene and entities
+*/
+
+namespace Scenes 
+{
+	using SceneID = Definitions::identificator;
+
+	class SceneLoader;
+
+	class SceneContext
+	{
+		friend SceneLoader;
+
+		ECS::EntitySpace entitySpace;
+
+		std::string Name = "Scene";
+
+		SceneID sceneID = Definitions::InvalidID;
+
+		std::string Description = "Description";
+
+		std::shared_ptr<Viewports::ViewportService> viewportService;
+
+	public:
+		//Copying is forbidden
+		SceneContext(const SceneContext&) = delete;
+		SceneContext& operator=(const SceneContext&) = delete;
+		//Разрешаем перемещать
+		SceneContext(SceneContext&&) = default;
+		SceneContext& operator=(SceneContext&&) = default;
+
+		std::string GetName() { return Name; }
+		void SetName(std::string new_name)
+		{
+			Name = new_name;
+		}
+
+		std::string GetDescription() { return Description; }
+
+		void SetDescription(std::string new_description)
+		{
+			Description = new_description;
+		}
+
+		SceneID GetID()
+		{
+			return sceneID;
+		}
+
+
+		SceneContext(std::string name)
+		{
+			SetName(name);
+			viewportService = std::make_shared<Viewports::ViewportService>(entitySpace.GetRegistryShared());
+		}
+
+		SceneContext(std::string name, SceneID id)
+		{
+			SetName(name);
+			sceneID = id;
+			viewportService = std::make_shared<Viewports::ViewportService>(entitySpace.GetRegistryShared());
+		}
+
+		Viewports::ViewportService& GetViewportService()
+		{
+			return *viewportService;
+		}
+
+		ECS::EntitySpace& GetEntitySpace()
+		{
+			return entitySpace;
+		}
+	};
+}

@@ -1,5 +1,5 @@
 #pragma once
-#include <ECS\ComponentServices\IComponentService.hpp>
+#include "IComponentService.hpp"
 #include <unordered_map>
 #include <memory>
 #include <mutex>

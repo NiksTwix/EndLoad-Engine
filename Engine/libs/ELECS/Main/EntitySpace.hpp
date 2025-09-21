@@ -1,8 +1,8 @@
 #pragma once
-#include <ECS\Registry\Registry.hpp>
-#include <ECS\Tree\HierarchyTree.hpp>
-#include <ECS/ComponentServices/ComponentServiceLocator.hpp>
-#include <ECS\Events\EventsManager.hpp>
+#include "..\Registry\Registry.hpp"
+#include "..\Tree\HierarchyTree.hpp"
+#include "../ComponentServices/ComponentServiceLocator.hpp"
+#include "..\Events\EventsManager.hpp"
 #include <vector>
 #include <memory>
 

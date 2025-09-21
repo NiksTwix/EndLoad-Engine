@@ -1,5 +1,5 @@
 #pragma once
-#include <ECS/Events/Events.hpp>
+#include "Events.hpp"
 #include <functional>
 #include <unordered_map>
 #include <unordered_set>

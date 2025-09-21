@@ -23,7 +23,7 @@ namespace Graphics
 		};
 
 		std::unordered_map<MeshID, MeshBuffersData> m_meshes;
-		std::unordered_map<MeshID, GLuint> m_textures;
+		std::unordered_map<TextureID, GLuint> m_textures;
 
 		static bool m_glewInitialized;
 
@@ -36,15 +36,18 @@ namespace Graphics
 		void ClearFrameBuffer(Math::Vector4 color) override;
 		MeshID CreateMesh(const MeshData& data) override;
 		void BindMesh(const MeshID& id) override;
-		void DeleteMesh(const MeshID& id) override;
+		void DestroyMesh(const MeshID& id) override;
 		TextureID CreateTexture(const TextureData& data) override;
-		void BindTexture(const TextureID& id) override;
-		void DeleteTexture(const TextureID& id) override;
+		void BindTexture(Definitions::uint slot, const TextureID& id) override;
+		void DestroyTexture(const TextureID& id) override;
 		ShaderID CreateShader(const std::string& name, const std::vector<ShaderSource>& sources) override;
 		void Draw(const RenderCommand& render_command) override;
 		void DrawBatch(const std::vector<RenderCommand>& render_commands) override;
 
-		// Унаследовано через IGraphicsDevice
 		void UpdateMesh(const MeshID& id, const MeshData& data) override;
+
+		void SetRenderViewport(Viewports::Viewport* viewport) override;
+
+		void Set(GDSettings setting_type, GDSettingsValues setting_value) override;
 	};
 }

@@ -1,8 +1,8 @@
 #pragma once
 #include <sstream>
 #include <algorithm>
-#include <ECS\ESDL\ESDLStructs.hpp>
-#include <ECS\ESDL\ESDLStrings.hpp>
+#include "ESDLStructs.hpp"
+#include "ESDLStrings.hpp"
 
 
 namespace ECS 

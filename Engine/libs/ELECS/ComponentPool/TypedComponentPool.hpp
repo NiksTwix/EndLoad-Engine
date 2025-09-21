@@ -1,6 +1,6 @@
 #pragma once
-#include "ECS\ComponentPool\ComponentPool.hpp"
-#include "ECS\SparseSet\SparseSet.hpp"
+#include "..\ComponentPool\ComponentPool.hpp"
+#include "..\SparseSet\SparseSet.hpp"
 #include <shared_mutex>
 #include <type_traits>
 #include <bitset>

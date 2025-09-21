@@ -1,8 +1,8 @@
 #pragma once
-#include <ECS\Utility\Definitions.hpp>
-#include <ECS\ESDL\ESDLStructs.hpp>
-#include <ECS\ESDL\ESDLStrings.hpp>
-#include <ECS\ESDL\ESDLValueParser.hpp>
+#include "..\Utility\Definitions.hpp"
+#include "ESDLStructs.hpp"
+#include "ESDLStrings.hpp"
+#include "ESDLValueParser.hpp"
 
 namespace ECS
 {

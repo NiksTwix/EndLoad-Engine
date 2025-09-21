@@ -1,7 +1,7 @@
 #pragma once
-#include <ECS\Utility\Definitions.hpp>
-#include <ECS\ESDL\ESDLEntityParser.hpp>
-#include <ECS\ESDL\ESDLDBParser.hpp>
+#include "..\Utility\Definitions.hpp"
+#include "ESDLEntityParser.hpp"
+#include "ESDLDBParser.hpp"
 #include <iostream>
 #include <stack>
 #include <memory>
