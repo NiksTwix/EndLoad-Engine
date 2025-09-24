@@ -2,11 +2,9 @@
 #include <Services\Diagnostics\Logger\Logger.hpp>
 #include <Systems/Input\InputSystem.hpp>
 
-
-
-namespace UserInput 
+namespace UserInput
 {
-    InputSystem::InputSystem()
+    InputSystem::InputSystem() : m_windowManager(nullptr), m_currentFocusedWindow(0)
     {
         Init();
     }
@@ -18,7 +16,9 @@ namespace UserInput
     void InputSystem::Init()
     {
         if (m_isValid) return;
-        GLFWKEYMAP = {
+
+        // Инициализация маппинга клавиш (как у тебя было)
+        m_keyMapping = {
             {"SPACE",GLFW_KEY_SPACE},              {"[",GLFW_KEY_LEFT_BRACKET},
             {"'",GLFW_KEY_APOSTROPHE},             {"]",GLFW_KEY_RIGHT_BRACKET},
             {",",GLFW_KEY_COMMA},                  {"\\",GLFW_KEY_BACKSLASH},
@@ -65,10 +65,11 @@ namespace UserInput
             {"Y",GLFW_KEY_Y},
             {"Z",GLFW_KEY_Z},
         };
-        m_window_manager = Core::ServiceLocator::Get<Windows::WindowsManager>();
-        if (!m_window_manager)
+
+        m_windowManager = Core::ServiceLocator::Get<Windows::WindowsManager>();
+        if (!m_windowManager)
         {
-            Diagnostics::Logger::Get().SendMessage("(InputSystem) window manager is invalid, initialization failed.", Diagnostics::MessageType::Error);
+            Diagnostics::Logger::Get().SendMessage("(InputSystem) Window manager is invalid, initialization failed.", Diagnostics::MessageType::Error);
             m_isValid = false;
             return;
         }
@@ -78,124 +79,155 @@ namespace UserInput
     void InputSystem::Shutdown()
     {
         m_isValid = false;
+        m_inputFrames.clear();
     }
 
     void InputSystem::Update()
     {
         if (!m_isValid) return;
 
-        auto* fwindow = m_window_manager->GetFocusedWindow();
-
-        if (!fwindow) return;   //Doesnt handle input
-
-        if (fwindow->GetID() != currentWindow)
-        {
-            current_mouse_pos = m_lastPositions[fwindow->GetID()]; //Default is 0,0
-            currentWindow = fwindow->GetID();
+        // Обновляем фокус окна
+        auto* focusedWindow = m_windowManager->GetFocusedWindow();
+        if (focusedWindow) {
+            m_currentFocusedWindow = focusedWindow->GetID();
         }
 
-        // Сохраняем состояние предыдущего кадра
-        m_lastFrameKeys = m_pressedKeys;
-
-        // Очищаем временные состояния
-        m_justPressedKeys.clear();
-        m_justReleasedKeys.clear();
-        m_justPressedMouseButtons.clear();
-        m_justReleasedMouseButtons.clear();
-        if (current_mouse_pos != m_lastPositions[currentWindow]) m_lastPositions[currentWindow] = current_mouse_pos;
-
+        // Обновляем все InputFrame'ы
+        for (auto& [windowId, frame] : m_inputFrames) {
+            frame.UpdateFrame();
+        }
     }
 
-    bool InputSystem::IsActionPressed(std::string key)
+    // Private helpers
+    InputFrame& InputSystem::GetOrCreateFrame(Windows::WindowID windowId)
     {
-        if (!m_isValid) return false;
-        auto* w = m_window_manager->GetFocusedWindow();
-        if (!w || !GLFWKEYMAP.count(key)) return false;
-        GLint state = glfwGetKey(w->GetNativeHandle(), GLFWKEYMAP[key]);
-        if (state == GLFW_PRESS)
-            return true;
-
-        return false;
+        return m_inputFrames[windowId];
     }
 
-    bool InputSystem::IsMouseActionPressed(std::string key)
+    Windows::WindowID InputSystem::GetWindowIdFromGLFW(GLFWwindow* window)
     {
-        if (!m_isValid) return false;
-        auto w = m_window_manager->GetFocusedWindow();
-        if (!w || !GLFWKEYMAP.count(key)) return false;
-        GLint state = glfwGetMouseButton(w->GetNativeHandle(), GLFWKEYMAP[key]);
-        if (state == GLFW_PRESS)return true;
-        return false;
-    }
-
-    void InputSystem::MouseMovingCallback(GLFWwindow* window, double xpos, double ypos) {
-        // Находим какое окно вызвало callback
-        Windows::Window* sourceWindow = nullptr;
-        for (auto& [id, win] : m_window_manager->GetAllWindows()) {
+        for (auto& [id, win] : m_windowManager->GetAllWindows()) {
             if (win->GetNativeHandle() == window) {
-                sourceWindow = win.get();
-                break;
+                return id;
             }
         }
-        if (!sourceWindow) return;
-
-        // Update position for this window
-        Windows::WindowID windowId = sourceWindow->GetID();
-        m_lastPositions[windowId] = current_mouse_pos; // Save previous position
-        current_mouse_pos = Math::Vector2(xpos, ypos);
-
-        // Update currentWindow
-        currentWindow = windowId;
-
-        Diagnostics::Logger::Get().SendMessage(std::to_string(xpos));
+        return 0;
     }
 
-    Math::Vector2 InputSystem::GetMouseDelta() {
-        // Returns delta only for active window
-        if (m_lastPositions.count(currentWindow)) {
-            return current_mouse_pos - m_lastPositions[currentWindow];
+    // Методы для активного окна
+    bool InputSystem::IsActionPressed(const std::string& key)
+    {
+        return IsActionPressed(m_currentFocusedWindow, key);
+    }
+
+    bool InputSystem::IsActionPressed(Windows::WindowID windowId, const std::string& key)
+    {
+        if (!m_isValid || !m_keyMapping.count(key)) return false;
+
+        auto it = m_inputFrames.find(windowId);
+        if (it == m_inputFrames.end()) return false;
+
+        return it->second.pressedKeys.count(m_keyMapping[key]);
+    }
+
+    bool InputSystem::IsMouseActionPressed(const std::string& key)
+    {
+        return IsMouseActionPressed(m_currentFocusedWindow, key);
+    }
+
+    bool InputSystem::IsMouseActionPressed(Windows::WindowID windowId, const std::string& key)
+    {
+        if (!m_isValid || !m_keyMapping.count(key)) return false;
+
+        auto it = m_inputFrames.find(windowId);
+        if (it == m_inputFrames.end()) return false;
+
+        return it->second.pressedMouseButtons.count(m_keyMapping[key]);
+    }
+
+    Math::Vector2 InputSystem::GetMouseDelta()
+    {
+        return GetMouseDelta(m_currentFocusedWindow);
+    }
+
+    Math::Vector2 InputSystem::GetMouseDelta(Windows::WindowID windowId)
+    {
+        auto it = m_inputFrames.find(windowId);
+        if (it != m_inputFrames.end()) {
+            return it->second.mouseDelta;
         }
         return Math::Vector2(0);
     }
 
     Math::Vector2 InputSystem::GetMousePosition()
     {
-        return current_mouse_pos;
+        return GetMousePosition(m_currentFocusedWindow);
+    }
+
+    Math::Vector2 InputSystem::GetMousePosition(Windows::WindowID windowId)
+    {
+        auto it = m_inputFrames.find(windowId);
+        if (it != m_inputFrames.end()) {
+            return it->second.currentMousePosition;
+        }
+        return Math::Vector2(0);
+    }
+
+    // GLFW Callbacks
+    void InputSystem::MouseMovingCallback(GLFWwindow* window, double xpos, double ypos)
+    {
+        Windows::WindowID windowId = GetWindowIdFromGLFW(window);
+        if (windowId == 0) return;
+
+        InputFrame& frame = GetOrCreateFrame(windowId);
+        frame.currentMousePosition = Math::Vector2(xpos, ypos);
     }
 
     void InputSystem::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
     {
-        auto w = m_window_manager->GetFocusedWindow();
-        if (!w || w->GetNativeHandle() != window) return;
-        Diagnostics::Logger::Get().SendMessage(std::to_string(key));
+        Windows::WindowID windowId = GetWindowIdFromGLFW(window);
+        if (windowId == 0) return;
+
+        InputFrame& frame = GetOrCreateFrame(windowId);
+        
         if (action == GLFW_PRESS) {
-            m_pressedKeys.insert(key);
-            m_justPressedKeys.insert(key);
+            frame.pressedKeys.insert(key);
+            frame.justPressedKeys.insert(key);
         }
         else if (action == GLFW_RELEASE) {
-            m_pressedKeys.erase(key);
-            m_justReleasedKeys.insert(key);
+            frame.pressedKeys.erase(key);
+            frame.justReleasedKeys.insert(key);
         }
     }
 
     void InputSystem::MouseButtonCallback(GLFWwindow* window, int button, int action, int mode)
     {
-        auto w = m_window_manager->GetFocusedWindow();
+        Windows::WindowID windowId = GetWindowIdFromGLFW(window);
+        if (windowId == 0) return;
 
-        Diagnostics::Logger::Get().SendMessage(std::to_string(button));
-
-        if (!w || w->GetNativeHandle() != window) return;
+        InputFrame& frame = GetOrCreateFrame(windowId);
 
         if (action == GLFW_PRESS) {
-            m_pressedMouseButtons.insert(button);
-            m_justPressedMouseButtons.insert(button);
+            frame.pressedMouseButtons.insert(button);
+            frame.justPressedMouseButtons.insert(button);
         }
         else if (action == GLFW_RELEASE) {
-            m_pressedMouseButtons.erase(button);
-            m_justReleasedMouseButtons.insert(button);
+            frame.pressedMouseButtons.erase(button);
+            frame.justReleasedMouseButtons.insert(button);
         }
     }
 
+    void InputSystem::ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+    {
+        Windows::WindowID windowId = GetWindowIdFromGLFW(window);
+        if (windowId == 0) return;
+
+        InputFrame& frame = GetOrCreateFrame(windowId);
+        frame.scrollX = xoffset;
+        frame.scrollY = yoffset;
+    }
+
+    // Остальные методы (IsShiftPressed, IsActionJustPressed и т.д.) адаптируются аналогично
     bool InputSystem::IsShiftPressed()
     {
         return IsActionPressed("LEFT_SHIFT") || IsActionPressed("RIGHT_SHIFT");
@@ -213,36 +245,76 @@ namespace UserInput
 
     bool InputSystem::IsComboPressed(const std::vector<std::string>& keys)
     {
-        auto w = m_window_manager->GetFocusedWindow();
+        auto it = m_inputFrames.find(m_currentFocusedWindow);
+        if (it == m_inputFrames.end()) return false;
+
         for (const auto& keyName : keys) {
-            auto it = GLFWKEYMAP.find(keyName);
-            if (it == GLFWKEYMAP.end() || m_pressedKeys.find(it->second) == m_pressedKeys.end()) {
+            auto keyIt = m_keyMapping.find(keyName);
+            if (keyIt == m_keyMapping.end() ||
+                it->second.pressedKeys.find(keyIt->second) == it->second.pressedKeys.end()) {
                 return false;
             }
         }
         return true;
     }
-    bool InputSystem::IsActionJustPressed(std::string key)
+
+    bool InputSystem::IsActionJustPressed(const std::string& key)
     {
-        if (!m_isValid || !GLFWKEYMAP.count(key)) return false;
-        return m_justPressedKeys.count(GLFWKEYMAP[key]);
+        return IsActionJustPressed(m_currentFocusedWindow, key);
     }
 
-    bool InputSystem::IsActionJustReleased(std::string key)
+    bool InputSystem::IsActionJustPressed(Windows::WindowID windowId, const std::string& key)
     {
-        if (!m_isValid || !GLFWKEYMAP.count(key)) return false;
-        return m_justReleasedKeys.count(GLFWKEYMAP[key]);
+        if (!m_isValid || !m_keyMapping.count(key)) return false;
+
+        auto it = m_inputFrames.find(windowId);
+        if (it == m_inputFrames.end()) return false;
+
+        return it->second.justPressedKeys.count(m_keyMapping[key]);
     }
 
-    bool InputSystem::IsMouseActionJustPressed(std::string key)
+    bool InputSystem::IsActionJustReleased(const std::string& key)
     {
-        if (!m_isValid || !GLFWKEYMAP.count(key)) return false;
-        return m_justPressedMouseButtons.count(GLFWKEYMAP[key]);
+        return IsActionJustReleased(m_currentFocusedWindow, key);
     }
 
-    bool InputSystem::IsMouseActionJustReleased(std::string key)
+    bool InputSystem::IsActionJustReleased(Windows::WindowID windowId, const std::string& key)
     {
-        if (!m_isValid || !GLFWKEYMAP.count(key)) return false;
-        return m_justReleasedMouseButtons.count(GLFWKEYMAP[key]);
+        if (!m_isValid || !m_keyMapping.count(key)) return false;
+
+        auto it = m_inputFrames.find(windowId);
+        if (it == m_inputFrames.end()) return false;
+
+        return it->second.justReleasedKeys.count(m_keyMapping[key]);
+    }
+
+    bool InputSystem::IsMouseActionJustPressed(const std::string& key)
+    {
+        return IsMouseActionJustPressed(m_currentFocusedWindow, key);
+    }
+
+    bool InputSystem::IsMouseActionJustPressed(Windows::WindowID windowId, const std::string& key)
+    {
+        if (!m_isValid || !m_keyMapping.count(key)) return false;
+
+        auto it = m_inputFrames.find(windowId);
+        if (it == m_inputFrames.end()) return false;
+
+        return it->second.justPressedMouseButtons.count(m_keyMapping[key]);
+    }
+
+    bool InputSystem::IsMouseActionJustReleased(const std::string& key)
+    {
+        return IsMouseActionJustReleased(m_currentFocusedWindow, key);
+    }
+
+    bool InputSystem::IsMouseActionJustReleased(Windows::WindowID windowId, const std::string& key)
+    {
+        if (!m_isValid || !m_keyMapping.count(key)) return false;
+
+        auto it = m_inputFrames.find(windowId);
+        if (it == m_inputFrames.end()) return false;
+
+        return it->second.justReleasedMouseButtons.count(m_keyMapping[key]);
     }
 }

@@ -30,8 +30,11 @@ namespace Rendering
 		void DetachSceneFromWindow(Windows::WindowID window);
 		Scenes::SceneID GetAttachedScene(Windows::WindowID window);
 	private:
-		bool firstFrame = true;
-		bool scenes_changed = false;
+		bool m_firstFrame = true;
+		bool m_scenes_changed = false;
+
+		std::unordered_map<Windows::WindowID, Scenes::SceneID> m_scenes;
+
 		void FirstFrameInitialization();
 		void RenderScene(Viewports::Viewport* viewport, Scenes::SceneContext* scene);
 	};

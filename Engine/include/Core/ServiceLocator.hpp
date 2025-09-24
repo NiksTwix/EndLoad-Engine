@@ -1,9 +1,8 @@
 ﻿#pragma once
 #include "IServices.hpp"
-#include <Services/Diagnostics/Logger/Logger.hpp>
 #include <typeindex>
 #include <mutex>
-
+#include <Services/Diagnostics/Logger/Logger.hpp>
 namespace Core 
 {
     class ServiceLocator

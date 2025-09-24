@@ -194,24 +194,6 @@ namespace Graphics
     struct ShaderSource {
         ShaderType type;
         std::string sourceCode; // Source code of GLSL/HLSL
-        // We can add entry point (например, "main")
+        // We can add entry point (as example, "main")
     };
-
-    class IShader {
-    public:
-        virtual ~IShader() = default;
-
-        // Shader activation
-        virtual void Bind() const = 0;
-        // Method for uniform setting
-        virtual void SetUniform(const std::string& name, const UniformValue& value) = 0;
-
-        // Getters
-        virtual ShaderID GetID() const = 0;
-        virtual const std::string& GetName() const = 0;
-
-        virtual bool Compile(const std::vector<ShaderSource>& sources) = 0;
-    };
-    using ShaderPtr = std::shared_ptr<IShader>;
-
 }

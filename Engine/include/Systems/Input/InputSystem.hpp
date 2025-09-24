@@ -8,56 +8,94 @@
 
 namespace UserInput
 {
-	
+    struct InputFrame {
+        std::unordered_set<int> pressedKeys;
+        std::unordered_set<int> justPressedKeys;
+        std::unordered_set<int> justReleasedKeys;
 
-	class InputSystem: public Core::ISystem
-	{
-	public:
-		InputSystem();
-		~InputSystem();
-		virtual void Init() override;
-		virtual void Shutdown() override;
+        std::unordered_set<int> pressedMouseButtons;
+        std::unordered_set<int> justPressedMouseButtons;
+        std::unordered_set<int> justReleasedMouseButtons;
+        std::unordered_set<int> lastFrameKeys;
 
-		virtual void Update() override;
+        Math::Vector2 lastMousePosition;
+        Math::Vector2 currentMousePosition;
+        Math::Vector2 mouseDelta;
 
-		bool IsActionPressed(std::string key);
-		bool IsMouseActionPressed(std::string key);
+        double scrollX, scrollY;
 
-		Math::Vector2 GetMouseDelta();
+        InputFrame() : scrollX(0), scrollY(0) {}
 
-		Math::Vector2 GetMousePosition();
+        void UpdateFrame() {
+            // Сохраняем состояние предыдущего кадра
+            lastFrameKeys = pressedKeys;
 
-		void MouseMovingCallback(GLFWwindow* window, double xpos, double ypos);//For glfw
-		void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);//For glfw
-		void MouseButtonCallback(GLFWwindow* window, int button, int action, int mode);
+            // Очищаем временные состояния для нового кадра
+            justPressedKeys.clear();
+            justReleasedKeys.clear();
+            justPressedMouseButtons.clear();
+            justReleasedMouseButtons.clear();
 
-		bool IsShiftPressed();
-		bool IsControlPressed();
-		bool IsAltPressed();
+            // Обновляем дельту мыши
+            mouseDelta = currentMousePosition - lastMousePosition;
+            lastMousePosition = currentMousePosition;
 
-		bool IsComboPressed(const std::vector<std::string>& keys);
+            // Сбрасываем скролл
+            scrollX = 0;
+            scrollY = 0;
+        }
+    };
 
-		bool IsActionJustPressed(std::string key);
-		bool IsActionJustReleased(std::string key);
-		bool IsMouseActionJustPressed(std::string key);
-		bool IsMouseActionJustReleased(std::string key);
-		virtual Core::SystemPriority GetPriority() override { return Core::SystemPriority::INPUT; }
-	private:
-		std::unordered_map<std::string, int> GLFWKEYMAP;
-		std::unordered_set<int> m_pressedKeys;  // Нажатые клавиши (коды GLFW)
-		std::unordered_set<int> m_justPressedKeys;  // Клавиши, нажатые в текущем кадре
-		std::unordered_set<int> m_justReleasedKeys; // Клавиши, отпущенные в текущем кадре
+    class InputSystem : public Core::ISystem
+    {
+    public:
+        InputSystem();
+        ~InputSystem();
+        virtual void Init() override;
+        virtual void Shutdown() override;
+        virtual void Update() override;
 
-		std::unordered_set<int> m_pressedMouseButtons;
-		std::unordered_set<int> m_justPressedMouseButtons;
-		std::unordered_set<int> m_justReleasedMouseButtons;
-		std::unordered_set<int> m_lastFrameKeys;    // Состояние клавиш на предыдущем кадре
+        // Методы для активного окна (удобства ради)
+        bool IsActionPressed(const std::string& key);
+        bool IsMouseActionPressed(const std::string& key);
+        Math::Vector2 GetMouseDelta();
+        Math::Vector2 GetMousePosition();
+        bool IsShiftPressed();
+        bool IsControlPressed();
+        bool IsAltPressed();
+        bool IsComboPressed(const std::vector<std::string>& keys);
+        bool IsActionJustPressed(const std::string& key);
+        bool IsActionJustReleased(const std::string& key);
+        bool IsMouseActionJustPressed(const std::string& key);
+        bool IsMouseActionJustReleased(const std::string& key);
 
-		Windows::WindowsManager* m_window_manager;
+        // Методы для конкретного окна
+        bool IsActionPressed(Windows::WindowID windowId, const std::string& key);
+        bool IsMouseActionPressed(Windows::WindowID windowId, const std::string& key);
+        Math::Vector2 GetMouseDelta(Windows::WindowID windowId);
+        Math::Vector2 GetMousePosition(Windows::WindowID windowId);
+        bool IsActionJustPressed(Windows::WindowID windowId, const std::string& key);
+        bool IsActionJustReleased(Windows::WindowID windowId, const std::string& key);
+        bool IsMouseActionJustPressed(Windows::WindowID windowId, const std::string& key);
+        bool IsMouseActionJustReleased(Windows::WindowID windowId, const std::string& key);
 
-		Windows::WindowID currentWindow;
+        // GLFW callbacks
+        void MouseMovingCallback(GLFWwindow* window, double xpos, double ypos);
+        void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
+        void MouseButtonCallback(GLFWwindow* window, int button, int action, int mode);
+        void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 
-		std::unordered_map<Windows::WindowID, Math::Vector2> m_lastPositions;	//Last position of cursor for every window
-		Math::Vector2 current_mouse_pos;
-	};
+        virtual Core::SystemPriority GetPriority() override { return Core::SystemPriority::INPUT; }
+
+
+
+    private:
+        InputFrame& GetOrCreateFrame(Windows::WindowID windowId);
+        Windows::WindowID GetWindowIdFromGLFW(GLFWwindow* window);
+
+        std::unordered_map<Windows::WindowID, InputFrame> m_inputFrames;
+        Windows::WindowsManager* m_windowManager;
+        std::unordered_map<std::string, int> m_keyMapping;
+        Windows::WindowID m_currentFocusedWindow;
+    };
 }

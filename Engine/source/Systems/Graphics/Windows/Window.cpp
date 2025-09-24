@@ -20,13 +20,13 @@ namespace Windows
 
 		if (m_graphics_device == nullptr) 
 		{
-			Diagnostics::Logger::Get().SendMessage("(Window) invalid graphics device.", Diagnostics::MessageType::Error);
+			Diagnostics::Logger::Get().SendMessage("(Window) Invalid graphics device.", Diagnostics::MessageType::Error);
 			return false;
 		}
 
 		if (m_resolution.x <= 0 || m_resolution.y <= 0)
 		{
-			Diagnostics::Logger::Get().SendMessage("(Window) window hasnt created because width or height equals negative or null.", Diagnostics::MessageType::Error);
+			Diagnostics::Logger::Get().SendMessage("(Window) Window hasnt created because width or height equals negative or null.", Diagnostics::MessageType::Error);
 			return false;
 		}
 		if (!GLFWContextManager::Initialize()) {
@@ -36,7 +36,7 @@ namespace Windows
 		if (m_graphics_device->GetAPIType() != Graphics::GraphicsAPI::None)GLFWContextManager::ApplyHints(m_graphics_device->GetAPIType());
 		else 
 		{
-			Diagnostics::Logger::Get().SendMessage("(Window) invalid api (None) of graphics device.", Diagnostics::MessageType::Error);
+			Diagnostics::Logger::Get().SendMessage("(Window) Invalid API (None) of graphics device.", Diagnostics::MessageType::Error);
 			return false;
 		}
 		
@@ -44,7 +44,7 @@ namespace Windows
 
 		if (!m_window)
 		{
-			Diagnostics::Logger::Get().SendMessage("(Window): window hasnt created.", Diagnostics::MessageType::Error);
+			Diagnostics::Logger::Get().SendMessage("(Window): Window hasnt created.", Diagnostics::MessageType::Error);
 			return false;
 		}
 

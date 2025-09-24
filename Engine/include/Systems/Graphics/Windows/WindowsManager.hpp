@@ -4,6 +4,7 @@
 #include <Core\ServiceLocator.hpp>
 #include <Services/ResourcesManager/ResourceManager.hpp>
 
+
 namespace Windows 
 {
 	class WindowsManager : public Core::ISystem 
@@ -55,6 +56,20 @@ namespace Windows
 		size_t GetWindowsCount() const { return m_windows.size(); }
 
 		Window* GetFocusedWindow() const { return m_focusedWindow; }
+
+		void SetRenderWindow(WindowID windowId);
+
+		Window* GetRenderWindow() const { return m_renderWindow; }
+
+		Window* GetWindow(WindowID id) 
+		{
+			return m_windows.count(id) ? m_windows[id].get() : nullptr;
+		}
+
+		bool IsExists(WindowID id) 
+		{
+			return m_windows.count(id);
+		}
 
 		const std::unordered_map<WindowID, std::shared_ptr<Window>>& GetAllWindows() const {
 			return m_windows;

@@ -1,6 +1,6 @@
 #pragma once
 #include "GraphicsData.hpp"
-
+#include <Services/Diagnostics/Logger/Logger.hpp>
 namespace Viewports 
 {
 
@@ -21,7 +21,7 @@ namespace Graphics
 		Viewports::Viewport* m_CurrentViewport;		//Current render viewport. Pointer is observer
 
 		std::unordered_map<GDSettings, GDSettingsValues> m_Settings;		//Settings of render
-		std::unordered_map<ShaderID, ShaderPtr> m_Shaders;
+
 
 		enum class IDType 
 		{
@@ -57,7 +57,7 @@ namespace Graphics
 
 		inline bool CheckValid() const {
 			if (!m_IsValid) {
-				Diagnostics::Logger::Get().SendMessage("(IGraphicsDevice) device not initialized.", Diagnostics::MessageType::Error);
+				Diagnostics::Logger::Get().SendMessage("(IGraphicsDevice) Device not initialized.", Diagnostics::MessageType::Error);
 				return false;
 			}
 			return true;
@@ -99,20 +99,11 @@ namespace Graphics
 		//Shader working
 
 		virtual ShaderID CreateShader(const std::string& name, const std::vector<ShaderSource>& sources) = 0;
-		virtual ShaderPtr GetShader(ShaderID id) const {
-			auto it = m_Shaders.find(id);
-			return (it != m_Shaders.end()) ? it->second : nullptr;
-		}
-		virtual bool DeleteShader(const ShaderID& id) {
-			return m_Shaders.erase(id) > 0;		//shader clear his resources automaticaly (shader_ptr is very good thing)
-		}
-		virtual void BindShader(const ShaderID& id) 
-		{
-			auto shader = GetShader(id);
-			if (shader != nullptr) {
-				shader->Bind();
-			}
-		};
+		virtual void SetUniform(ShaderID shader, const std::string& name, const UniformValue& value) = 0;
+		virtual void BindShader(const ShaderID& id) = 0;
+		virtual void DestroyShader(const ShaderID& id) = 0;
+
+
 		//Viewport working
 
 		virtual void SetRenderViewport(Viewports::Viewport* viewport) { m_CurrentViewport = viewport; }

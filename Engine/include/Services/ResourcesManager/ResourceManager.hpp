@@ -76,12 +76,12 @@ namespace Resources
 			for (auto& [path, resource] : m_resources) 
 			{
 				resource->Release();
-				Diagnostics::Logger::Get().SendMessage("(ResourceFrame) resource \"" + path + "\" has released. Window id: " + std::to_string(m_ownerWindow) + ".");
+				Diagnostics::Logger::Get().SendMessage("(ResourceFrame) Resource \"" + path + "\" has released. Window id: " + std::to_string(m_ownerWindow) + ".");
 			}
 			for (auto& [name, resource] : m_runTimeResources)
 			{
 				resource->Release();
-				Diagnostics::Logger::Get().SendMessage("(ResourceFrame) runtime resource \"" + name + "\" has released. Window id: " + std::to_string(m_ownerWindow) + ".");
+				Diagnostics::Logger::Get().SendMessage("(ResourceFrame) Runtime resource \"" + name + "\" has released. Window id: " + std::to_string(m_ownerWindow) + ".");
 			}
 			m_resources.clear();
 			m_runTimeResources.clear();
@@ -120,12 +120,12 @@ namespace Resources
 			for (auto& [path, resource] : m_resources)
 			{
 				if (resource->GetState() == ResourceState::Loaded)resource->Init();
-				if (resource->GetState() == ResourceState::Initialized)Diagnostics::Logger::Get().SendMessage("(ResourceFrame) resource \"" + path + "\" has initialized. Window id: " + std::to_string(m_ownerWindow) + ".");
+				if (resource->GetState() == ResourceState::Initialized)Diagnostics::Logger::Get().SendMessage("(ResourceFrame) Resource \"" + path + "\" has initialized. Window id: " + std::to_string(m_ownerWindow) + ".");
 			}
 			for (auto& [name, resource] : m_runTimeResources)
 			{
 				if (resource->GetState() == ResourceState::Loaded)resource->Init();
-				if (resource->GetState() == ResourceState::Initialized)Diagnostics::Logger::Get().SendMessage("(ResourceFrame) runtime resource \"" + name + "\" has initialized. Window id: " + std::to_string(m_ownerWindow) + ".");
+				if (resource->GetState() == ResourceState::Initialized)Diagnostics::Logger::Get().SendMessage("(ResourceFrame) Runtime resource \"" + name + "\" has initialized. Window id: " + std::to_string(m_ownerWindow) + ".");
 			}
 		}
 
@@ -154,7 +154,7 @@ namespace Resources
 			
 			if (m_activeWindow == Definitions::InvalidID) 
 			{
-				Diagnostics::Logger::Get().SendMessage("(ResourceManager) invalid active window.");
+				Diagnostics::Logger::Get().SendMessage("(ResourceManager) Invalid active window.");
 				return nullptr;
 			}
 

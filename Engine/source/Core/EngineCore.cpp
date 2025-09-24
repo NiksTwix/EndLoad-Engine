@@ -1,5 +1,4 @@
 #include <Core/ServiceLocator.hpp>
-#include <Services/Diagnostics/Logger/Logger.hpp>
 #include <Systems/Input/InputSystem.hpp>
 #include <Core/EngineCore.hpp>
 
@@ -43,13 +42,17 @@ void EngineCore::Mainloop()
 					system->Update(); //Sync
 				}
 			}
+
+			m_ThreadPool.WaitForCompletion();
+
+			Diagnostics::ProcessObserver::Get().CalculateDelta();
 		}
 		//Запуск физики в отдельном потоке Создать задачу PhysicsSystem -> Update
 		//Запуск графики в отдельном потоке
 	}
 	catch (std::exception& e)
 	{
-		Diagnostics::Logger::Get().SendMessage("(Core) error: " + std::string(e.what()) + ".", Diagnostics::MessageType::Error);
+		Diagnostics::Logger::Get().SendMessage("(Core) Error: " + std::string(e.what()) + ".", Diagnostics::MessageType::Error);
 		m_isRunning = false;
 	}
 	m_isRunning = false;

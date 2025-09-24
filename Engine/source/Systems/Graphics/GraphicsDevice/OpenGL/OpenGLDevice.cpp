@@ -7,6 +7,45 @@ namespace Graphics
 
 	bool OpenGLDevice::m_glewInitialized = false;
 
+	Definitions::uint OpenGLDevice::CompileShader(GLenum type, const std::string& source)
+	{
+		GLuint shader = glCreateShader(type);
+		const char* src = source.c_str();
+		glShaderSource(shader, 1, &src, nullptr);
+		glCompileShader(shader);
+
+		GLint success;
+		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+		if (!success) {
+			char infoLog[512];
+			glGetShaderInfoLog(shader, 512, nullptr, infoLog);
+			std::stringstream ss;
+			ss << (type == GL_VERTEX_SHADER ? "Vertex" : "Fragment")
+				<< " shader compilation failed: " << infoLog;
+
+			Diagnostics::Logger::Get().SendMessage("(OpenGLDevice) Shader's compilation failed: " + ss.str() + ".", Diagnostics::MessageType::Error);
+			return Definitions::InvalidID;
+		}
+		return shader;
+	}
+
+	GLuint OpenGLDevice::GetGLBufferMode(GDBufferModes mode)
+	{
+		switch (mode)
+		{
+		case Graphics::GDBufferModes::STATIC:
+			return GL_STATIC_DRAW;
+		case Graphics::GDBufferModes::DYNAMIC:
+			return GL_DYNAMIC_DRAW;
+		case Graphics::GDBufferModes::STREAM:
+			return GL_STREAM_DRAW;
+		default:
+			return GL_STATIC_DRAW;
+			break;
+		}
+		return GL_STATIC_DRAW;
+	}
+
 	OpenGLDevice::OpenGLDevice()
 	{
 		api = GraphicsAPI::OpenGL;
@@ -115,6 +154,9 @@ namespace Graphics
 
 		auto key_id = GetNextID(IDType::Mesh);
 		MeshBuffersData mbd;
+
+		mbd.indices_count = data.indices.size();
+		mbd.vertices_count = data.vertices.size();
 
 		mbd.buffer_mode = data.buffer_mode;
 		mbd.vao = VAO;
@@ -240,22 +282,208 @@ namespace Graphics
 
 	ShaderID OpenGLDevice::CreateShader(const std::string& name, const std::vector<ShaderSource>& sources)
 	{
-		return ShaderID();
+		if (!CheckValid()) return Definitions::InvalidID;
+		std::string m_vertexSrc;
+		std::string m_fragmentSrc;
+
+		for (auto& source : sources) 
+		{
+			if (source.type == ShaderType::VERTEX) m_vertexSrc = source.sourceCode;
+			if (source.type == ShaderType::FRAGMENT) m_fragmentSrc = source.sourceCode;
+		}
+
+		GLuint vertex = CompileShader(GL_VERTEX_SHADER, m_vertexSrc);
+		GLuint fragment = CompileShader(GL_FRAGMENT_SHADER, m_fragmentSrc);
+
+		auto m_id = glCreateProgram();
+		glAttachShader(m_id, vertex);
+		glAttachShader(m_id, fragment);
+		glLinkProgram(m_id);
+
+		GLint success;
+		glGetProgramiv(m_id, GL_LINK_STATUS, &success);
+		if (!success) {
+			char infoLog[512];
+			glGetProgramInfoLog(m_id, 512, nullptr, infoLog);
+			std::stringstream ss;
+			ss << infoLog;
+			Diagnostics::Logger::Get().SendMessage("(OpenGLDevice) Shader's linking failed: " + ss.str() + ".", Diagnostics::MessageType::Error);
+			return Definitions::InvalidID;
+		}
+
+		glDeleteShader(vertex);
+		glDeleteShader(fragment);
+
+		//Creating GLSLShader
+
+		auto key_id = GetNextID(IDType::Shader);
+
+		m_shaders[key_id] = m_id;
+
+		return key_id;
+	}
+
+	void OpenGLDevice::SetUniform(ShaderID shader, const std::string& name, const UniformValue& value)
+	{
+		if (!m_shaders.count(shader))
+		{
+			Diagnostics::Logger::Get().SendMessage("(OpenGLDevice) Shader's uniform set attemp is failed: invalid shader's id.", Diagnostics::MessageType::Error);
+			return;
+		}
+		GLint id = glGetUniformLocation(m_shaders[shader], name.c_str());
+		if (id > -1)
+		{
+			Math::Vector2 vec_value2;
+			Math::Vector3 vec_value3;
+			Math::Vector4 vec_value4;
+			switch (value.type)
+			{
+			case UniformValue::ValueType::BOOL:
+				glUniform1i(id, (GLboolean)value.GetBool());
+				break;
+			case UniformValue::ValueType::FLOAT:
+				glUniform1f(id, (GLfloat)value.GetFloat());
+				break;
+			case UniformValue::ValueType::INT:
+				glUniform1i(id, (GLint)value.GetInt());
+				break;
+			case UniformValue::ValueType::UINT:
+				glUniform1ui(id, (GLuint)value.GetUInt());
+				break;
+			case UniformValue::ValueType::VECTOR2:
+				vec_value2 = value.GetVector2();
+				glUniform2f(id, (GLfloat)vec_value2.x, (GLfloat)vec_value2.y);
+				break;
+			case UniformValue::ValueType::VECTOR3:
+				vec_value3 = value.GetVector3();
+				glUniform3f(id, (GLfloat)vec_value3.x, (GLfloat)vec_value3.y, (GLfloat)vec_value3.z);
+				break;
+			case UniformValue::ValueType::VECTOR4:
+				vec_value4 = value.GetVector4();
+				glUniform4f(id, (GLfloat)vec_value4.x, (GLfloat)vec_value4.y, (GLfloat)vec_value4.z, (GLfloat)vec_value4.w);
+				break;
+			case UniformValue::ValueType::MATRIX4x4:
+				glUniformMatrix4fv(id, 1, GL_TRUE, Math::GetValuePtr(value.GetMatrix4x4()));
+				break;
+			default:
+				break;
+			}
+		}
+		else 
+		{
+			Diagnostics::Logger::Get().SendMessage("(OpenGLDevice) Shader's uniform set attemp is failed: invalid uniform name \"" + name + "\" of shader with id " + std::to_string(shader) + ".", Diagnostics::MessageType::Error);
+		}
 	}
 
 
-	void OpenGLDevice::Draw(const RenderCommand& render_command)
-	{
+	void OpenGLDevice::Draw(const RenderCommand& render_command) {
 		if (!CheckValid()) return;
+
+		//TODO improve error system with stack
+
+		// Attach shader
+		BindShader(render_command.shader_id);
+
+		// Attach textures
+		for (const auto& [slot, texture_id] : render_command.textures) {
+			BindTexture(slot, texture_id);
+		}
+
+		// Set uniformы
+		for (const auto& [name, value] : render_command.uniforms) {
+			SetUniform(render_command.shader_id, name, value);
+		}
+
+		// Set and draw mesh
+		BindMesh(render_command.mesh_id);
+		auto& mesh = m_meshes[render_command.mesh_id];
+
+		glDrawElements(GL_TRIANGLES,
+			static_cast<GLsizei>(mesh.indices_count),
+			GL_UNSIGNED_INT, nullptr);
+
+		GLenum error = glGetError();
+		if (error != GL_NO_ERROR) {
+			std::stringstream ss;
+			ss << "OpenGL error: 0x" << std::hex << error;
+			Diagnostics::Logger::Get().SendMessage("(OpenGLDevice) Draw error. OpenGL error:" + ss.str() + ".", Diagnostics::MessageType::Error);
+		}
+
 	}
-	void OpenGLDevice::DrawBatch(const std::vector<RenderCommand>& render_commands)
-	{
+	void OpenGLDevice::DrawBatch(const std::vector<RenderCommand>& render_commands) {
 		if (!CheckValid()) return;
+
+		auto sorted_commands = render_commands;
+		std::sort(sorted_commands.begin(), sorted_commands.end(), [](const auto& a, const auto& b) {
+			// 1. Shader is the first (most expensive)
+
+			if (a.shader_id != b.shader_id) return a.shader_id < b.shader_id;
+
+			// 2. After by textures (cheaper)
+			if (a.textures != b.textures) return a.textures < b.textures;
+
+			// 3. By meshes (cheapest)
+			return a.mesh_id < b.mesh_id;
+			});
+
+		ShaderID current_shader = Definitions::InvalidID;	
+		std::vector<std::pair<TextureID, GLuint>> current_textures;		//texture - slot
+
+		for (const auto& cmd : sorted_commands) {
+			// Replace shader if he is changed
+			if (cmd.shader_id != current_shader) {
+				BindShader(cmd.shader_id);
+				current_shader = cmd.shader_id;
+				current_textures.clear(); // Reset textures
+			}
+
+			// Replace textures if they are changed
+			if (cmd.textures != current_textures) {
+				for (const auto& [tex_id, slot] : cmd.textures) {
+					BindTexture(slot, tex_id);
+				}
+				current_textures = cmd.textures;
+			}
+
+			// Uniform's set every time (they are unique for every object)
+			for (const auto& [name, value] : cmd.uniforms) {
+				SetUniform(cmd.shader_id, name, value);
+			}
+
+			// Mesh bind always (it is cheap)
+			BindMesh(cmd.mesh_id);
+			glDrawElements(GL_TRIANGLES, m_meshes[cmd.mesh_id].indices_count, GL_UNSIGNED_INT, nullptr);
+		}
 	}
 
 	void OpenGLDevice::UpdateMesh(const MeshID& id, const MeshData& data)
 	{
 		if (!CheckValid()) return;
+
+		if (!m_meshes.count(id)) {
+			Diagnostics::Logger::Get().SendMessage("(OpenGLDevice) Update mesh failed: invalid mesh id.", Diagnostics::MessageType::Error);
+			return;
+		}
+
+		auto& mesh = m_meshes[id];
+
+		// Обновляем VBO
+		glBindBuffer(GL_ARRAY_BUFFER, mesh.vbos[0]);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, data.vertices.size() * sizeof(Math::Vertex), data.vertices.data());
+		mesh.vertices_count = data.vertices.size();
+		// Обновляем EBO (если изменилось количество индексов)
+		if (data.indices.size() != mesh.indices_count) {
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.vbos[1]);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, data.indices.size() * sizeof(GLuint),
+				data.indices.data(), GetGLBufferMode(mesh.buffer_mode));
+			mesh.indices_count = data.indices.size();
+		}
+		else {
+			glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, data.indices.size() * sizeof(GLuint), data.indices.data());
+		}
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
 
@@ -308,5 +536,28 @@ namespace Graphics
 
 
 		m_Settings[setting_type] = setting_value;
+	}
+	void OpenGLDevice::BindShader(const ShaderID& id)
+	{
+		if (!m_shaders.count(id)) 
+		{
+			Diagnostics::Logger::Get().SendMessage("(OpenGLDevice) Shader's binding failed: invalid shader's id.", Diagnostics::MessageType::Error);
+			return;
+		}
+
+		glUseProgram(m_shaders[id]);
+
+	}
+	void OpenGLDevice::DestroyShader(const ShaderID& id)
+	{
+		if (!m_shaders.count(id))
+		{
+			Diagnostics::Logger::Get().SendMessage("(OpenGLDevice) Shader's destruction failed: invalid shader's id.", Diagnostics::MessageType::Error);
+			return;
+		}
+
+		glDeleteProgram(m_shaders[id]);
+		m_shaders.erase(id);
+
 	}
 }
