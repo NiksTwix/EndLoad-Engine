@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>Engine\libs\glm.1.0.1\build\native\include;Engine\libs;Engine\include;Engine\libs\glew220\include\;Engine\libs\glfw34WIN64\include\;$(IncludePath)</IncludePath>
+    <IncludePath>Engine\libs\glm.1.0.1\build\native\include;Engine\libs;Engine\include;Engine\libs\glew220\include\;Engine\libs\glfw34WIN64\include\;Engine\libs\ELMath\include\;Engine\libs\freetype2133\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -112,7 +112,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>Engine\libs\ELMath\lib\;Engine\libs\glew220\lib\Release\x64\;Engine\libs\glfw34WIN64\lib-vc2022\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ELMath.lib;glew32s.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ELMath.lib;glew32s.lib;opengl32.lib;glfw3.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="EndLoad Engine.cpp" />
     <ClCompile Include="Engine\source\Core\EngineCore.cpp" />
+    <ClCompile Include="Engine\source\Resources\FontResource.cpp" />
     <ClCompile Include="Engine\source\Services\Diagnostics\Logger\Logger.cpp" />
     <ClCompile Include="Engine\source\Services\Diagnostics\ProcessObserver\ProcessObserver.cpp" />
     <ClCompile Include="Engine\source\Services\ResourcesManager\ResourceManager.cpp" />
@@ -148,7 +149,10 @@
     <ClInclude Include="Engine\include\Core\IServices.hpp" />
     <ClInclude Include="Engine\include\Core\ServiceLocator.hpp" />
     <ClInclude Include="Engine\include\Multithreading\ThreadPool.hpp" />
+    <ClInclude Include="Engine\include\Resources\FileInfo.hpp" />
+    <ClInclude Include="Engine\include\Resources\FontResource.hpp" />
     <ClInclude Include="Engine\include\Resources\IResource.hpp" />
+    <ClInclude Include="Engine\include\Resources\MeshResource.hpp" />
     <ClInclude Include="Engine\include\Services\Diagnostics\Logger\Logger.hpp" />
     <ClInclude Include="Engine\include\Services\Diagnostics\ProcessObserver\ProcessObserver.hpp" />
     <ClInclude Include="Engine\include\Services\ResourcesManager\ResourceManager.hpp" />

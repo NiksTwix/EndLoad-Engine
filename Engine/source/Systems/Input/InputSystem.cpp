@@ -2,7 +2,7 @@
 #include <Services\Diagnostics\Logger\Logger.hpp>
 #include <Systems/Input\InputSystem.hpp>
 
-namespace UserInput
+namespace Input
 {
     InputSystem::InputSystem() : m_windowManager(nullptr), m_currentFocusedWindow(0)
     {
@@ -112,6 +112,20 @@ namespace UserInput
             }
         }
         return 0;
+    }
+
+    void InputSystem::RemoveFrame(Windows::WindowID windowId) {
+        auto it = m_inputFrames.find(windowId);
+        if (it != m_inputFrames.end()) {
+            m_inputFrames.erase(it);
+            Diagnostics::Logger::Get().SendMessage(
+                "(InputSystem) Removed input frame for window: " + std::to_string(windowId)
+            );
+        }
+        // Если удаляем текущее активное окно - сбрасываем фокус
+        if (m_currentFocusedWindow == windowId) {
+            m_currentFocusedWindow = Definitions::InvalidID;
+        }
     }
 
     // Методы для активного окна

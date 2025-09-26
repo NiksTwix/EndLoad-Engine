@@ -74,14 +74,14 @@ namespace Windows
 
 		glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mode)
 			{
-				UserInput::InputSystem* Input_ = Core::ServiceLocator::Get<UserInput::InputSystem>();
+				Input::InputSystem* Input_ = Core::ServiceLocator::Get<Input::InputSystem>();
 
 				if (Input_)Input_->KeyCallback(window, key, scancode, action, mode);
 
 			});
 		glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double xpos, double ypos)
 			{
-				UserInput::InputSystem* Input_ = Core::ServiceLocator::Get<UserInput::InputSystem>();
+				Input::InputSystem* Input_ = Core::ServiceLocator::Get<Input::InputSystem>();
 
 
 				if (Input_)Input_->MouseMovingCallback(window, xpos, ypos);
@@ -89,7 +89,7 @@ namespace Windows
 			});
 		glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int button, int action, int mode)
 			{
-				UserInput::InputSystem* Input_ = Core::ServiceLocator::Get<UserInput::InputSystem>();
+				Input::InputSystem* Input_ = Core::ServiceLocator::Get<Input::InputSystem>();
 
 
 				if (Input_)Input_->MouseButtonCallback(window, button, action, mode);

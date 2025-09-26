@@ -106,6 +106,12 @@
     <Filter Include="Engine\source\Services\Scenes">
       <UniqueIdentifier>{d462365e-2810-43ea-b4d5-73080be39e46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\include\Components">
+      <UniqueIdentifier>{fa655357-3bd3-452a-b47f-005c8d2a3c8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Components">
+      <UniqueIdentifier>{70b64abb-f3f4-4060-9a42-6c72840827e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndLoad Engine.cpp">
@@ -143,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="Engine\source\Services\Scenes\SceneManager.cpp">
       <Filter>Engine\source\Services\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Resources\FontResource.cpp">
+      <Filter>Engine\source\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +217,15 @@
     </ClInclude>
     <ClInclude Include="Engine\include\Services\Scenes\SceneContext.hpp">
       <Filter>Engine\include\Services\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\FileInfo.hpp">
+      <Filter>Engine\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\FontResource.hpp">
+      <Filter>Engine\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\MeshResource.hpp">
+      <Filter>Engine\include\Resources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

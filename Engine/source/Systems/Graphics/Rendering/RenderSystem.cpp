@@ -1,4 +1,4 @@
-#include <Systems\Graphics\Rendering\RenderSystem.hpp>
+﻿#include <Systems\Graphics\Rendering\RenderSystem.hpp>
 #include <Services\Scenes\SceneManager.hpp>
 #include <Systems\Graphics\Windows\WindowsManager.hpp>
 #include <Core\ServiceLocator.hpp>
@@ -53,8 +53,8 @@ namespace Rendering
 
 				if (window->GetWindowState() == Windows::WindowState::Collapsed) continue;
 				//m_context = window->GetContext();
-				//wm->SetRenderWindow(window.get());
-				//
+				wm->SetRenderWindow(window->GetID());
+				//               
 				auto* scene = Core::ServiceLocator::Get<Scenes::SceneManager>()->GetContext(sceneId);
 				
 				for (auto viewport : scene->GetViewportService().GetViewports()) {
@@ -122,5 +122,28 @@ namespace Rendering
 	}
 	void RenderSystem::RenderScene(Viewports::Viewport* viewport, Scenes::SceneContext* scene)
 	{
+		if (m_firstFrame) FirstFrameInitialization();
+		float delta_time = Diagnostics::ProcessObserver::GetFrameTimeMSST();      
+		scene->GetEntitySpace().UpdateAllServices();
+		if (!scene || !viewport) return;
+		auto& CSL = scene->GetEntitySpace().GetServiceLocator();
+
+		//CSL.Register<LocalTransformComponent, TransformService>()->UpdateGlobalTransforms();
+		//auto* m_cameraService = CSL.Register<CameraComponent, CameraService>();
+		//m_context->SetViewport(viewport);  //Óñòàíîâêà âàéïîðòà
+
+
+
+		auto* cam = viewport->GetCamera().Get();
+		if (cam) {
+			//m_cameraService->UpdateProjectionMatrix(*cam, viewport->GetResolution().x, viewport->GetResolution().y, cam->Projection_Type, cam->FOV);
+		}
+
+		//m_cameraService->SetRenderCamera(viewport->GetCamera().GetEntityID());                  
+		//m_cameraService->UpdateAllCameras(*scene);
+		UpdateModules();
+
+		//CSL.Register<ScriptComponent, ScriptService>()->InvokeProcess(*scene, delta_time);        
+		//CSL.Register<ELScriptComponent, ELScriptService>()->InvokeProcess(*scene, delta_time);
 	}
 }

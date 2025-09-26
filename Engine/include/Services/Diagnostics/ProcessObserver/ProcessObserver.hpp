@@ -27,6 +27,8 @@ namespace Diagnostics
 		float m_smoothFPS = 60.0f;
 		float m_frameTime = 0.0f;
 
+		size_t currentFrame;
+
 		ProcessObserver();
 	public:
 

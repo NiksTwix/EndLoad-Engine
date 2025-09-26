@@ -8,6 +8,7 @@ namespace Resources
 		NotLoaded,
 		Loaded,     // Данные загружены
 		Initialized, // Инициализирован в памяти
+		NeedReinit,
 		Error
 	};
 
@@ -19,6 +20,8 @@ namespace Resources
 		virtual bool Load(const std::string& path) = 0;	//Load file data
 
 		virtual bool Init() = 0;	//Initializate resource to memory
+
+		virtual bool Uninit() = 0;
 
 		virtual void Release() = 0;
 		virtual std::string GetType() const = 0;

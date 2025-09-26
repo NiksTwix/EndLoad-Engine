@@ -1,8 +1,8 @@
 #pragma once
 #include <SpecialHeaders\Definitions.hpp>
-#include <ELMath\include\Vertex.hpp>
-#include <ELMath\include\Vector4.hpp>
-#include <ELMath\include\Matrix4x4.hpp>
+#include <Vertex.hpp>
+#include <Vector4.hpp>
+#include <Matrix4x4.hpp>
 // This file contains special structs for graphics
 
 namespace Graphics

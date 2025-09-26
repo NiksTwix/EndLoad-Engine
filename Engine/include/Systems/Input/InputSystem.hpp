@@ -6,7 +6,7 @@
 #include <ELMath\include\Vector2.hpp>
 #include <Systems\Graphics\Windows\WindowsManager.hpp>
 
-namespace UserInput
+namespace Input
 {
     struct InputFrame {
         std::unordered_set<int> pressedKeys;
@@ -92,6 +92,10 @@ namespace UserInput
     private:
         InputFrame& GetOrCreateFrame(Windows::WindowID windowId);
         Windows::WindowID GetWindowIdFromGLFW(GLFWwindow* window);
+
+        friend void Windows::WindowsManager::RemoveInputFrame(WindowID window);
+
+        void RemoveFrame(Windows::WindowID windowId);
 
         std::unordered_map<Windows::WindowID, InputFrame> m_inputFrames;
         Windows::WindowsManager* m_windowManager;

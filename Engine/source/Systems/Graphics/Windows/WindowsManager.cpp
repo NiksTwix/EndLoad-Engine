@@ -1,5 +1,5 @@
 #include <Systems\Graphics\Windows\WindowsManager.hpp>
-
+#include <Systems\Input\InputSystem.hpp>
 
 
 namespace Windows 
@@ -19,10 +19,22 @@ namespace Windows
 			for (auto id : m_closedWindows)
 			{
 				m_windows.erase(id);
+				RemoveInputFrame(id);
 				if (resource_manager) resource_manager->ClearWindowData(id);
 			}
 			m_closedWindows.clear();
 		}
+	}
+	void WindowsManager::RemoveInputFrame(WindowID window)
+	{
+		auto* input = Core::ServiceLocator::Get<Input::InputSystem>();
+		if (!input) 
+		{
+			Diagnostics::Logger::Get().SendMessage("(WindowsManager) IF's removing failed: InputSystem is invalid.", Diagnostics::MessageType::Error);
+			return;
+		}
+
+		input->RemoveFrame(window);
 	}
 	void WindowsManager::SetRenderWindow(WindowID windowId)
 	{
@@ -33,6 +45,8 @@ namespace Windows
 			return;
 		}
 		m_renderWindow = m_windows[windowId].get();
+		Core::ServiceLocator::Get<Resources::ResourceManager>()->SetActiveWindow(windowId);
+		m_windows[windowId]->MakeCurrent();
 	}
 	void WindowsManager::Update()
 	{

@@ -5,6 +5,8 @@
 #include <Services/ResourcesManager/ResourceManager.hpp>
 
 
+
+
 namespace Windows 
 {
 	class WindowsManager : public Core::ISystem 
@@ -30,6 +32,8 @@ namespace Windows
 		std::vector<WindowID> m_closedWindows;	//Temp buffer for window closing
 
 		void HandleClosedWindows();
+
+		
 
 	public:
 		template<typename GraphicsDevice>
@@ -77,5 +81,7 @@ namespace Windows
 
 		void Update() override;
 		void Shutdown() override;
+
+		void RemoveInputFrame(WindowID window);
 	};
 }

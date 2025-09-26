@@ -69,6 +69,6 @@ void EngineCore::Init()
 
 	//System registration
 	ServiceLocator::Set<Windows::WindowsManager, Windows::WindowsManager>();
-	ServiceLocator::Set<UserInput::InputSystem, UserInput::InputSystem>();
+	ServiceLocator::Set<Input::InputSystem, Input::InputSystem>();
 	Diagnostics::Logger::Get().SendMessage("(Core) Core initialization has ended.", Diagnostics::MessageType::Info);
 }
