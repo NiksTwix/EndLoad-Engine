@@ -11,6 +11,10 @@ namespace Resources
     {
     public:
         MeshResource();
+
+
+
+
         ~MeshResource();
 
     };

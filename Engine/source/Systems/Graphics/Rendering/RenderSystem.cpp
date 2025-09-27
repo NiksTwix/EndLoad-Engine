@@ -72,6 +72,7 @@ namespace Rendering
 	{
 		auto* wm = Core::ServiceLocator::Get<Windows::WindowsManager>();
 		auto* sm = Core::ServiceLocator::Get<Scenes::SceneManager>();
+		auto* rm = Core::ServiceLocator::Get<Resources::ResourceManager>();
 		auto& l = Diagnostics::Logger::Get();
 
 		if (!wm || !sm)
@@ -95,6 +96,13 @@ namespace Rendering
 		}
 		m_scenes[window] = scene;
 
+		auto r_window = wm->GetRenderWindow();
+		
+		wm->SetRenderWindow(window);
+		
+		rm->AttachStaticResources(sm->GetContext(scene)->GetStaticResources());
+		
+		if (r_window != nullptr) wm->SetRenderWindow(r_window->GetID());
 		l.SendMessage("(RenderSystem) Scene with id " + std::to_string(scene) + " has been successfully attached to window " + std::to_string(window) + ".", Diagnostics::MessageType::Info);
 		m_scenes_changed = true;
 	}
@@ -104,6 +112,16 @@ namespace Rendering
 		{
 			m_scenes_changed = true;
 			m_scenes.erase(window);
+
+			auto* wm = Core::ServiceLocator::Get<Windows::WindowsManager>();
+			if (wm->IsExists(window)) 
+			{
+				auto r_window = wm->GetRenderWindow();
+				wm->SetRenderWindow(window);
+				auto* rm = Core::ServiceLocator::Get<Resources::ResourceManager>();
+				rm->GetActiveFrame()->ClearStaticResources();
+				if (r_window != nullptr) wm->SetRenderWindow(r_window->GetID());
+			}
 		}
 	}
 	Scenes::SceneID RenderSystem::GetAttachedScene(Windows::WindowID window)

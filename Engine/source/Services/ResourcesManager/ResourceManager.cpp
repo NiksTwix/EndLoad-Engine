@@ -8,23 +8,47 @@ namespace Resources
 	{
 		for (auto& k:m_resources) 
 		{
-			k.second.ClearResources();
+			k.second->ClearAllResources();
 		}
 		m_resources.clear();
 		m_isValid = false;
 	}
 
+	void ResourceManager::AttachStaticResources(const std::vector<std::shared_ptr<Resources::IResource>>& resources)
+	{
+		if (m_activeWindow == Definitions::InvalidID) 
+		{
+			Diagnostics::Logger::Get().SendMessage("(ResourceManager) Invalid active window.");
+			return;
+		}
+
+		for (auto resource : resources) 
+		{
+			m_resources[m_activeWindow]->AddStaticResource(resource);
+		}
+	}
+
+
+	ResourcesFrame* ResourceManager::GetActiveFrame()
+	{
+		if (m_activeWindow == Definitions::InvalidID) return nullptr;
+		return m_resources.count(m_activeWindow) ? m_resources.at(m_activeWindow).get() : nullptr;
+	}
 
 	void ResourceManager::SetActiveWindow(Windows::WindowID new_active_window)
 	{
 		m_activeWindow = new_active_window;
+		if (m_resources.count(m_activeWindow) == 0 && m_activeWindow != Definitions::InvalidID) 
+		{
+			m_resources[m_activeWindow] = std::make_shared<ResourcesFrame>(m_activeWindow);
+		}
 	}
 
 	void ResourceManager::ClearWindowData(Windows::WindowID id)
 	{
 		if (m_resources.count(id))
 		{
-			m_resources[id].ClearResources();
+			m_resources[id]->ClearAllResources();
 			m_resources.erase(id);
 		}
 	}
@@ -33,7 +57,7 @@ namespace Resources
 	{
 		if (m_resources.count(id))
 		{
-			m_resources[id].CleanupUnusedResources();
+			m_resources[id]->CleanupUnusedResources();
 		}
 	}
 
@@ -41,69 +65,58 @@ namespace Resources
 	{
 		if (m_isValid) return; m_isValid = true;
 	}
-	void ResourcesFrame::DeleteResource(ResourceID id, bool is_runtime)
+	bool ResourcesFrame::Exists(ResourceID id)
 	{
-		if (id == Definitions::InvalidID) return;
-		if (is_runtime)
-		{
-			if (!m_runTimeResources.count(id)) return;
-			m_runTimeResources.erase(id);
-			m_IdStr.erase(id);
+		return GetStaticResource(id) != nullptr;
+	}
+	bool ResourcesFrame::Exists(const std::string& name)
+	{
+		return GetRuntimeResource(name) != nullptr;
+	}
+	void ResourcesFrame::DeleteResource(ResourceID id)
+	{
+		if (!m_staticResources.count(id)) return;
+		m_staticResources[id].m_resource->Uninit();
+		m_staticResources.erase(id);
+	}
+	void ResourcesFrame::DeleteResource(const std::string& name)
+	{
+		if (!m_runtimeResources.count(name)) return;
+		m_runtimeResources[name].m_resource->Uninit();
+		m_runtimeResources.erase(name);
+	}
+	void ResourcesFrame::ClearStaticResources() {
+		for (auto& [id, cell] : m_staticResources) {
+			cell.m_resource->Uninit();
+			Diagnostics::Logger::Get().SendMessage(
+				"(ResourceFrame) Static resource released. Window: " +
+				std::to_string(m_ownerWindow)
+			);
 		}
-		else
-		{
-			if (!m_resources.count(id)) return;
-			m_resources.erase(id);
-			m_IdStr.erase(id);
-		}
+		m_staticResources.clear();
+	}
 
-	}
-	void ResourcesFrame::ClearResources()
-	{
-		for (auto& [path, resource] : m_resources)
-		{
-			resource.m_resource->Uninit();
-			resource.m_resource->Release();
-			Diagnostics::Logger::Get().SendMessage("(ResourceFrame) Resource \"" + std::to_string(path) + "\" has released. Window id: " + std::to_string(m_ownerWindow) + ".");
+	void ResourcesFrame::ClearRuntimeResources() {
+		for (auto& [name, cell] : m_runtimeResources) {
+			cell.m_resource->Uninit();
+			Diagnostics::Logger::Get().SendMessage(
+				"(ResourceFrame) Runtime resource \"" + name + "\" released. Window: " +
+				std::to_string(m_ownerWindow)
+			);
 		}
-		for (auto& [name, resource] : m_runTimeResources)
-		{
-			resource.m_resource->Uninit();
-			resource.m_resource->Release();
-			Diagnostics::Logger::Get().SendMessage("(ResourceFrame) Runtime resource \"" + std::to_string(name) + "\" has released. Window id: " + std::to_string(m_ownerWindow) + ".");
-		}
-		m_resources.clear();
-		m_runTimeResources.clear();
-		m_IdStr.clear();
-		m_strId.clear();
+		m_runtimeResources.clear();
 	}
-	bool ResourcesFrame::Exists(const std::string& key, bool is_runtime) const
-	{
-		return m_strId.count(key) ? Exists(m_strId.at(key), is_runtime) : false;
+
+	void ResourcesFrame::ClearAllResources() {
+		ClearStaticResources();
+		ClearRuntimeResources();
 	}
-	bool ResourcesFrame::Exists(ResourceID id, bool is_runtime = false) const
-	{
-		if (is_runtime) return m_runTimeResources.count(id);
-		return m_resources.count(id);
-	}
-	void ResourcesFrame::InitAll()
-	{
-		for (auto& [path, resource] : m_resources)
-		{
-			if (resource.m_resource->GetState() == ResourceState::Loaded)resource.m_resource->Init();
-			if (resource.m_resource->GetState() == ResourceState::Initialized)Diagnostics::Logger::Get().SendMessage("(ResourceFrame) Resource \"" + std::to_string(path) + "\" has initialized. Window id: " + std::to_string(m_ownerWindow) + ".");
-		}
-		for (auto& [name, resource] : m_runTimeResources)
-		{
-			if (resource.m_resource->GetState() == ResourceState::Loaded)resource.m_resource->Init();
-			if (resource.m_resource->GetState() == ResourceState::Initialized)Diagnostics::Logger::Get().SendMessage("(ResourceFrame) Runtime resource \"" + std::to_string(name) + "\" has initialized. Window id: " + std::to_string(m_ownerWindow) + ".");
-		}
-	}
+
 	void ResourcesFrame::CleanupUnusedResources()
 	{
 		auto now = std::chrono::steady_clock::now();
 		std::vector<ResourceID> toRemove;
-		for (auto& [path, cell] : m_resources) {
+		for (auto& [path, cell] : m_staticResources) {
 			auto timeSinceLastUse = now - cell.m_lastUsedTime;
 			if (!cell.m_isPinned &&
 				timeSinceLastUse > MaxUnusedPeriod && cell.m_useCount < MinUsedCounts) toRemove.push_back(path);

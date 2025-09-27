@@ -12,10 +12,26 @@ namespace Resources
 		Error
 	};
 
+	using ResourceID = Definitions::identificator;
+
 	
 	class IResource 
 	{
+	private:
+		static ResourceID GetNext() 
+		{
+			static ResourceID next = 1;
+			return next++;
+		}
+		ResourceID m_id = Definitions::InvalidID;
 	public:
+		IResource() 
+		{
+			m_id = GetNext();
+		}
+
+		ResourceID GetID() const { return m_id; }
+
 		virtual ~IResource() = default;
 		virtual bool Load(const std::string& path) = 0;	//Load file data
 

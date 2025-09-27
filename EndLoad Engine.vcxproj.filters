@@ -153,6 +153,9 @@
     <ClCompile Include="Engine\source\Resources\FontResource.cpp">
       <Filter>Engine\source\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\source\Resources\MeshResource.cpp">
+      <Filter>Engine\source\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\include\Systems\Graphics\GraphicsDevice\GraphicsData.hpp">

@@ -3,6 +3,7 @@
 #include <typeindex> 
 #include <ELECS\ECS.hpp>
 #include <Systems\Graphics\Viewports\Viewport.hpp>
+#include <Resources\IResource.hpp>
 /*
 	SceneContext controls scene and entities
 */
@@ -27,6 +28,16 @@ namespace Scenes
 
 		std::shared_ptr<Viewports::ViewportService> viewportService;
 
+		std::vector<std::shared_ptr<Resources::IResource>> staticResources;
+
+		void ClearStaticResources()
+		{
+			for (auto r : staticResources)
+			{
+				r->Release();	//Uninit() call only in ResourceFrame
+			}
+			staticResources.clear();
+		}
 	public:
 		//Copying is forbidden
 		SceneContext(const SceneContext&) = delete;
@@ -35,6 +46,10 @@ namespace Scenes
 		SceneContext(SceneContext&&) = default;
 		SceneContext& operator=(SceneContext&&) = default;
 
+		std::vector<std::shared_ptr<Resources::IResource>>  GetStaticResources() const
+		{
+			return staticResources;
+		}
 		std::string GetName() { return Name; }
 		void SetName(std::string new_name)
 		{
@@ -66,7 +81,13 @@ namespace Scenes
 			sceneID = id;
 			viewportService = std::make_shared<Viewports::ViewportService>(entitySpace.GetRegistryShared());
 		}
-
+		SceneContext(std::string name, SceneID id, std::vector<std::shared_ptr<Resources::IResource>> resources)
+		{
+			SetName(name);
+			sceneID = id;
+			viewportService = std::make_shared<Viewports::ViewportService>(entitySpace.GetRegistryShared());
+			staticResources = resources;
+		}
 		Viewports::ViewportService& GetViewportService()
 		{
 			return *viewportService;
@@ -75,6 +96,10 @@ namespace Scenes
 		ECS::EntitySpace& GetEntitySpace()
 		{
 			return entitySpace;
+		}
+		~SceneContext() 
+		{
+			ClearStaticResources();
 		}
 	};
 }

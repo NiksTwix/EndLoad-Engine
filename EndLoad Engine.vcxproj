@@ -133,6 +133,7 @@
     <ClCompile Include="EndLoad Engine.cpp" />
     <ClCompile Include="Engine\source\Core\EngineCore.cpp" />
     <ClCompile Include="Engine\source\Resources\FontResource.cpp" />
+    <ClCompile Include="Engine\source\Resources\MeshResource.cpp" />
     <ClCompile Include="Engine\source\Services\Diagnostics\Logger\Logger.cpp" />
     <ClCompile Include="Engine\source\Services\Diagnostics\ProcessObserver\ProcessObserver.cpp" />
     <ClCompile Include="Engine\source\Services\ResourcesManager\ResourceManager.cpp" />

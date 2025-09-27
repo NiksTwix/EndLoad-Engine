@@ -10,8 +10,6 @@ namespace Resources
 	constexpr std::chrono::minutes MaxUnusedPeriod = std::chrono::minutes(5);
 	constexpr Definitions::uint MinUsedCounts = 5;
 
-	using ResourceID = Definitions::identificator;
-
 	struct ResourceCashCell
 	{
 		std::shared_ptr<IResource> m_resource;
@@ -24,23 +22,21 @@ namespace Resources
 			m_useCount++;
 		}
 	};
-
-
 	struct ResourcesFrame {
 	private:
-		std::unordered_map<ResourceID, ResourceCashCell> m_resources;
-		std::unordered_map<ResourceID, ResourceCashCell> m_runTimeResources;	//Name-resource
+		std::unordered_map<ResourceID, ResourceCashCell> m_staticResources;
+		std::unordered_map<std::string, ResourceCashCell> m_runtimeResources;	//Name-resource
 
-		std::unordered_map<std::string, ResourceID> m_strId;	//StrIdentificator - ResourceID
-		std::unordered_map<ResourceID, std::string> m_IdStr;		//ResourceID - StrIdentificator
 		Windows::WindowID m_ownerWindow = Definitions::InvalidID;
 
-		ResourceID GetNextID()
+		ResourceCashCell* GetStaticResource(ResourceID id)
 		{
-			static ResourceID next_id = 0;
-			return next_id++;
+			return m_staticResources.count(id) > 0 ? &m_staticResources[id] : nullptr;
 		}
-
+		ResourceCashCell* GetRuntimeResource(const std::string& name)
+		{
+			return m_runtimeResources.count(name) > 0 ? &m_runtimeResources[name] : nullptr;
+		}
 	public:
 
 		ResourcesFrame() = default;
@@ -48,42 +44,39 @@ namespace Resources
 		ResourcesFrame(Windows::WindowID owner_window) 
 		{
 			m_ownerWindow = owner_window;
-			m_resources = std::unordered_map<ResourceID, ResourceCashCell>();
-			m_runTimeResources = std::unordered_map<ResourceID, ResourceCashCell>();
+			m_staticResources = std::unordered_map<ResourceID, ResourceCashCell>();
+			m_runtimeResources = std::unordered_map<std::string, ResourceCashCell>();
 		}
-
-		ResourceID AddResource(std::string str_id, std::shared_ptr<IResource> resource, bool is_runtime = false)
+		ResourceID AddStaticResource(std::shared_ptr<IResource> resource)
 		{
-			auto id = GetNextID();
-			if (is_runtime)m_runTimeResources[id] = ResourceCashCell(resource);
-			else m_resources[id] = ResourceCashCell(resource);
-
-			m_strId[str_id] = id;
-			m_IdStr[id] = str_id;
-			return id;
+			if (resource == nullptr) return Definitions::InvalidID;
+			m_staticResources[resource->GetID()] = ResourceCashCell(resource);
+			return resource->GetID();
 		}
-
+		void AddRuntimeResource(const std::string& name,std::shared_ptr<IResource> resource)
+		{
+			m_runtimeResources[name] = ResourceCashCell(resource);
+		}
 		template<typename Resource>
-		std::shared_ptr<Resource> GetResourceByID(ResourceID id, bool is_runtime = false) {
+		std::shared_ptr<Resource> GetResource(ResourceID id) {
 			static_assert(std::is_base_of_v<IResource, Resource>, "Resource must inherit from IResource");
 
-			auto resource = GetResourceByID(id, is_runtime); // Базовый метод
+			auto resource = GetStaticResource(id); // Базовый метод
 			if (!resource) return nullptr;
-
+			resource->UpdateData();
 			// Дополнительная проверка типа
-			auto casted = std::dynamic_pointer_cast<Resource>(resource);
+			auto casted = std::dynamic_pointer_cast<Resource>(resource->m_resource);
 			if (!casted) {
-				Diagnostics::Logger::Get().SendMessage("Type mismatch in GetResourceByID");
+				Diagnostics::Logger::Get().SendMessage("Type mismatch in GetResource", Diagnostics::MessageType::Error);
 				return nullptr;
 			}
 			return casted;
 		}
-
 		template<typename Resource>
-		std::shared_ptr<Resource> GetResourceByIDI(ResourceID id, bool is_runtime = false)	//I - Init
+		std::shared_ptr<Resource> GetResourceI(ResourceID id, bool is_runtime = false)	//I - Init
 		{
 			static_assert(std::is_base_of_v<IResource, Resource>, "Resource must inherit from IResource");
-			auto result = GetResourceByID<Resource>(id, is_runtime);
+			auto result = GetResource<Resource>(id, is_runtime);
 			if (result) 
 			{
 				if (ResourceState rs = result->GetState(); rs == ResourceState::NeedReinit || rs == ResourceState::Loaded)
@@ -93,33 +86,59 @@ namespace Resources
 			}
 			return result;
 		}
-
-		
 		template<typename Resource>
-		ResourceID Load(const std::string& str_id, bool is_runtime = false) {
+		std::shared_ptr<Resource> GetResource(const std::string& name) {
+			static_assert(std::is_base_of_v<IResource, Resource>, "Resource must inherit from IResource");
+
+			auto resource = GetRuntimeResource(name); // Базовый метод
+			if (!resource) return nullptr;
+			resource->UpdateData();
+			// Дополнительная проверка типа
+			auto casted = std::dynamic_pointer_cast<Resource>(resource->m_resource);
+			if (!casted) {
+				Diagnostics::Logger::Get().SendMessage("Type mismatch in GetResource", Diagnostics::MessageType::Error);
+				return nullptr;
+			}
+			return casted;
+		}
+		template<typename Resource>
+		std::shared_ptr<Resource> GetResourceI(const std::string& name)	//I - Init
+		{
+			static_assert(std::is_base_of_v<IResource, Resource>, "Resource must inherit from IResource");
+			auto result = GetResource<Resource>(name);
+			if (result)
+			{
+				if (ResourceState rs = result->GetState(); rs == ResourceState::NeedReinit || rs == ResourceState::Loaded)
+				{
+					result->Init();
+				}
+			}
+			return result;
+		}
+		template<typename Resource>
+		ResourceID Load(const std::string& path) {
 			auto resource = std::make_shared<Resource>();
-			if (resource->Load(str_id)) {
-				return AddResource(str_id, resource, is_runtime);;
+			if (resource->Load(path)) {
+				return AddStaticResource(resource);;
 			}
 			return Definitions::InvalidID;
 		}
 
-		ResourceID GetIDByStrID(const std::string& str_id) 
-		{
-			return m_strId.count(str_id) ? m_strId.at(str_id) : Definitions::InvalidID;
-		}
+		bool Exists(ResourceID id);
+		bool Exists(const std::string& name);
 
+		void DeleteResource(ResourceID id);
+		void DeleteResource(const std::string& name);
 
-		bool Exists(const std::string& key, bool is_runtime = false) const;
-		bool Exists(ResourceID id, bool is_runtime = false) const;
+		void ClearStaticResources();
 
-		void InitAll();	//Initialization must be after scene attachment to window
-		void DeleteResource(ResourceID id, bool is_runtime = false);
-		void ClearResources();
+		void ClearRuntimeResources();
+
+		void ClearAllResources();
 
 		~ResourcesFrame() 
 		{
-			ClearResources();
+			ClearAllResources();
 		}
 
 		void CleanupUnusedResources();
@@ -131,74 +150,19 @@ namespace Resources
 	private:
 		Windows::WindowID m_activeWindow = Definitions::InvalidID;
 	
-		std::unordered_map<Windows::WindowID, ResourcesFrame> m_resources;	//Window - resources
+		std::unordered_map<Windows::WindowID, std::shared_ptr<ResourcesFrame>> m_resources;	//Window - resources
 		
 	public:
-		//Load и тд
-		template<typename Resource>
-		std::shared_ptr<Resource> Load(const std::string& str_id, bool is_runtime = false, bool init = false) 
-		{
-			static_assert(std::is_base_of_v<IResource, Resource>, "Resource must inherit from IResource");
-			
-			if (m_activeWindow == Definitions::InvalidID) 
-			{
-				Diagnostics::Logger::Get().SendMessage("(ResourceManager) Invalid active window.");
-				return nullptr;
-			}
-
-			if (!m_resources.count(m_activeWindow)) 
-			{
-				m_resources.insert({ m_activeWindow, ResourcesFrame(m_activeWindow) });
-			}
-			if (m_resources[m_activeWindow].Exists(str_id, is_runtime))
-			{
-				return m_resources[m_activeWindow].GetResource<Resource>(str_id,is_runtime);
-			}
-
-
-			std::shared_ptr<Resource> resource = nullptr;
-			resource = m_resources[m_activeWindow].Load<Resource>(str_id, is_runtime);
-			if (init) resource->Init();
-
-			return resource;
-		}
-		template<typename Resource>
-		std::shared_ptr<Resource> GetResourceByStrID(const std::string& str_id, bool is_runtime = false)
-		{
-			if (m_activeWindow == Definitions::InvalidID)
-			{
-				Diagnostics::Logger::Get().SendMessage("(ResourceManager) Invalid active window.");
-				return nullptr;
-			}
-			if (m_resources[m_activeWindow].Exists(str_id, is_runtime))
-			{
-				return m_resources[m_activeWindow].GetResourceByID<Resource>(m_resources[m_activeWindow].GetIDByStrID(str_id), is_runtime);
-			}
-			return nullptr;
-		}
-		template<typename Resource>
-		std::shared_ptr<Resource> GetResourceByID(ResourceID id, bool is_runtime = false)
-		{
-			static_assert(std::is_base_of_v<IResource, Resource>, "Resource must inherit from IResource");
-
-			if (m_activeWindow == Definitions::InvalidID)
-			{
-				Diagnostics::Logger::Get().SendMessage("(ResourceManager) Invalid active window.");
-				return nullptr;
-			}
-
-			if (m_resources[m_activeWindow].Exists(id, is_runtime))
-			{
-				return m_resources[m_activeWindow].GetResourceByID<Resource>(id, is_runtime);
-			}
-
-			return nullptr;
-		}
+		
+		ResourcesFrame* GetActiveFrame();
 
 		void SetActiveWindow(Windows::WindowID new_active_window);
 		void ClearWindowData(Windows::WindowID id);
 		void ClearWindowCache(Windows::WindowID id);
 		void Init() override;
 		void Shutdown() override;
+
+		void AttachStaticResources(const std::vector<std::shared_ptr<Resources::IResource>>& resources);
+
 	};
 }
