@@ -5,8 +5,6 @@
 
 namespace Windows 
 {
-	using WindowID = Definitions::identificator;
-
 	enum class WindowState 
 	{
 		Windowed,

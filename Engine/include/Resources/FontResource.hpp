@@ -47,6 +47,12 @@ namespace Resources
 
         bool Uninit() override;
 
+
+        // TODO realize 
+        bool SetData(std::any data) override;
+
+        std::type_index GetDataType() const override;
+
     };
 
 }

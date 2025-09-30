@@ -14,9 +14,6 @@ namespace Graphics
         //DirectX11,
         // ...
     };
-    using MeshID = Definitions::identificator;
-    using TextureID = Definitions::identificator;
-    using ShaderID = Definitions::identificator;
     
     enum class GDSettings
     {
@@ -155,9 +152,33 @@ namespace Graphics
             , indices(std::move(inds)), buffer_mode(buffer_mode)
         {
         }
+        MeshData() = default;
+
         Definitions::uint GetVertexCount() const { return vertices.size(); }
         Definitions::uint GetIndexCount() const { return indices.size(); }
 	};
+    struct MaterialData {
+        std::string name;
+
+        // PBR параметры
+        Math::Vector4 baseColor = Math::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        float metallic = 0.0f;
+        float roughness = 1.0f;
+        float emissiveIntensity = 0.0f;
+        Math::Vector3 emissiveColor = Math::Vector3(0.0f);
+
+        // Текстуры (пути или ResourceID)
+        std::string albedoTexture;
+        std::string normalTexture;
+        std::string metallicRoughnessTexture;
+        std::string emissiveTexture;
+        std::string occlusionTexture;
+
+        // Flags
+        bool doubleSided = false;
+        bool alphaTest = false;
+        float alphaCutoff = 0.5f;
+    };
 
     struct TextureData
     {

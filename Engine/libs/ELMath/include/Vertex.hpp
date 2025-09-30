@@ -10,5 +10,7 @@ namespace Math
 		Vector3 position;
 		Vector3 normal;
 		Vector2 texCoord;
+		Vector3 tangent;
+		Vector3 bitangent;
 	};
 }

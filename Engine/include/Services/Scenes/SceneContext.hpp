@@ -10,8 +10,6 @@
 
 namespace Scenes 
 {
-	using SceneID = Definitions::identificator;
-
 	class SceneLoader;
 
 	class SceneContext

@@ -143,7 +143,6 @@ namespace Resources
 
 		void CleanupUnusedResources();
 	};
-	
 
 	class ResourceManager : public Core::IService 
 	{
@@ -154,6 +153,31 @@ namespace Resources
 		
 	public:
 		
+		template<typename Resource>
+		std::shared_ptr<Resource> LoadResource(const std::string& path) 
+		{
+			static_assert(std::is_base_of_v<IResource, Resource>, "Resource must inherit from IResource");
+
+			std::shared_ptr<Resource> resource = std::make_shared<Resource>();
+
+			if (!resource->Load(path)) 
+			{
+				Diagnostics::Logger::Get().SendMessage("(ResourceManager) Loaging of resource on path \"" + path + "\" failed.", Diagnostics::MessageType::Error);
+				return nullptr;
+			}
+			return resource;
+		}
+		template<typename Resource>
+		std::shared_ptr<Resource> CreateResource()//Creates static resource
+		{
+			static_assert(std::is_base_of_v<IResource, Resource>, "Resource must inherit from IResource");
+
+			std::shared_ptr<Resource> resource = std::make_shared<Resource>();
+			return resource;
+		}
+
+		ResourceID AttachResourceToFrame(std::shared_ptr<IResource> resource);
+
 		ResourcesFrame* GetActiveFrame();
 
 		void SetActiveWindow(Windows::WindowID new_active_window);
@@ -163,6 +187,5 @@ namespace Resources
 		void Shutdown() override;
 
 		void AttachStaticResources(const std::vector<std::shared_ptr<Resources::IResource>>& resources);
-
 	};
-}
+} 

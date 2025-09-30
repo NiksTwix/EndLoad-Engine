@@ -146,6 +146,16 @@ namespace Resources
 		m_state = ResourceState::Loaded;
 		return true;
 	}
+
+	bool FontResource::SetData(std::any data)
+	{
+		return false;
+	}
+	std::type_index FontResource::GetDataType() const
+	{
+		return typeid(void);
+	}
+
 	const std::vector<std::pair<char32_t, char32_t>> FontResource::SUPPORTED_RANGES = {
 	{0x0000, 0x007F},   // ASCII
 	{0x0400, 0x04FF},   

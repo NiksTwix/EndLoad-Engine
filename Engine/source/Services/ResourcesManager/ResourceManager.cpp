@@ -29,6 +29,17 @@ namespace Resources
 	}
 
 
+	ResourceID ResourceManager::AttachResourceToFrame(std::shared_ptr<IResource> resource)
+	{
+		auto frame = GetActiveFrame();
+		if (!frame)
+		{
+			Diagnostics::Logger::Get().SendMessage("(ResourceManager) Attaching of resource failed: active frame is invalid.", Diagnostics::MessageType::Error);
+			return;
+		}
+		return frame->AddStaticResource(resource);
+	}
+
 	ResourcesFrame* ResourceManager::GetActiveFrame()
 	{
 		if (m_activeWindow == Definitions::InvalidID) return nullptr;
