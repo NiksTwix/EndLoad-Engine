@@ -39,6 +39,9 @@ namespace Core
             return next_id++;
         }
         SystemModuleID m_id = Definitions::InvalidID;
+
+        uint8_t m_priority = 0;
+
     public:
         ISystemModule() 
         {
@@ -46,9 +49,11 @@ namespace Core
         }
         SystemModuleID GetID() const { return m_id; }
         virtual ~ISystemModule() = default;
-        virtual uint8_t GetPriority() const = 0;
         virtual void Update() = 0;      //Scene pointer and delta time he will get from services: SceneContext::GetRenderScene() and ProccessObserver::GetDeltaTime()) 
         virtual void UpdateResources() {}       //Update module resources (plane mesh for ui rendering and etc)
+
+        void SetPriority(uint8_t new_priority) { m_priority = new_priority; }
+        uint8_t GetPriority() const { return m_priority; }
     };
 
     enum class SystemPriority {

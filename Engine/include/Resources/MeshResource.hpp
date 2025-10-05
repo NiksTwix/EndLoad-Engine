@@ -16,7 +16,7 @@ namespace Resources
         // Унаследовано через IResource
         bool Load(const std::string& path) override;
 
-        bool SetData(std::any data) override;
+        bool SetData(std::any data) override;       //MeshData
 
         std::type_index GetDataType() const override;
 
@@ -32,7 +32,8 @@ namespace Resources
         const Graphics::MeshID GetMeshID() const { return m_dataID; }
     protected:
         Graphics::MeshData m_data;
-        Graphics::MeshID m_dataID;
+        Graphics::MeshID m_dataID = Definitions::InvalidID;
+
     };
 }
 

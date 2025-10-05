@@ -2,7 +2,7 @@
 #include <Services\Diagnostics\Logger\Logger.hpp>
 #include <Core\ServiceLocator.hpp>
 #include <Systems\Graphics\Windows\WindowsManager.hpp>
-
+#include <Services\ResourcesManager\ResourceManager.hpp>
 namespace Resources 
 {
 	bool Resources::FontResource::Init()
@@ -79,10 +79,16 @@ namespace Resources
 	bool FontResource::GenerateBitmap()
 	{
 		if (!face || Core::ServiceLocator::Get<Windows::WindowsManager>()->GetRenderWindow() == nullptr) return false;
+		auto active_window = Core::ServiceLocator::Get<Resources::ResourceManager>()->GetActiveWindow();
+
+		if (active_window == Definitions::InvalidID) return false;
+
 		FT_UInt glyphIndex;
 		char32_t charCode = FT_Get_First_Char(face, &glyphIndex);
 
-		Core::ServiceLocator::Get<Windows::WindowsManager>()->GetRenderWindow()->GetGraphicsDevice()->Set(Graphics::GDSettings::UNPACK_ALIGNMENT, Graphics::GDSettingsValues::ONE_BYTE);
+		m_ownerWindow = active_window;
+
+		Core::ServiceLocator::Get<Windows::WindowsManager>()->GetWindow(active_window)->GetGraphicsDevice()->Set(Graphics::GDSettings::UNPACK_ALIGNMENT, Graphics::GDSettingsValues::ONE_BYTE);
 		Uninit();	
 		while (glyphIndex != 0) {
 			bool isSupported = false;
@@ -138,6 +144,11 @@ namespace Resources
 	}
 	bool FontResource::Uninit()
 	{
+		auto active_window = Core::ServiceLocator::Get<Resources::ResourceManager>()->GetActiveWindow();
+
+		if (active_window == Definitions::InvalidID || active_window != m_ownerWindow) return false;
+
+		if (m_state != ResourceState::Initialized && m_state != ResourceState::NeedReinit) return false;
 		for (auto character : characters) //Clear old textures
 		{
 			if (character.second.textureID != Definitions::InvalidID)Core::ServiceLocator::Get<Windows::WindowsManager>()->GetRenderWindow()->GetGraphicsDevice()->DestroyTexture(character.second.textureID);

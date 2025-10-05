@@ -181,6 +181,7 @@ namespace Resources
 		ResourcesFrame* GetActiveFrame();
 
 		void SetActiveWindow(Windows::WindowID new_active_window);
+		Windows::WindowID GetActiveWindow() const { return m_activeWindow; };
 		void ClearWindowData(Windows::WindowID id);
 		void ClearWindowCache(Windows::WindowID id);
 		void Init() override;

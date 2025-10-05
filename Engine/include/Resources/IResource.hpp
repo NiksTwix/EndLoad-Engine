@@ -56,7 +56,7 @@ namespace Resources
 		std::string m_resourceName = "IResource";
 		std::string m_path;
 		ResourceState m_state;
-
+		Windows::WindowID m_ownerWindow = Definitions::InvalidID; // Place of init
 		template<typename T>
 		bool ValidateData(const std::any& data) const {
 			return data.type() == typeid(T);

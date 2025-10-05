@@ -135,6 +135,7 @@
     <ClCompile Include="Engine\source\Resources\FontResource.cpp" />
     <ClCompile Include="Engine\source\Resources\MaterialResource.cpp" />
     <ClCompile Include="Engine\source\Resources\MeshResource.cpp" />
+    <ClCompile Include="Engine\source\Resources\ShaderResource.cpp" />
     <ClCompile Include="Engine\source\Services\Diagnostics\Logger\Logger.cpp" />
     <ClCompile Include="Engine\source\Services\Diagnostics\ProcessObserver\ProcessObserver.cpp" />
     <ClCompile Include="Engine\source\Services\Importing\AssimpLoader.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Engine\include\Resources\IResource.hpp" />
     <ClInclude Include="Engine\include\Resources\MaterialResource.hpp" />
     <ClInclude Include="Engine\include\Resources\MeshResource.hpp" />
+    <ClInclude Include="Engine\include\Resources\ShaderResource.hpp" />
     <ClInclude Include="Engine\include\Services\Diagnostics\Logger\Logger.hpp" />
     <ClInclude Include="Engine\include\Services\Diagnostics\ProcessObserver\ProcessObserver.hpp" />
     <ClInclude Include="Engine\include\Services\Importing\AssimpLoader.hpp" />

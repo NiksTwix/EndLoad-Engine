@@ -132,10 +132,18 @@ namespace Rendering
 	void RenderSystem::FirstFrameInitialization()
 	{
 		if (!m_firstFrame) return;
+		//auto mrm = std::make_shared<MeshRenderModule>();
+		//mrm->SetPriority(0);
+		//
+		//auto srm = std::make_shared<SpriteRenderModule>();
+		//srm->SetPriority(1);
+		//
+		//auto uirm = std::make_shared<UIRenderModule>();
+		//uirm->SetPriority(0);
 
-		//AddModule(std::make_shared<MeshRenderModule>());
-		//AddModule(std::make_shared<SpriteRenderModule>());
-		//AddModule(std::make_shared<UIRenderModule>());
+		//AddModule(mrm);
+		//AddModule(srm);
+		//AddModule(uirm);
 		m_firstFrame = false;
 	}
 	void RenderSystem::RenderScene(Viewports::Viewport* viewport, Scenes::SceneContext* scene)

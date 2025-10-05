@@ -88,9 +88,6 @@
     <Filter Include="Engine\source\Resources">
       <UniqueIdentifier>{cc3af7d2-12d9-4938-b4a6-2eef328a3e4c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\source\Systems\Rendering">
-      <UniqueIdentifier>{cf2df70e-57a7-4834-ad18-63685038bcf7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\include\Systems\Graphics\Rendering">
       <UniqueIdentifier>{233633c8-2d57-49d7-9c3b-6c7a2de33679}</UniqueIdentifier>
     </Filter>
@@ -117,6 +114,9 @@
     </Filter>
     <Filter Include="Engine\source\Services\Importing">
       <UniqueIdentifier>{73b9b757-2c40-4563-86f4-d12b309a9876}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Systems\Graphics\Rendering">
+      <UniqueIdentifier>{cf2df70e-57a7-4834-ad18-63685038bcf7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -148,7 +148,7 @@
       <Filter>Engine\source\Resources</Filter>
     </ClCompile>
     <ClCompile Include="Engine\source\Systems\Graphics\Rendering\RenderSystem.cpp">
-      <Filter>Engine\source\Systems\Rendering</Filter>
+      <Filter>Engine\source\Systems\Graphics\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Engine\source\Systems\Graphics\Viewports\Viewport.cpp">
       <Filter>Engine\source\Systems\Graphics\Viewports</Filter>
@@ -166,6 +166,9 @@
       <Filter>Engine\source\Services\Importing</Filter>
     </ClCompile>
     <ClCompile Include="Engine\source\Resources\MaterialResource.cpp">
+      <Filter>Engine\source\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Resources\ShaderResource.cpp">
       <Filter>Engine\source\Resources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -246,6 +249,9 @@
       <Filter>Engine\include\Services\Importing</Filter>
     </ClInclude>
     <ClInclude Include="Engine\include\Resources\MaterialResource.hpp">
+      <Filter>Engine\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Resources\ShaderResource.hpp">
       <Filter>Engine\include\Resources</Filter>
     </ClInclude>
   </ItemGroup>

@@ -47,7 +47,6 @@ namespace Importing
 			static AssimpLoader al;
 			return al;
 		}
-
 	};
 
 
