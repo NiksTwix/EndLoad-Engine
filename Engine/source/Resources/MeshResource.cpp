@@ -14,6 +14,13 @@ namespace Resources
 	bool MeshResource::Load(const std::string& path)
 	{
 		if (path == "") return false;
+		if (m_state != ResourceState::NotLoaded) {
+			Diagnostics::Logger::Get().SendMessage(
+				"(MeshResource) Retrying to download the resource. Free up the current data first.",
+				Diagnostics::MessageType::Error
+			);
+			return false;
+		}
 		auto mesh_data = Importing::AssimpLoader::Get().LoadSingleMesh(path);
 		m_path = path;
 		return SetData(mesh_data.mesh);
@@ -22,7 +29,7 @@ namespace Resources
 	{
 		if (!ValidateData<Graphics::MeshData>(data)) {
 			Diagnostics::Logger::Get().SendMessage(
-				"MeshResource: Invalid data type provided",
+				"MeshResource: Invalid data type provided.",
 				Diagnostics::MessageType::Error
 			);
 			return false;
@@ -34,7 +41,7 @@ namespace Resources
 		}
 		catch (const std::bad_any_cast& e) {
 			Diagnostics::Logger::Get().SendMessage(
-				"MeshResource: Failed to cast data: " + std::string(e.what()),
+				"MeshResource: Failed to cast data: " + std::string(e.what()) + ".",
 				Diagnostics::MessageType::Error
 			);
 			return false;
@@ -78,7 +85,7 @@ namespace Resources
 		auto render_window = wm->GetWindow(rm->GetActiveWindow());	
 
 		if (!render_window || render_window->GetID() != m_ownerWindow) return false;
-		render_window->GetGraphicsDevice()->DestroyMesh(m_ownerWindow);
+		render_window->GetGraphicsDevice()->DestroyMesh(m_dataID);
 
 		m_dataID = Definitions::InvalidID;
 		m_ownerWindow = Definitions::InvalidID;

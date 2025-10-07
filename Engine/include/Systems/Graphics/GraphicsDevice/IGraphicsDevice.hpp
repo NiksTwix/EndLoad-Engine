@@ -98,7 +98,7 @@ namespace Graphics
 
 		//Shader working
 
-		virtual ShaderID CreateShader(const std::string& name, const std::vector<ShaderSource>& sources) = 0;
+		virtual ShaderID CreateShader(const std::vector<ShaderSource>& sources) = 0;
 		virtual void SetUniform(ShaderID shader, const std::string& name, const UniformValue& value) = 0;
 		virtual void BindShader(const ShaderID& id) = 0;
 		virtual void DestroyShader(const ShaderID& id) = 0;

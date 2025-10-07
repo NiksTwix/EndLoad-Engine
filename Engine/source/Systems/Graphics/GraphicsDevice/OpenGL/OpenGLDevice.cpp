@@ -280,7 +280,7 @@ namespace Graphics
 		m_textures.erase(id);
 	}
 
-	ShaderID OpenGLDevice::CreateShader(const std::string& name, const std::vector<ShaderSource>& sources)
+	ShaderID OpenGLDevice::CreateShader(const std::vector<ShaderSource>& sources)
 	{
 		if (!CheckValid()) return Definitions::InvalidID;
 		std::string m_vertexSrc;

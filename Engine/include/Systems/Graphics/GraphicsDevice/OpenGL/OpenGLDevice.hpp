@@ -48,7 +48,7 @@ namespace Graphics
 		TextureID CreateTexture(const TextureData& data) override;
 		void BindTexture(Definitions::uint slot, const TextureID& id) override;
 		void DestroyTexture(const TextureID& id) override;
-		ShaderID CreateShader(const std::string& name, const std::vector<ShaderSource>& sources) override;
+		ShaderID CreateShader(const std::vector<ShaderSource>& sources) override;
 
 		void SetUniform(ShaderID shader,const std::string& name, const UniformValue& value) override;
 

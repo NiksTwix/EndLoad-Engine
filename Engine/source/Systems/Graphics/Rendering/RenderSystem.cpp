@@ -33,10 +33,8 @@ namespace Rendering
 	void RenderSystem::Update()
 	{
 		if (!m_isValid) return;
-
 		auto wm = Core::ServiceLocator::Get<Windows::WindowsManager>();
 		auto& logger = Diagnostics::Logger::Get();
-
 		for (auto& [windowId, sceneId] : m_scenes) {
 			try {
 				if (m_scenes_changed)
@@ -44,13 +42,11 @@ namespace Rendering
 					m_scenes_changed = false;
 					break;
 				}
-
 				auto* window = wm->GetWindow(windowId);
 				if (!window) {
 					DetachSceneFromWindow(windowId);
 					continue;
 				}
-
 				if (window->GetWindowState() == Windows::WindowState::Collapsed) continue;
 				//m_context = window->GetContext();
 				wm->SetRenderWindow(window->GetID());
