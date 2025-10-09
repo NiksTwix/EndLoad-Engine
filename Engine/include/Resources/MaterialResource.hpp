@@ -1,4 +1,33 @@
+#pragma once
+#include <Resources\IResource.hpp>
+#include <Systems/Graphics/GraphicsDevice/IGraphicsDevice.hpp>
+
+
+namespace Resources 
+{
+    class MaterialResource : public IResource {
+    private:
+        Graphics::MaterialData m_data;
+
+    public:
+        bool SetData(std::any data) override;
+
+        bool Init() override;
+
+        bool Uninit() override;
+
+        const Graphics::MaterialData& GetData() const { return m_data; }
+
+        // Унаследовано через IResource
+        bool Load(const std::string& path) override;
+        std::type_index GetDataType() const override;
+        void Release() override;
+        std::string GetType() const override;
+    };
+}
+
 /*
+
 class MaterialResource : public IResource {
 private:
     MaterialData m_data;

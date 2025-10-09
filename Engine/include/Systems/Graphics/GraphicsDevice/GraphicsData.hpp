@@ -164,14 +164,14 @@ namespace Graphics
         Math::Vector4 baseColor = Math::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         float metallic = 0.0f;
         float roughness = 1.0f;
-        float emissiveIntensity = 0.0f;
+        float emissionIntensity = 0.0f;
         Math::Vector3 emissiveColor = Math::Vector3(0.0f);
 
         // Текстуры (пути или ResourceID)
         std::string albedoTexture;
         std::string normalTexture;
         std::string metallicRoughnessTexture;
-        std::string emissiveTexture;
+        std::string emissionTexture;
         std::string occlusionTexture;
 
         // Flags
