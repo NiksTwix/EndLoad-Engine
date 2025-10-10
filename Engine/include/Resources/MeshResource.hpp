@@ -33,7 +33,6 @@ namespace Resources
     protected:
         Graphics::MeshData m_data;
         Graphics::MeshID m_dataID = Definitions::InvalidID;
-
     };
 }
 

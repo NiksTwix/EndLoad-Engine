@@ -84,4 +84,11 @@ namespace Math
     Vector2 Abs(const Vector2& v);
     Vector3 Abs(const Vector3& v);
     Vector4 Abs(const Vector4& v);
+
+    std::vector<Vector3> FromStringToV3(std::string data, char delimiter = ',');
+    std::vector<Vector4> FromStringToV4(std::string data, char delimiter = ',');
+    std::vector<Vector2> FromStringToV2(std::string data, char delimiter = ',');
+    std::vector<int> FromStringToInt(std::string data, char delimiter = ',');
+
+
 }

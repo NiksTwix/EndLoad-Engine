@@ -139,6 +139,7 @@
     <ClCompile Include="Engine\source\Services\Diagnostics\Logger\Logger.cpp" />
     <ClCompile Include="Engine\source\Services\Diagnostics\ProcessObserver\ProcessObserver.cpp" />
     <ClCompile Include="Engine\source\Services\Importing\AssimpLoader.cpp" />
+    <ClCompile Include="Engine\source\Services\Importing\Base64Decoder.cpp" />
     <ClCompile Include="Engine\source\Services\ResourcesManager\ResourceManager.cpp" />
     <ClCompile Include="Engine\source\Services\Scenes\SceneManager.cpp" />
     <ClCompile Include="Engine\source\Systems\Graphics\GraphicsDevice\OpenGL\OpenGLDevice.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Engine\include\Services\Diagnostics\Logger\Logger.hpp" />
     <ClInclude Include="Engine\include\Services\Diagnostics\ProcessObserver\ProcessObserver.hpp" />
     <ClInclude Include="Engine\include\Services\Importing\AssimpLoader.hpp" />
+    <ClInclude Include="Engine\include\Services\Importing\Base64Decoder.hpp" />
     <ClInclude Include="Engine\include\Services\ResourcesManager\ResourceManager.hpp" />
     <ClInclude Include="Engine\include\Services\Scenes\SceneContext.hpp" />
     <ClInclude Include="Engine\include\Services\Scenes\SceneManager.hpp" />
