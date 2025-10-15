@@ -44,6 +44,11 @@ namespace Scenes
 		SceneContext(SceneContext&&) = default;
 		SceneContext& operator=(SceneContext&&) = default;
 
+		void AttachStaticResource(std::shared_ptr<Resources::IResource> resource) 
+		{
+			staticResources.push_back(resource);
+		}
+
 		std::vector<std::shared_ptr<Resources::IResource>>  GetStaticResources() const
 		{
 			return staticResources;

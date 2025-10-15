@@ -105,6 +105,7 @@ namespace Resources
 
 	bool ShaderResource::Init()
 	{
+		if (m_state == ResourceState::Initialized) return true;
 		auto wm = Core::ServiceLocator::Get<Windows::WindowsManager>();
 		auto rm = Core::ServiceLocator::Get<ResourceManager>();
 		if (!wm || !rm) return false;

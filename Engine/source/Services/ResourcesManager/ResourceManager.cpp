@@ -35,7 +35,7 @@ namespace Resources
 		if (!frame)
 		{
 			Diagnostics::Logger::Get().SendMessage("(ResourceManager) Attaching of resource failed: active frame is invalid.", Diagnostics::MessageType::Error);
-			return;
+			return Definitions::InvalidID; 
 		}
 		return frame->AddStaticResource(resource);
 	}

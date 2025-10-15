@@ -65,6 +65,8 @@ namespace Windows
 
 		Window* GetRenderWindow() const { return m_renderWindow; }
 
+		WindowID GetRenderWindowID() const { return m_renderWindow ? m_renderWindow->GetID() : Definitions::InvalidID; };
+
 		Window* GetWindow(WindowID id) 
 		{
 			return m_windows.count(id) ? m_windows[id].get() : nullptr;

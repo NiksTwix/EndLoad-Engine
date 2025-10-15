@@ -11,8 +11,16 @@ namespace Viewports
 namespace Graphics 
 {
 	class IGraphicsDevice 
-	{
+	{	
 	protected:
+		enum class IDType
+		{
+			Mesh,
+			Texture,
+			Shader
+		};
+
+
 		bool m_IsValid = false;
 		std::string m_Name = "GraphicsDevice";		//OpenGL, Vulkan
 
@@ -23,13 +31,6 @@ namespace Graphics
 		std::unordered_map<GDSettings, GDSettingsValues> m_Settings;		//Settings of render
 
 
-		enum class IDType 
-		{
-			Mesh,
-			Texture,
-			Shader
-		};
-
 		Definitions::identificator GetNextID(IDType type) const
 		{
 			static MeshID nextMI = 1;
@@ -38,13 +39,13 @@ namespace Graphics
 
 			switch (type)
 			{
-			case Graphics::IGraphicsDevice::IDType::Mesh:
+			case IDType::Mesh:
 				return nextMI++;
 				break;
-			case Graphics::IGraphicsDevice::IDType::Texture:
+			case IDType::Texture:
 				return nextTI++;
 				break;
-			case Graphics::IGraphicsDevice::IDType::Shader:
+			case IDType::Shader:
 				return nextSI++;
 				break;
 			default:
@@ -74,7 +75,6 @@ namespace Graphics
 		const std::string& GetName() const { return m_Name; }
 		GraphicsAPI GetAPIType() const { return api; }
 		//State
-
 		virtual void ClearState() = 0; // Clear all data
 		virtual void ClearFrameBuffer(Math::Vector4 color = Math::Vector4(0)) = 0; //Clear and fill frame buffer
 		
@@ -89,20 +89,20 @@ namespace Graphics
 		virtual void BindMesh(const MeshID& id) = 0;
 		virtual void UpdateMesh(const MeshID& id, const MeshData& data) = 0;
 		virtual void DestroyMesh(const MeshID& id) = 0;
-
+		virtual bool IsMeshValid(const MeshID& id) = 0;
 		//Texture working
 
 		virtual TextureID CreateTexture(const TextureData& data) = 0;
 		virtual void BindTexture(Definitions::uint slot,const TextureID& id) = 0;
 		virtual void DestroyTexture(const TextureID& id) = 0;
-
+		virtual bool IsTextureValid(const TextureID& id) = 0;
 		//Shader working
 
 		virtual ShaderID CreateShader(const std::vector<ShaderSource>& sources) = 0;
 		virtual void SetUniform(ShaderID shader, const std::string& name, const UniformValue& value) = 0;
 		virtual void BindShader(const ShaderID& id) = 0;
 		virtual void DestroyShader(const ShaderID& id) = 0;
-
+		virtual bool IsShaderValid(const ShaderID& id) = 0;
 
 		//Viewport working
 

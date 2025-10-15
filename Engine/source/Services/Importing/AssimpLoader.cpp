@@ -50,7 +50,7 @@ namespace Importing
 
         return scene;
     }
-    Graphics::MaterialData ExtractMaterialData(const aiMaterial* aiMat) {
+    Graphics::MaterialData  AssimpLoader::ExtractMaterialData(const aiMaterial* aiMat) const {
         Graphics::MaterialData material;
 
         // Имя материала
@@ -96,7 +96,7 @@ namespace Importing
         return material;
     }
 
-    void ExtractTextures(const aiMaterial* aiMat, Graphics::MaterialData& material) {
+    void AssimpLoader::ExtractTextures(const aiMaterial* aiMat, Graphics::MaterialData& material) const {
         // Albedo/Diffuse texture
         if (aiMat->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
             aiString path;
@@ -123,22 +123,21 @@ namespace Importing
         if (aiMat->GetTextureCount(aiTextureType_METALNESS) > 0) {
             aiString path;
             if (aiMat->GetTexture(aiTextureType_METALNESS, 0, &path) == AI_SUCCESS) {
-                material.metallicRoughnessTexture = ProcessTexturePath(path.C_Str());
+                material.metallicTexture = ProcessTexturePath(path.C_Str());
             }
         }
         else if (aiMat->GetTextureCount(aiTextureType_UNKNOWN) > 0) {
             // Иногда PBR текстуры лежат в UNKNOWN
             aiString path;
             if (aiMat->GetTexture(aiTextureType_UNKNOWN, 0, &path) == AI_SUCCESS) {
-                material.metallicRoughnessTexture = ProcessTexturePath(path.C_Str());
+                material.metallicTexture = ProcessTexturePath(path.C_Str());
             }
         }
-
         // Emissive
         if (aiMat->GetTextureCount(aiTextureType_EMISSIVE) > 0) {
             aiString path;
             if (aiMat->GetTexture(aiTextureType_EMISSIVE, 0, &path) == AI_SUCCESS) {
-                material.emissiveTexture = ProcessTexturePath(path.C_Str());
+                material.emissionTexture = ProcessTexturePath(path.C_Str());
             }
         }
 
@@ -151,7 +150,7 @@ namespace Importing
         }
     }
 
-    std::string ProcessTexturePath(const std::string& rawPath) {
+    std::string AssimpLoader::ProcessTexturePath(const std::string& rawPath) const {
         // Очистка пути от абсолютных путей, преобразование в относительные
         std::filesystem::path path(rawPath);
         return path.filename().string(); // или твоя логика обработки путей

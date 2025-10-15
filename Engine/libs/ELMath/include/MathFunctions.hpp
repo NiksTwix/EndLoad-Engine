@@ -5,6 +5,7 @@
 #include "..\include\Matrix4x4.hpp"
 #include "..\include\Vertex.hpp"
 #include "..\include\Quaternion.hpp"
+#include <vector>
 //#include <glm/glm.hpp>
 //#include <glm/gtc/matrix_transform.hpp>
 //#include <glm/gtc/type_ptr.hpp>
@@ -85,10 +86,10 @@ namespace Math
     Vector3 Abs(const Vector3& v);
     Vector4 Abs(const Vector4& v);
 
-    std::vector<Vector3> FromStringToV3(std::string data, char delimiter = ',');
-    std::vector<Vector4> FromStringToV4(std::string data, char delimiter = ',');
-    std::vector<Vector2> FromStringToV2(std::string data, char delimiter = ',');
-    std::vector<int> FromStringToInt(std::string data, char delimiter = ',');
+    std::vector<Vector3> FromStringToV3(const std::string& data, char delimiter = ',');
+    std::vector<Vector4> FromStringToV4(const std::string& data, char delimiter = ',');
+    std::vector<Vector2> FromStringToV2(const std::string& data, char delimiter = ',');
+    std::vector<int> FromStringToInt(const std::string& data, char delimiter = ',');
 
 
 }

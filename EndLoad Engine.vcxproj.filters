@@ -118,6 +118,15 @@
     <Filter Include="Engine\source\Systems\Graphics\Rendering">
       <UniqueIdentifier>{cf2df70e-57a7-4834-ad18-63685038bcf7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\include\Components\Graphics">
+      <UniqueIdentifier>{4183f6e6-7e66-4fba-aced-0073dd9c2847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Systems\Module">
+      <UniqueIdentifier>{e88f452d-386b-4ee8-9f94-12b63ccd9e27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\include\Systems\Modules">
+      <UniqueIdentifier>{5998a59c-b0a6-4f0a-8584-72ba1b92dcfa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndLoad Engine.cpp">
@@ -173,6 +182,18 @@
     </ClCompile>
     <ClCompile Include="Engine\source\Services\Importing\Base64Decoder.cpp">
       <Filter>Engine\source\Services\Importing</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Systems\Modules\Rendering\RenderModule3D.cpp">
+      <Filter>Engine\source\Systems\Module</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Components\Basic\TransformComponent.cpp">
+      <Filter>Engine\source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Components\Graphics\MeshComponent.cpp">
+      <Filter>Engine\source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Components\Graphics\MaterialComponent.cpp">
+      <Filter>Engine\source\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +280,24 @@
     </ClInclude>
     <ClInclude Include="Engine\include\Services\Importing\Base64Decoder.hpp">
       <Filter>Engine\include\Services\Importing</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Graphics\CameraComponent.hpp">
+      <Filter>Engine\include\Components\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Graphics\MaterialComponent.hpp">
+      <Filter>Engine\include\Components\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Graphics\MeshComponent.hpp">
+      <Filter>Engine\include\Components\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Graphics\SpriteComponent.hpp">
+      <Filter>Engine\include\Components\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Modules\Rendering\RenderModule3D.hpp">
+      <Filter>Engine\include\Systems\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Basic\TransformComponent.hpp">
+      <Filter>Engine\include\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

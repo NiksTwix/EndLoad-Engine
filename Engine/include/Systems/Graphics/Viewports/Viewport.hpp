@@ -5,14 +5,7 @@
 #include <ELECS\ECS.hpp>
 #include <ELECS\ESDL\ESDLParser.hpp>
 #include <ELMath/include/MathFunctions.hpp>
-
-
-class Registry;
-namespace Components 
-{
-	struct CameraComponent;
-}
-
+#include <Components\Graphics\CameraComponent.hpp>
 
 namespace Viewports 
 {

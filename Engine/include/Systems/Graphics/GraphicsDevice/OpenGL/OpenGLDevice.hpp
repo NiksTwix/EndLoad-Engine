@@ -44,6 +44,7 @@ namespace Graphics
 		void ClearFrameBuffer(Math::Vector4 color) override;
 		MeshID CreateMesh(const MeshData& data) override;
 		void BindMesh(const MeshID& id) override;
+		
 		void DestroyMesh(const MeshID& id) override;
 		TextureID CreateTexture(const TextureData& data) override;
 		void BindTexture(Definitions::uint slot, const TextureID& id) override;
@@ -66,5 +67,10 @@ namespace Graphics
 
 		// Унаследовано через IGraphicsDevice
 		void DestroyShader(const ShaderID& id) override;
+
+		// Унаследовано через IGraphicsDevice
+		bool IsMeshValid(const MeshID& id) override;
+		bool IsTextureValid(const TextureID& id) override;
+		bool IsShaderValid(const ShaderID& id) override;
 	};
 }

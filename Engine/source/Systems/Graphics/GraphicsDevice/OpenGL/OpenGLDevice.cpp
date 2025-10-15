@@ -560,4 +560,16 @@ namespace Graphics
 		m_shaders.erase(id);
 
 	}
+	bool OpenGLDevice::IsMeshValid(const MeshID& id)
+	{
+		return m_meshes.count(id) > 0;
+	}
+	bool OpenGLDevice::IsTextureValid(const TextureID& id)
+	{
+		return m_textures.count(id) > 0;
+	}
+	bool OpenGLDevice::IsShaderValid(const ShaderID& id)
+	{
+		return m_shaders.count(id) > 0;
+	}
 }

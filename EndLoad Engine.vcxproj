@@ -111,7 +111,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>Engine\libs\ELMath\lib\;Engine\libs\glew220\lib\Release\x64\;Engine\libs\glfw34WIN64\lib-vc2022\;Engine\libs\assimp_x64-windows\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>Engine\libs\ELMath\lib;Engine\libs\glew220\lib\Release\x64\;Engine\libs\glfw34WIN64\lib-vc2022\;Engine\libs\assimp_x64-windows\lib\;Engine\libs\freetype2133\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>ELMath.lib;glew32s.lib;opengl32.lib;glfw3.lib;freetype.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -131,6 +131,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EndLoad Engine.cpp" />
+    <ClCompile Include="Engine\source\Components\Basic\TransformComponent.cpp" />
+    <ClCompile Include="Engine\source\Components\Graphics\MaterialComponent.cpp" />
+    <ClCompile Include="Engine\source\Components\Graphics\MeshComponent.cpp" />
     <ClCompile Include="Engine\source\Core\EngineCore.cpp" />
     <ClCompile Include="Engine\source\Resources\FontResource.cpp" />
     <ClCompile Include="Engine\source\Resources\MaterialResource.cpp" />
@@ -148,8 +151,14 @@
     <ClCompile Include="Engine\source\Systems\Graphics\Windows\Window.cpp" />
     <ClCompile Include="Engine\source\Systems\Graphics\Windows\WindowsManager.cpp" />
     <ClCompile Include="Engine\source\Systems\Input\InputSystem.cpp" />
+    <ClCompile Include="Engine\source\Systems\Modules\Rendering\RenderModule3D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\include\Components\Basic\TransformComponent.hpp" />
+    <ClInclude Include="Engine\include\Components\Graphics\CameraComponent.hpp" />
+    <ClInclude Include="Engine\include\Components\Graphics\MaterialComponent.hpp" />
+    <ClInclude Include="Engine\include\Components\Graphics\MeshComponent.hpp" />
+    <ClInclude Include="Engine\include\Components\Graphics\SpriteComponent.hpp" />
     <ClInclude Include="Engine\include\Core\EngineCore.hpp" />
     <ClInclude Include="Engine\include\Core\IServices.hpp" />
     <ClInclude Include="Engine\include\Core\ServiceLocator.hpp" />
@@ -178,6 +187,7 @@
     <ClInclude Include="Engine\include\Systems\Graphics\Windows\Window.hpp" />
     <ClInclude Include="Engine\include\Systems\Graphics\Windows\WindowsManager.hpp" />
     <ClInclude Include="Engine\include\Systems\Input\InputSystem.hpp" />
+    <ClInclude Include="Engine\include\Systems\Modules\Rendering\RenderModule3D.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

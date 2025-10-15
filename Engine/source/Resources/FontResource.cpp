@@ -7,6 +7,7 @@ namespace Resources
 {
 	bool Resources::FontResource::Init()
 	{
+		if (m_state == ResourceState::Initialized) return true;
 		if (GenerateBitmap()) m_state = ResourceState::Initialized;
 		else 
 		{

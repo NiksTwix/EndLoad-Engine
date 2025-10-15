@@ -29,18 +29,10 @@ namespace Importing
 		Graphics::MaterialData ExtractMaterialData(const aiMaterial* material) const;
 
 		Graphics::MeshData ExtractMeshGeometry(const aiMesh* ai_mesh) const;
-
-		std::filesystem::path ProcessTexturePath(const std::string& raw_path);
+		void ExtractTextures(const aiMaterial* aiMat, Graphics::MaterialData& material) const;
+		std::string ProcessTexturePath(const std::string& raw_path) const;
 	public:
 		MeshImportResult LoadSingleMesh(const std::string& path) const;
-		//Impote/load scene
-
-		//Scenes::SceneID ImportScene(const std::string& path)
-		/*
-			Imports scene from file.
-			Creates entities with meshes,materials and etc
-			Loads resources
-		*/
 
 		static AssimpLoader& Get() 
 		{
@@ -48,6 +40,4 @@ namespace Importing
 			return al;
 		}
 	};
-
-
 }

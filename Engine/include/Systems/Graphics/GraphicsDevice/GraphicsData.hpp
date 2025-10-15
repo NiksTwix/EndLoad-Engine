@@ -167,17 +167,28 @@ namespace Graphics
         float emissionIntensity = 0.0f;
         Math::Vector3 emissiveColor = Math::Vector3(0.0f);
 
-        // Текстуры (пути или ResourceID)
+        // Текстуры (пути или base64 последовательность)
         std::string albedoTexture;
         std::string normalTexture;
-        std::string metallicRoughnessTexture;
+        std::string metallicTexture;
+        std::string roughnessTexture;
         std::string emissionTexture;
         std::string occlusionTexture;
+
+        std::vector<uint8_t> albedoBinary;
+        std::vector<uint8_t> normalBinary;
+        std::vector<uint8_t> metallicBinary;
+        std::vector<uint8_t> roughnessBinary;
+        std::vector<uint8_t> emissionBinary;
+        std::vector<uint8_t> occlusionBinary;
 
         // Flags
         bool doubleSided = false;
         bool alphaTest = false;
         float alphaCutoff = 0.5f;
+
+        std::string textureMode = "Path"; //or Base64
+
     };
 
     struct TextureData
