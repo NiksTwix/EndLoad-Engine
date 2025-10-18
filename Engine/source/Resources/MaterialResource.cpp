@@ -2,6 +2,9 @@
 #include <Services/Importing/AssimpLoader.hpp>
 #include <ELDCL\include\Loading\Loader.hpp>
 #include <Services/Importing/Base64Decoder.hpp>
+#include <Resources/TextureResource.hpp>
+
+
 namespace Resources 
 {
 	bool MaterialResource::SetData(std::any data)
@@ -14,6 +17,8 @@ namespace Resources
 	}
 	bool MaterialResource::Init()
 	{
+        if (m_state == ResourceState::Initialized) return true;
+        if (m_state != ResourceState::Loaded && m_state != ResourceState::NeedReinit) return false;
 		m_state = ResourceState::Initialized;
 		return true;
 	}
@@ -119,70 +124,41 @@ namespace Resources
 
         }
 
-        parameters = {
-                "Albedo", "Normal", "Metallic", "Roughness", "Emission", "Occlusion"
-        };
 
         // Обрабатываем текстуры
         if (fields["Textures"] != nullptr && fields["Textures"]->container) {
-            auto textures = fields["Textures"]->container->FindFields(parameters);
-            if (textures["TextureMode"] != nullptr) {
-                material_data.textureMode = textures["TextureMode"]->value.strVal;
-            }
-            else 
+            auto textures = ct->GetByTag("texture", fields["Textures"]->container);
+            
+            for (auto texture : textures) 
             {
-                material_data.textureMode = "path";
-            }
-            if (textures["Albedo"] != nullptr && !textures["Albedo"]->value.strVal.empty()) {
-                material_data.albedoTexture = textures["Albedo"]->value.strVal;
-                if (material_data.textureMode == "base64") 
+                std::string data_field = texture->FindField("Data")->value.ToString();
+
+                std::string data_format = texture->FindField("Format")->value.ToString();
+                auto resolution = texture->FindField("Resolution")->value.arrayVal;
+                if (data_field == "" || data_format == "" || resolution->size() < 2) continue;
+
+                std::vector<unsigned char> bytes;
+
+                Graphics::TextureType type;
+
+                Math::Vector2 resolution_v = Math::Vector2(resolution->at(0).numberVal, resolution->at(1).numberVal);
+
+                if (data_format == "base64")
                 {
-                    material_data.albedoBinary = Importing::Base64Decoder::Get().Decode(material_data.albedoTexture);
-                    material_data.albedoTexture.clear();
+                    bytes = Importing::Base64Decoder::Get().Decode(data_field);
                 }
-            }
-            if (textures["Normal"] != nullptr && !textures["Normal"]->value.strVal.empty()) {
-                material_data.normalTexture = textures["Normal"]->value.strVal;
-                if (material_data.textureMode == "base64")
+                if (data_format == "path")
                 {
-                    material_data.normalBinary = Importing::Base64Decoder::Get().Decode(material_data.normalTexture);
-                    material_data.normalTexture.clear();
+                    bytes = TextureResource::LoadRaw(data_field,resolution_v);
                 }
-            }
-            if (textures["Metallic"] != nullptr && !textures["Metallic"]->value.strVal.empty()) {
-                material_data.metallicTexture = textures["Metallic"]->value.strVal;
-                if (material_data.textureMode == "base64")
-                {
-                    material_data.metallicBinary = Importing::Base64Decoder::Get().Decode(material_data.metallicTexture);
-                    material_data.metallicTexture.clear();
-                }
-            }
-            if (textures["Roughness"] != nullptr && !textures["Roughness"]->value.strVal.empty()) {
-                // Если нужно отдельное поле для roughness, можно добавить
-                // material_data.roughnessTexture = textures["Roughness"]->value.strVal;
-                /*
-                if (material_data.textureMode == "base64") 
-                {
-                    material_data.roughnessBinary = Importing::Base64Decoder::Get().Decode(material_data.albedoTexture);
-                    material_data.roughnessTexture.clear();
-                }
-                */
-            }
-            if (textures["Emission"] != nullptr && !textures["Emission"]->value.strVal.empty()) {
-                material_data.emissionTexture = textures["Emission"]->value.strVal;
-                if (material_data.textureMode == "base64")
-                {
-                    material_data.emissionBinary = Importing::Base64Decoder::Get().Decode(material_data.emissionTexture);
-                    material_data.emissionTexture.clear();
-                }
-            }
-            if (textures["Occlusion"] != nullptr && !textures["Occlusion"]->value.strVal.empty()) {
-                material_data.occlusionTexture = textures["Occlusion"]->value.strVal;
-                if (material_data.textureMode == "base64")
-                {
-                    material_data.occlusionBinary = Importing::Base64Decoder::Get().Decode(material_data.occlusionTexture);
-                    material_data.occlusionTexture.clear();
-                }
+                if (texture->name == "Albedo")  type = Graphics::TextureType::ALBEDO;
+                else if (texture->name == "Normal")  type = Graphics::TextureType::NORMAL;
+                else if (texture->name == "Metallic")  type = Graphics::TextureType::METALLIC;
+                else if (texture->name == "Roughness")  type = Graphics::TextureType::ROUGHNESS;
+                else if (texture->name == "Emission")  type = Graphics::TextureType::EMISSION;
+                else if (texture->name == "Occlusion")  type = Graphics::TextureType::OCCLUSION;
+
+                material_data.raw_textures[type] = Graphics::TextureData(bytes,resolution_v,4);
             }
         }
 
@@ -197,6 +173,7 @@ namespace Resources
 	}
 	void MaterialResource::Release()
 	{
+        Uninit();
 		m_data = Graphics::MaterialData();
 		m_state = ResourceState::NotLoaded;
 	}

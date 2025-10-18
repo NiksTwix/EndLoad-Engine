@@ -43,12 +43,41 @@ tag::material Material1
 		AlphaCutOff: 0.5;
     }
     tag::textures Textures{
-	TextureMode: "path"; // or base64
-        Albedo: "textures/mesh_diffuse.jpg";
-        Normal: "textures/mesh_normal.jpg";
-		Metallic: "textures/mesh_metallic.jpg";
-		Roughness: "textures/mesh_roughness.jpg";
-		Emission: "textures/mesh_emission.jpg";
-		Occlusion: "textures/mesh_occlusion.jpg";
+	tag::texture Albedo
+	{
+		TextureMode: "path"; 
+		Data: "textures/mesh_diffuse.jpg";
+		Resolution: [1920,1920];
+	}	
+        tag::texture Normal
+	{
+		TextureMode: "path"; //or base64
+		Data: "textures/mesh_normal.jpg";
+		Resolution: [1920,1920];
+	}
+	tag::texture Metallic
+	{
+		TextureMode: "base64"; //or base64
+		Data: "AHSHhdsjsfwwewe....";
+		Resolution: [1920,1920];
+	}
+	tag::texture Roughness
+	{
+		TextureMode: "base64"; //or base64
+		Data: "AHSHhdsjsfwwewe....";
+		Resolution: [1920,1920];
+	}
+	tag::texture Emission
+	{
+		TextureMode: "base64"; //or base64
+		Data: "AHSHhdsjsfwwewe....";
+		Resolution: [1920,1920];
+	}
+	tag::texture Occlusion
+	{
+		TextureMode: "base64"; //or base64
+		Data: "AHSHhdsjsfwwewe....";
+		Resolution: [1920,1920];
+	}
     }
 }

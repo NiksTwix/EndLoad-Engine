@@ -1,7 +1,5 @@
 #include <Components/Graphics/MaterialComponent.hpp>
-#include <Core\ServiceLocator.hpp>
-#include <Services\ResourcesManager\ResourceManager.hpp>
-
+#include <Resources/TextureResource.hpp>
 
 namespace Components
 {
@@ -35,7 +33,7 @@ namespace Components
 		component.shaderID = res->GetShaderID();
 	}
 
-	void MaterialComponentService::SetResourceMaterialData(MaterialComponent& component, Resources::ResourceID material_resource) const
+	void MaterialComponentService::SetResourceMaterialData(MaterialComponent& component, Resources::ResourceID material_resource, bool generate_textures) const
 	{
 		auto* rm = Core::ServiceLocator::Get<Resources::ResourceManager>();
 		if (!rm) return; // TODO error
@@ -50,11 +48,23 @@ namespace Components
 		}
 
 		component.materialResource = material_resource;
-	}
 
-	bool MaterialComponentService::InitResources(MaterialComponent& component) const	//Also check validity
+		if (!generate_textures) return;
+
+		for (auto& texture : res->GetData().raw_textures)	//Type - texture data
+		{
+			auto res1 = std::make_shared<Resources::TextureResource>();
+			res1->SetData(texture.second);
+			component.textures[texture.first] = resourceFrame->AddStaticResource(res1);
+		}
+
+	}
+	bool MaterialComponentService::UpdateResourceState(ECS::EntityID entity)
 	{
 		auto* rm = Core::ServiceLocator::Get<Resources::ResourceManager>();
+
+		MaterialComponent component = m_eSpace->GetComponent<MaterialComponent>(entity);
+
 		if (!rm) return; // TODO error
 		auto resourceFrame = rm->GetActiveFrame();
 		if (!resourceFrame) return; //TODO error
@@ -66,24 +76,7 @@ namespace Components
 		if (!res)
 		{
 			component.materialResource = Definitions::InvalidID;
-			component.texturesInited = false;
 			return false;
-		}
-		if (!component.texturesInited) 
-		{
-			const Graphics::MaterialData& data = res->GetData();
-
-			if (data.textureMode == "path") 
-			{
-				//Loading textures
-			}
-			else if (data.textureMode == "base64") 
-			{
-				//Create and initialize Texture resources, sets binary data and attach it to frame
-			}
-			//Saving Texture ID (gpu handle) to uniforms
-
-			component.texturesInited = true;
 		}
 		auto res1 = resourceFrame->GetResource<Resources::ShaderResource>(component.shaderResource);
 		if (!res1)
@@ -92,9 +85,23 @@ namespace Components
 			component.shaderID = Definitions::InvalidID;
 			return false;
 		}
-
+		if (!res1->Init()) return false;	//If inited  returns true
 		component.shaderID = res1->GetShaderID();
+		//checking textures
 
+		for (auto& resource : component.textures)
+		{
+			if (resource.second == Definitions::InvalidID) continue;
+			auto res2 = resourceFrame->GetResource<Resources::TextureResource>(resource.second);
+			if (!res2)
+			{
+				resource.second = Definitions::InvalidID;
+				component.texturesID[resource.first] = Definitions::InvalidID;
+				continue;
+			}
+			if (res2->Init())component.texturesID[resource.first] = res2->GetDataID();
+			
+		}
 		return true;
 	}
 }

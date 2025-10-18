@@ -314,6 +314,7 @@ namespace Resources
 	bool MeshResource::Init()
 	{
         if (m_state == ResourceState::Initialized) return true;
+        if (m_state != ResourceState::Loaded && m_state != ResourceState::NeedReinit) return false;
 		//Calls graphic device to set up mesh
         
 		auto wm = Core::ServiceLocator::Get<Windows::WindowsManager>();

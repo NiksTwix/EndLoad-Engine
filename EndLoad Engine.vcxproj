@@ -71,7 +71,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>Engine\libs\glm.1.0.1\build\native\include;Engine\libs;Engine\include;Engine\libs\glew220\include\;Engine\libs\glfw34WIN64\include\;Engine\libs\ELMath\include\;Engine\libs\freetype2133\include;Engine\libs\assimp_x64-windows\include\;$(IncludePath)</IncludePath>
+    <IncludePath>Engine\libs\glm.1.0.1\build\native\include;Engine\libs;Engine\include;Engine\libs\glew220\include\;Engine\libs\glfw34WIN64\include\;Engine\libs\ELMath\include\;Engine\libs\freetype2133\include;Engine\libs\assimp_x64-windows\include\;Engine\libs\stb-master;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -139,6 +139,7 @@
     <ClCompile Include="Engine\source\Resources\MaterialResource.cpp" />
     <ClCompile Include="Engine\source\Resources\MeshResource.cpp" />
     <ClCompile Include="Engine\source\Resources\ShaderResource.cpp" />
+    <ClCompile Include="Engine\source\Resources\TextureResource.cpp" />
     <ClCompile Include="Engine\source\Services\Diagnostics\Logger\Logger.cpp" />
     <ClCompile Include="Engine\source\Services\Diagnostics\ProcessObserver\ProcessObserver.cpp" />
     <ClCompile Include="Engine\source\Services\Importing\AssimpLoader.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Engine\include\Components\Graphics\MaterialComponent.hpp" />
     <ClInclude Include="Engine\include\Components\Graphics\MeshComponent.hpp" />
     <ClInclude Include="Engine\include\Components\Graphics\SpriteComponent.hpp" />
+    <ClInclude Include="Engine\include\Components\IRComponentService.hpp" />
     <ClInclude Include="Engine\include\Core\EngineCore.hpp" />
     <ClInclude Include="Engine\include\Core\IServices.hpp" />
     <ClInclude Include="Engine\include\Core\ServiceLocator.hpp" />
@@ -169,6 +171,7 @@
     <ClInclude Include="Engine\include\Resources\MaterialResource.hpp" />
     <ClInclude Include="Engine\include\Resources\MeshResource.hpp" />
     <ClInclude Include="Engine\include\Resources\ShaderResource.hpp" />
+    <ClInclude Include="Engine\include\Resources\TextureResource.hpp" />
     <ClInclude Include="Engine\include\Services\Diagnostics\Logger\Logger.hpp" />
     <ClInclude Include="Engine\include\Services\Diagnostics\ProcessObserver\ProcessObserver.hpp" />
     <ClInclude Include="Engine\include\Services\Importing\AssimpLoader.hpp" />

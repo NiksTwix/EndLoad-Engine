@@ -50,6 +50,16 @@ namespace Graphics
         STREAM
     };
 
+    enum class TextureType
+    {
+        ALBEDO = 0, //SLOT = 0
+        NORMAL,
+        METALLIC,
+        ROUGHNESS,
+        EMISSION,
+        OCCLUSION
+    };
+
     struct UniformValue
     {
         enum class ValueType
@@ -157,9 +167,22 @@ namespace Graphics
         Definitions::uint GetVertexCount() const { return vertices.size(); }
         Definitions::uint GetIndexCount() const { return indices.size(); }
 	};
+
+    struct TextureData
+    {
+        std::vector<unsigned char> pixels;
+        Math::Vector2 size;
+        Definitions::uint bytes_per_pixel;
+
+        TextureData(const std::vector<unsigned char>& pixels, Math::Vector2 size, Definitions::uint bytes_per_pixel)
+            : pixels(pixels)
+            , size(size), bytes_per_pixel(bytes_per_pixel)
+        {
+        }
+        TextureData() {}
+    };
     struct MaterialData {
         std::string name;
-
         // PBR параметры
         Math::Vector4 baseColor = Math::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         float metallic = 0.0f;
@@ -167,42 +190,16 @@ namespace Graphics
         float emissionIntensity = 0.0f;
         Math::Vector3 emissiveColor = Math::Vector3(0.0f);
 
-        // “екстуры (пути или base64 последовательность)
-        std::string albedoTexture;
-        std::string normalTexture;
-        std::string metallicTexture;
-        std::string roughnessTexture;
-        std::string emissionTexture;
-        std::string occlusionTexture;
-
-        std::vector<uint8_t> albedoBinary;
-        std::vector<uint8_t> normalBinary;
-        std::vector<uint8_t> metallicBinary;
-        std::vector<uint8_t> roughnessBinary;
-        std::vector<uint8_t> emissionBinary;
-        std::vector<uint8_t> occlusionBinary;
+        std::unordered_map<TextureType, TextureData> raw_textures;
 
         // Flags
         bool doubleSided = false;
         bool alphaTest = false;
         float alphaCutoff = 0.5f;
 
-        std::string textureMode = "Path"; //or Base64
-
     };
 
-    struct TextureData
-    {
-        const void* pixels;
-        Math::Vector2 size;
-        Definitions::uint bytes_per_pixel;
-
-        TextureData(const void* pixels, Math::Vector2 size, Definitions::uint bytes_per_pixel)
-            : pixels(pixels)
-            , size(size), bytes_per_pixel(bytes_per_pixel)
-        {
-        }
-    };
+    
 
     struct RenderCommand 
     {

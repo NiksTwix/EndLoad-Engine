@@ -46,6 +46,8 @@ void EngineCore::Mainloop()
 			m_ThreadPool.WaitForCompletion();
 
 			Diagnostics::ProcessObserver::Get().CalculateDelta();
+
+			
 		}
 		//Запуск физики в отдельном потоке Создать задачу PhysicsSystem -> Update
 		//Запуск графики в отдельном потоке

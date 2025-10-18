@@ -1,38 +1,32 @@
 #pragma once
-#include <ELECS\ECS.hpp>
-#include <ELMath/include/MathFunctions.hpp>
+#include <Components/IRComponentService.hpp>
 #include <Systems/Graphics/GraphicsDevice/GraphicsData.hpp>
 #include <Resources/ShaderResource.hpp>
 #include <Resources/MaterialResource.hpp>
 namespace Components 
 {
+
+
 	struct MaterialComponent 
 	{
 		Graphics::ShaderID shaderID;
 		std::unordered_map<std::string, Graphics::UniformValue> uniforms;
-
+		std::unordered_map<Graphics::TextureType, Resources::ResourceID> textures;
+		std::unordered_map<Graphics::TextureType, Graphics::TextureID> texturesID;
 		Resources::ResourceID shaderResource = Definitions::InvalidID;
 		Resources::ResourceID materialResource = Definitions::InvalidID;
 
-		//Albedo,Normal,Metallic,Roughness,Emission,Occlusion textures in uniforms. Replacing is going trought materialResource
-
-		bool texturesInited;	//Flag for initializations of textures in InitResources
-		/*
-			Если флаг не установлен, то BuildCommand вызовет метод InitResources, что загрузит и инициализирует текстуры в текущей фрейм. 
-			Проблема с деинициализацией не грозит, 5 минут бездействия и ресурс удаляется
-		*/
-
-		bool isValid;               
+		bool isValid;  
 	};
 
-	class MaterialComponentService : public ECS::IComponentService
+	class MaterialComponentService : public IRComponentService
 	{
 	public:
 		void Init() override;
 		void Update(ECS::EntitySpace* eSpace) override;
 		void Shutdown() override;
 		void SetResourceShaderData(MaterialComponent& component, Resources::ResourceID shader_resource) const;
-		void SetResourceMaterialData(MaterialComponent& component, Resources::ResourceID material_resource) const;
-		bool InitResources(MaterialComponent& component) const;
+		void SetResourceMaterialData(MaterialComponent& component, Resources::ResourceID material_resource, bool generate_textures = false) const;
+		bool UpdateResourceState(ECS::EntityID entity) override;
 	};
 }

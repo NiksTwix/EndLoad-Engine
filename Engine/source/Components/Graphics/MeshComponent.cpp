@@ -26,35 +26,34 @@ namespace Components
 		auto res = resourceFrame->GetResource<Resources::MeshResource>(new_resource);
 		if (!res) 
 		{
-			component.previousResource = component.currentResource;
+			component.resource = Definitions::InvalidID;
 			component.meshID = Definitions::InvalidID;
 			component.isValid = false;
-			component.currentResource = Definitions::InvalidID;
 			return;
 		}
 
-		component.previousResource = component.currentResource;
-		component.currentResource = new_resource;
+		component.resource = new_resource;
 		component.meshID = res->GetMeshID();
 		//Проверка mesh id также будет meshrendermodule
 	}
 
-	bool MeshComponentService::InitResource(MeshComponent& component) const
+	bool MeshComponentService::UpdateResourceState(ECS::EntityID entity)
 	{
 		auto* rm = Core::ServiceLocator::Get<Resources::ResourceManager>();
+		MeshComponent component = m_eSpace->GetComponent<MeshComponent>(entity);
 		if (!rm) return false; // TODO error
 		auto resourceFrame = rm->GetActiveFrame();
 		if (!resourceFrame) return false; //TODO error
 
-		auto res = resourceFrame->GetResource<Resources::MeshResource>(component.currentResource);
+		auto res = resourceFrame->GetResource<Resources::MeshResource>(component.resource);	//Update deleting timer
 		if (!res)
 		{
-			component.previousResource = component.currentResource;
+			component.resource = Definitions::InvalidID;
 			component.meshID = Definitions::InvalidID;
 			component.isValid = false;
-			component.currentResource = Definitions::InvalidID;
 			return false;
 		}
+		component.isValid = true;
 		return res->Init();
 	}
 

@@ -116,14 +116,22 @@ namespace Resources
 			return result;
 		}
 		template<typename Resource>
-		ResourceID Load(const std::string& path) {
+		ResourceID Load(const std::string& path) {		// Add static resource
 			auto resource = std::make_shared<Resource>();
 			if (resource->Load(path)) {
 				return AddStaticResource(resource);;
 			}
 			return Definitions::InvalidID;
 		}
-
+		template<typename Resource>
+		ResourceID LoadI(const std::string& path) {		// Add static resource and init
+			auto resource = std::make_shared<Resource>();
+			if (resource->Load(path)) {
+				resource->Init();
+				return AddStaticResource(resource);;
+			}
+			return Definitions::InvalidID;
+		}
 		bool Exists(ResourceID id);
 		bool Exists(const std::string& name);
 

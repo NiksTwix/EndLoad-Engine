@@ -4,7 +4,7 @@
 #include <Core\ServiceLocator.hpp>
 #include <Services\Diagnostics\Logger\Logger.hpp>
 #include <Services\Diagnostics\ProcessObserver\ProcessObserver.hpp>
-
+#include <Services/ResourcesManager/ResourceManager.hpp>
 namespace Rendering
 {
 	RenderSystem::RenderSystem()
@@ -57,6 +57,7 @@ namespace Rendering
 					if (viewport) RenderScene(viewport, scene);
 				}
 				window->SwapFrameBuffers();
+				Core::ServiceLocator::Get<Resources::ResourceManager>()->ClearWindowCache(window->GetID());
 			}
 			catch (const std::exception& e) {
 				Diagnostics::Logger::Get().SendMessage("(RenderSystem) Rendering error (Window " + std::to_string(windowId) + "): " + e.what() + ".", Diagnostics::MessageType::Error);
