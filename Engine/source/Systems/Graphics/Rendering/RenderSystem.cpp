@@ -156,7 +156,6 @@ namespace Rendering
 		//m_context->SetViewport(viewport);  //Óñòàíîâêà âàéïîðòà
 
 
-
 		auto* cam = viewport->GetCamera().Get();
 		if (cam) {
 			//m_cameraService->UpdateProjectionMatrix(*cam, viewport->GetResolution().x, viewport->GetResolution().y, cam->Projection_Type, cam->FOV);

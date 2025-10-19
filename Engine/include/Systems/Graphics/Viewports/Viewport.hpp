@@ -122,8 +122,8 @@ namespace Viewports
 		}
 		void Shutdown() override;
 
-		std::unordered_map<std::string, ECS::ESDL::ESDLType> GetViewportFields(int id);
-		std::shared_ptr<Viewport> CreateViewportByFields(std::unordered_map<std::string, ECS::ESDL::ESDLType> fields);
+		//std::unordered_map<std::string, ECS::ESDL::ESDLType> GetViewportFields(int id);
+		//std::shared_ptr<Viewport> CreateViewportByFields(std::unordered_map<std::string, ECS::ESDL::ESDLType> fields);
 	};
 }
 

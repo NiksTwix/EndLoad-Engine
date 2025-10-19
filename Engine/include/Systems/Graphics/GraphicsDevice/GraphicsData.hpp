@@ -50,14 +50,15 @@ namespace Graphics
         STREAM
     };
 
-    enum class TextureType
+    enum  TextureType
     {
-        ALBEDO = 0, //SLOT = 0
-        NORMAL,
-        METALLIC,
-        ROUGHNESS,
-        EMISSION,
-        OCCLUSION
+        //Use << or >> in shader
+        ALBEDO = 1 << 0, //SLOT = 0  // texture_exists 00000001 =1
+        NORMAL = 1 << 1,     // texture_exists 00000010 = 2
+        METALLIC = 1 << 2,   // texture_exists 00000100 = 4
+        ROUGHNESS = 1 << 3,  // texture_exists 00001000 = 8
+        EMISSION = 1 << 4,   // texture_exists 00010000 = 16
+        OCCLUSION = 1 << 5,  // texture_exists 00100000 = 32
     };
 
     struct UniformValue

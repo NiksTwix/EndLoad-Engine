@@ -31,7 +31,6 @@ namespace Rendering
 
 	void RenderModule3D::BuildCommands()
 	{
-		
 		auto& entitySpace = m_currentScene->GetEntitySpace();
 
 		ECS::View<Components::LocalTransformComponent, Components::MeshComponent, Components::MaterialComponent> view(entitySpace.GetRegistry());
@@ -40,51 +39,54 @@ namespace Rendering
 		auto* camera = m_cameraService->GetRenderCamera();
 		if (!camera) return;
 		*/
-
-		view.Each([&](auto& entity_id, auto& localt, auto& mesh, auto& material)
+		view.Each([&](auto& entity_id, Components::LocalTransformComponent& localt, Components::MeshComponent& mesh, Components::MaterialComponent& material)
 			{
 				Graphics::RenderCommand command;
-				if (!mesh.isValid || mesh.currentResource == Definitions::InvalidID) return;
-				if (mesh.currentResource != mesh.previousResource)
-				{
-					//Check and init resource if he isnt inited
-					if (m_meshService->InitResource(mesh)) mesh.previousResource = mesh.currentResource;
-				}
+				if (!m_meshService->UpdateResourceState(entity_id)) return; // Skip If mesh invalid - object will be black or invisible
 				if (!m_windowManager->GetRenderWindow()->GetGraphicsDevice()->IsMeshValid(mesh.meshID))	//Skip this mesh
 				{
 					//TODO error
 					return;
 				}
-				
+				if (!m_materialService->UpdateResourceState(entity_id)) return; // Skip If material or shader are invalid - object will be black or invisible
+				if (!m_windowManager->GetRenderWindow()->GetGraphicsDevice()->IsShaderValid(material.shaderID))	//Skip this object
+				{
+					//TODO error
+					return;
+				}
 				command.mesh_id = mesh.meshID;
-				//command.shader_id = material.shaderID
-				/*
-					command.shader_id = material.shaderID
-
-					//Обновления матриц материала
-
-					auto gt = context->GetEntitySpace().GetComponent<GlobalTransformComponent>(id);
-					if (m_settingsManager->GetSwitch(Switches::FrustumCulling))
+				command.shader_id = material.shaderID;
+				command.uniforms = material.uniforms;
+				//Add new uniforms
+				command.uniforms["texture_exists"] = Graphics::UniformValue((Definitions::uint)0);
+				for (auto& text : material.texturesID) 
+				{
+					if (text.second == Definitions::InvalidID) 
 					{
-						auto aabb = m_meshService->GetTransformedAABB(mesh,gt.ModelMatrix);
-						if (!(m_cameraService->IsVisibleAABB(aabb, *camera)))
-						{
-							return;
-						}
+						continue;
 					}
-					if (!gt.Visible) return;
+					command.uniforms["texture_exists"] = command.uniforms["texture_exists"] | text.first;	// 00000000 + 00000001
+					command.textures.push_back({ text.second,text.first });	//TextureID, TextureType (enum class) -> slot
+				}
 
-					material.uniforms["ViewMatrix"].data = camera->View;
-					material.uniforms["ProjectionMatrix"].data = camera->Projection;
-					material.uniforms["WorldMatrix"].data = gt.ModelMatrix;
+				//Обновления матриц материала
 
-					command.uniforms = (material.uniforms)
-					for (texture : material.textures)
-					{
-						command.textures.pushback({texture.textureID, texture.slot});
-					}
-				*/
-				m_currentRenderCommands.push_back(command);
+				//auto gt = context->GetEntitySpace().GetComponent<GlobalTransformComponent>(id);
+				//if (m_settingsManager->GetSwitch(Switches::FrustumCulling))
+				//{
+				//	auto aabb = m_meshService->GetTransformedAABB(mesh,gt.ModelMatrix);
+				//	if (!(m_cameraService->IsVisibleAABB(aabb, *camera)))
+				//	{
+				//		return;
+				//	}
+				//}
+				//if (!gt.Visible) return;
+
+				//command.uniforms["ViewMatrix"].data = camera->View;
+				//command.uniforms["ProjectionMatrix"].data = camera->Projection;
+				//command.uniforms["WorldMatrix"].data = gt.ModelMatrix;
+
+				m_currentRenderCommands.push_back(command);	//global state
 			});
 
 	}

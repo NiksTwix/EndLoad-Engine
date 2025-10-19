@@ -53,8 +53,11 @@ namespace Components
 			component.isValid = false;
 			return false;
 		}
+
+		component.meshID = res->GetMeshID();
+
 		component.isValid = true;
-		return res->Init();
+		return res->Init();	//If has already inited returns true
 	}
 
 }

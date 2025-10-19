@@ -29,9 +29,11 @@ namespace Rendering
 		void AttachSceneToWindow(Windows::WindowID window, Scenes::SceneID scene);
 		void DetachSceneFromWindow(Windows::WindowID window);
 		Scenes::SceneID GetAttachedScene(Windows::WindowID window);
+
 	private:
 		bool m_firstFrame = true;
 		bool m_scenes_changed = false;
+
 
 		std::unordered_map<Windows::WindowID, Scenes::SceneID> m_scenes;
 
