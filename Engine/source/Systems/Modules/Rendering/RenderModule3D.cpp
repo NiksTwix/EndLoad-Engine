@@ -5,6 +5,7 @@
 #include <Components/Graphics/MeshComponent.hpp>
 #include <Components/Graphics/MaterialComponent.hpp>
 #include <Components/Basic/TransformComponent.hpp>
+
 namespace Rendering 
 {
 	void RenderModule3D::Update()
@@ -35,10 +36,10 @@ namespace Rendering
 
 		ECS::View<Components::LocalTransformComponent, Components::MeshComponent, Components::MaterialComponent> view(entitySpace.GetRegistry());
 
-		/*
-		auto* camera = m_cameraService->GetRenderCamera();
+		
+		auto camera = m_windowManager->GetRenderWindow()->GetGraphicsDevice()->GetRenderViewport()->GetCamera();
 		if (!camera) return;
-		*/
+		
 		view.Each([&](auto& entity_id, Components::LocalTransformComponent& localt, Components::MeshComponent& mesh, Components::MaterialComponent& material)
 			{
 				Graphics::RenderCommand command;
@@ -65,26 +66,26 @@ namespace Rendering
 					{
 						continue;
 					}
-					command.uniforms["texture_exists"] = command.uniforms["texture_exists"] | text.first;	// 00000000 + 00000001
+					command.uniforms["texture_exists"] = Graphics::UniformValue((command.uniforms["texture_exists"].GetUInt() | text.first));	// 00000000 + 00000001
 					command.textures.push_back({ text.second,text.first });	//TextureID, TextureType (enum class) -> slot
 				}
 
 				//Обновления матриц материала
 
-				//auto gt = context->GetEntitySpace().GetComponent<GlobalTransformComponent>(id);
-				//if (m_settingsManager->GetSwitch(Switches::FrustumCulling))
-				//{
-				//	auto aabb = m_meshService->GetTransformedAABB(mesh,gt.ModelMatrix);
-				//	if (!(m_cameraService->IsVisibleAABB(aabb, *camera)))
-				//	{
-				//		return;
-				//	}
-				//}
-				//if (!gt.Visible) return;
+				Components::GlobalTransformComponent& gt = entitySpace.GetComponent<Components::GlobalTransformComponent>(entity_id);
+				if (SettingsFlags::UseCameraFrustrum && Math::LengthSquared(mesh.aabb.Size) > 0)
+				{
+					m_meshService->UpdateWorldAABB(mesh, gt.modelMatrix);	//TODO Replace with BuildAABB, UpdateCamera and Transforms in CoordinatesUpdateSystem (in the future)
+					if (!(m_cameraService->IsVisibleMesh(mesh, *camera)))
+					{
+						return;
+					}
+				}
+				if (!gt.visible) return;
 
-				//command.uniforms["ViewMatrix"].data = camera->View;
-				//command.uniforms["ProjectionMatrix"].data = camera->Projection;
-				//command.uniforms["WorldMatrix"].data = gt.ModelMatrix;
+				command.uniforms["ViewMatrix"] = Graphics::UniformValue(camera->view);
+				command.uniforms["ProjectionMatrix"] = Graphics::UniformValue(camera->projection);
+				command.uniforms["WorldMatrix"] = Graphics::UniformValue(gt.modelMatrix);
 
 				m_currentRenderCommands.push_back(command);	//global state
 			});

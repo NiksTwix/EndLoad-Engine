@@ -1,5 +1,8 @@
 #include <Core/ServiceLocator.hpp>
 #include <Systems/Input/InputSystem.hpp>
+#include <Systems/Graphics/Rendering/RenderSystem.hpp>
+#include <Systems/Physics/PhysicsSystem.hpp>
+#include <Systems/Coordinates/CoordinatesSystem.hpp>
 #include <Core/EngineCore.hpp>
 
 using namespace Core;
@@ -49,8 +52,13 @@ void EngineCore::Mainloop()
 
 			
 		}
-		//Запуск физики в отдельном потоке Создать задачу PhysicsSystem -> Update
-		//Запуск графики в отдельном потоке
+		/*
+			Sync: WindowsManager
+			Sync: InputSystem
+			Sync: CoordinatesSystem
+			Async: PhysicsSystem (waiting CS)
+			Sync: RenderSystem
+		*/
 	}
 	catch (std::exception& e)
 	{
@@ -71,6 +79,10 @@ void EngineCore::Init()
 
 	//System registration
 	ServiceLocator::Set<Windows::WindowsManager, Windows::WindowsManager>();
+	
 	ServiceLocator::Set<Input::InputSystem, Input::InputSystem>();
+	ServiceLocator::Set<Coordinates::CoordinatesSystem, Coordinates::CoordinatesSystem>();
+	ServiceLocator::Set < Rendering::RenderSystem, Rendering::RenderSystem>();
+	ServiceLocator::Set<Physics::PhysicsSystem,Physics::PhysicsSystem>();
 	Diagnostics::Logger::Get().SendMessage("(Core) Core initialization has ended.", Diagnostics::MessageType::Info);
 }

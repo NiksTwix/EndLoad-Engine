@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <ELMath\include\Basis.hpp>
+#include <ELMath\include\MathFunctions.hpp>
 #include <ELECS\ECS.hpp>
 
 

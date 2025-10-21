@@ -41,3 +41,8 @@ namespace Scenes
 {
 	using SceneID = Definitions::identificator;
 }
+
+namespace SettingsFlags //Flags for debugging before creating settings manager
+{
+	constexpr bool UseCameraFrustrum = true;
+}

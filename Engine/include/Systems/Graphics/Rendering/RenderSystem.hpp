@@ -30,6 +30,8 @@ namespace Rendering
 		void DetachSceneFromWindow(Windows::WindowID window);
 		Scenes::SceneID GetAttachedScene(Windows::WindowID window);
 
+		std::vector<Scenes::SceneID> GetAttachedScenes() const;
+
 	private:
 		bool m_firstFrame = true;
 		bool m_scenes_changed = false;

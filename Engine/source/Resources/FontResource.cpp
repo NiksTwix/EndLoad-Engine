@@ -115,7 +115,10 @@ namespace Resources
 					char_.bearing.x = (face)->glyph->bitmap_left;
 					char_.bearing.y = (face)->glyph->bitmap_top;
 					char_.charCode = charCode;
-					char_.textureID = Core::ServiceLocator::Get<Windows::WindowsManager>()->GetRenderWindow()->GetGraphicsDevice()->CreateTexture(Graphics::TextureData(buffer, char_.size, 1));
+
+					std::vector<unsigned char> vbuffer(buffer, buffer + bitmap.width * bitmap.rows * 1);
+
+					char_.textureID = Core::ServiceLocator::Get<Windows::WindowsManager>()->GetRenderWindow()->GetGraphicsDevice()->CreateTexture(Graphics::TextureData(vbuffer,char_.size,1));
 					characters.insert({ charCode,char_ });
 				}
 			}

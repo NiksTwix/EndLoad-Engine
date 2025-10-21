@@ -5,6 +5,7 @@
 #include <Services\Diagnostics\Logger\Logger.hpp>
 #include <Services\Diagnostics\ProcessObserver\ProcessObserver.hpp>
 #include <Services/ResourcesManager/ResourceManager.hpp>
+#include <Systems/Modules/Rendering/RenderModule3D.hpp>
 namespace Rendering
 {
 	RenderSystem::RenderSystem()
@@ -126,6 +127,15 @@ namespace Rendering
 		if (m_scenes.count(window)) return m_scenes[window];
 		return Definitions::InvalidID;
 	}
+	std::vector<Scenes::SceneID> RenderSystem::GetAttachedScenes() const
+	{
+		std::vector<Scenes::SceneID> result;
+		for (auto& [_, scene] : m_scenes) 
+		{
+			result.push_back(scene);
+		}
+		return result;
+	}
 	void RenderSystem::FirstFrameInitialization()
 	{
 		if (!m_firstFrame) return;
@@ -152,13 +162,14 @@ namespace Rendering
 		auto& CSL = scene->GetEntitySpace().GetServiceLocator();
 
 		//CSL.Register<LocalTransformComponent, TransformService>()->UpdateGlobalTransforms();
-		//auto* m_cameraService = CSL.Register<CameraComponent, CameraService>();
+		auto* m_cameraService = CSL.GetByService<Components::CameraComponentService>();
 		//m_context->SetViewport(viewport);  //Óñòàíîâêà âàéïîðòà
 
 
-		auto* cam = viewport->GetCamera().Get();
-		if (cam) {
+		auto cam = viewport->GetCamera().GetEntityID();
+		if (cam != Definitions::InvalidID) {
 			//m_cameraService->UpdateProjectionMatrix(*cam, viewport->GetResolution().x, viewport->GetResolution().y, cam->Projection_Type, cam->FOV);
+			m_cameraService->UpdateCameraData(scene, cam);	//WARNING РАССИНХРОН С ТРАНСФОРМАМИ (ОНИ ОБНОВЛЯЮТСЯ В ФИЗИКЕ!), отставание на 1 кадр, можно перенести в отдельную систему Transform+Camera ну, понятно думаю
 		}
 
 		//m_cameraService->SetRenderCamera(viewport->GetCamera().GetEntityID());                  

@@ -58,9 +58,10 @@ namespace Core
 
     enum class SystemPriority {
         WINDOW_MANAGER = 0,  // WindowManager (Window's update in first queue is very important)
-        INPUT = 1,  // InputSystem
-        PHYSICS = 2,  // PhysicsSystem
-        RENDER = 3,  // RenderSystem
+        INPUT,// InputSystem
+        COORDINATES,
+        PHYSICS,  // PhysicsSystem
+        RENDER,  // RenderSystem
         USER_SYSTEMS = 100 // User systems is not important for good engine work
     };
 
@@ -80,7 +81,7 @@ namespace Core
         }
 
     public:
-        virtual void Update() {}
+        virtual void Update() = 0 {}
 
         virtual SystemPriority GetPriority() { return SystemPriority::USER_SYSTEMS; }
 

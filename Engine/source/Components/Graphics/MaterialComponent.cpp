@@ -65,9 +65,9 @@ namespace Components
 
 		MaterialComponent component = m_eSpace->GetComponent<MaterialComponent>(entity);
 
-		if (!rm) return; // TODO error
+		if (!rm) return false; // TODO error
 		auto resourceFrame = rm->GetActiveFrame();
-		if (!resourceFrame) return; //TODO error
+		if (!resourceFrame) return false; //TODO error
 
 		//Reset state
 		component.shaderID = Definitions::InvalidID;

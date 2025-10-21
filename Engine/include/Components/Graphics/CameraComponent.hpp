@@ -1,9 +1,11 @@
 #pragma once
-#include <ELECS\ECS.hpp>
-#include <ELMath/include/MathFunctions.hpp>
+#include <Components/Basic/TransformComponent.hpp>
+
 
 namespace Components 
 {
+	struct MeshComponent;
+
 	enum class ProjectionType
 	{
 		Orthogonal,
@@ -12,27 +14,44 @@ namespace Components
 
 	struct CameraComponent 
 	{
-		float FOV = 90.0f;			// Only for Perspective
+		float fov = 90.0f;			// Only for Perspective
 
-		float Near = 0.1f;
-		float Far = 100.0f;
-		float OrthoSize = 10.0f;	// Only for Orthographic
-		Math::Matrix4x4 Projection;
-		Math::Matrix4x4 View;
+		float near = 0.1f;
+		float far = 100.0f;
+		float orthoSize = 10.0f;	// Only for Orthographic
+		Math::Matrix4x4 projection;
+		Math::Matrix4x4 view;
 		bool isDirty = true;    // Needs matrix update
-		ProjectionType ProjectionType;
-		Math::Vector3 Front = Math::Vector3::Forward();
-		Math::Vector3 WorldUp = Math::Vector3::Up();
-		Math::Vector3 Up = WorldUp;
-		Math::Vector3 Right = Math::Vector3::Right();
-		Math::Vector4 FrustumPlanes[6];
-		int Width;
-		int Height;
+		ProjectionType projectionType;
+		Math::Vector3 front = Math::Vector3::Forward();
+		Math::Vector3 worldUp = Math::Vector3::Up();
+		Math::Vector3 up = worldUp;
+		Math::Vector3 right = Math::Vector3::Right();
+		Math::Vector4 frustumPlanes[6];
+		int width;
+		int height;
 
 	};
 
 	class CameraComponentService: public ECS::IComponentService
 	{
-	
+	public:
+		CameraComponent CreateCamera(int width, int height, ProjectionType projection_type, float fov = 90, float ortho_size = 10.0f);
+
+		void UpdateProjectionMatrix(CameraComponent& cam, int width, int height, ProjectionType projection_type, float fov = 90);
+
+		void UpdateViewMatrix(CameraComponent& cam, GlobalTransformComponent& transform);
+
+		Math::Matrix4x4 GetCameraMatrix(CameraComponent& cam);
+
+		void UpdateCameraVectors(CameraComponent& cam, GlobalTransformComponent& transform);
+
+		void UpdateFrustumCulling(CameraComponent& cam);
+		void UpdateCameraData(Scenes::SceneContext* context, ECS::EntityID entity);
+		void Init() override;
+		void Update(ECS::EntitySpace* eSpace) override;
+		void Shutdown() override;
+
+		bool IsVisibleMesh(const Components::MeshComponent& mesh, const CameraComponent& camera);
 	};
 }

@@ -127,6 +127,12 @@
     <Filter Include="Engine\include\Systems\Modules">
       <UniqueIdentifier>{5998a59c-b0a6-4f0a-8584-72ba1b92dcfa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\include\Systems\Physics">
+      <UniqueIdentifier>{f6dafd2e-2f15-4495-b694-3dd8cb9cccad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\source\Systems\PhysicsSystem">
+      <UniqueIdentifier>{a89579ac-e819-4fc5-a6ea-61351cdaad72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndLoad Engine.cpp">
@@ -197,6 +203,15 @@
     </ClCompile>
     <ClCompile Include="Engine\source\Resources\TextureResource.cpp">
       <Filter>Engine\source\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Systems\Physics\PhysicsSystem.cpp">
+      <Filter>Engine\source\Systems\PhysicsSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Components\Graphics\CameraComponent.cpp">
+      <Filter>Engine\source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\source\Systems\Coordinates\CoordinatesSystem.cpp">
+      <Filter>Engine\source\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +322,12 @@
     </ClInclude>
     <ClInclude Include="Engine\include\Components\IRComponentService.hpp">
       <Filter>Engine\include\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Physics\PhysicsSystem.hpp">
+      <Filter>Engine\include\Systems\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Systems\Coordinates\CoordinatesSystem.hpp">
+      <Filter>Engine\include\Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,8 +2,6 @@
 #include <unordered_map>
 #include <memory>
 #include <Core\IServices.hpp>
-#include <ELECS\ECS.hpp>
-#include <ELECS\ESDL\ESDLParser.hpp>
 #include <ELMath/include/MathFunctions.hpp>
 #include <Components\Graphics\CameraComponent.hpp>
 

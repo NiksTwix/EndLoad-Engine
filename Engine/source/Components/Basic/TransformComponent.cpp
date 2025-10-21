@@ -166,7 +166,7 @@ namespace Components
 		child.visible = parent.visible && child.visible; 
 	}
 
-	void TransformComponentService::MarkDirty(ECS::EntityID id) {
+	void TransformComponentService::MarkDirty(ECS::EntityID id) {	//Try to replace on array with dirty entities
 		ECS::Registry& registry = m_eSpace->GetRegistry();
 		ECS::HierarchyTree& tree = m_eSpace->GetTree();
 
