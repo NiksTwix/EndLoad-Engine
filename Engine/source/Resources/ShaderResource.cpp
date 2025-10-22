@@ -2,7 +2,7 @@
 #include <Services/Diagnostics/Logger/Logger.hpp>
 #include <Systems\Graphics\Windows\WindowsManager.hpp>
 #include <ELDCL\include\Loading\Loader.hpp>
-#include <Services\ResourcesManager\ResourceManager.hpp>
+#include <Services\ResourcesManager\ResourcesManager.hpp>
 #include <Core\ServiceLocator.hpp>
 namespace Resources 
 {
@@ -108,7 +108,7 @@ namespace Resources
 		if (m_state == ResourceState::Initialized) return true;
 		if (m_state != ResourceState::Loaded && m_state != ResourceState::NeedReinit) return false;
 		auto wm = Core::ServiceLocator::Get<Windows::WindowsManager>();
-		auto rm = Core::ServiceLocator::Get<ResourceManager>();
+		auto rm = Core::ServiceLocator::Get<ResourcesManager>();
 		if (!wm || !rm) return false;
 
 		//Getting current render device/context
@@ -129,7 +129,7 @@ namespace Resources
 	{
 		if (m_dataID == Definitions::InvalidID || (m_state != ResourceState::Initialized && m_state != ResourceState::NeedReinit)) return false;
 		auto wm = Core::ServiceLocator::Get<Windows::WindowsManager>();
-		auto rm = Core::ServiceLocator::Get<ResourceManager>();
+		auto rm = Core::ServiceLocator::Get<ResourcesManager>();
 		if (!wm || !rm) return false;
 
 		//Getting current render device/context
@@ -147,7 +147,7 @@ namespace Resources
 
 	void ShaderResource::Release()
 	{
-		Uninit();	// ResourceManager also calls Uninit() before clearing, but we must provide resource clearing;
+		Uninit();	// ResourcesManager also calls Uninit() before clearing, but we must provide resource clearing;
 
 		m_dataSources.clear();
 

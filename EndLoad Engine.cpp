@@ -2,6 +2,8 @@
 #include <Core\EngineCore.hpp>
 #include <Core\ServiceLocator.hpp>
 #include <Systems\Graphics\Windows\WindowsManager.hpp>
+#include <Systems\Graphics\Rendering\RenderSystem.hpp>
+#include <Services/Scenes/SceneManager.hpp>
 #include <Systems\Graphics\GraphicsDevice\OpenGL\OpenGLDevice.hpp>
 #include <ELMath\include\MathFunctions.hpp>
 int main()
@@ -13,7 +15,14 @@ int main()
 	
 	Core::EngineCore& core = Core::EngineCore::Get();
 	
-	auto window = Core::ServiceLocator::Get<Windows::WindowsManager>()->CreateWindow<Graphics::OpenGLDevice>(Math::Vector2(200),"title");
+	auto window = Core::ServiceLocator::Get<Windows::WindowsManager>()->CreateWindow<Graphics::OpenGLDevice>(Math::Vector2(500),"title");
+
+	auto scene1 = Core::ServiceLocator::Get<Scenes::SceneManager>()->CreateContext("Scene1");
+
+	Core::ServiceLocator::Get<Rendering::RenderSystem>()->AttachSceneToWindow(window->GetID(), scene1);
+
+	window->SetTitle(Core::ServiceLocator::Get<Scenes::SceneManager>()->GetContext(scene1)->GetName());
+
 	auto window1 = Core::ServiceLocator::Get<Windows::WindowsManager>()->CreateWindow<Graphics::OpenGLDevice>(Math::Vector2(200), "title1");
 	core.Start();
 

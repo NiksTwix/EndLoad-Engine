@@ -1,24 +1,19 @@
 #include <Components/Graphics/MeshComponent.hpp>
 #include <Core\ServiceLocator.hpp>
-#include <Services\ResourcesManager\ResourceManager.hpp>
+#include <Services\ResourcesManager\ResourcesManager.hpp>
 
 
 namespace Components 
 {
-	void MeshComponentService::Init()
+	MeshComponentService::MeshComponentService()
 	{
-	}
-	void MeshComponentService::Update(ECS::EntitySpace* eSpace)
-	{
-		m_eSpace = eSpace;
-	}
-	void MeshComponentService::Shutdown()
-	{
+		m_stringType = "Mesh";
+		m_ComponentType = typeid(MeshComponent);
 	}
 
 	void MeshComponentService::SetResourceData(MeshComponent& component, Resources::ResourceID new_resource) const
 	{
-		auto* rm = Core::ServiceLocator::Get<Resources::ResourceManager>();
+		auto* rm = Core::ServiceLocator::Get<Resources::ResourcesManager>();
 		if (!rm) return; // TODO error
 		auto resourceFrame = rm->GetActiveFrame();
 		if (!resourceFrame) return; //TODO error
@@ -39,7 +34,7 @@ namespace Components
 
 	bool MeshComponentService::UpdateResourceState(ECS::EntityID entity)
 	{
-		auto* rm = Core::ServiceLocator::Get<Resources::ResourceManager>();
+		auto* rm = Core::ServiceLocator::Get<Resources::ResourcesManager>();
 		MeshComponent component = m_eSpace->GetComponent<MeshComponent>(entity);
 		if (!rm) return false; // TODO error
 		auto resourceFrame = rm->GetActiveFrame();
@@ -89,7 +84,7 @@ namespace Components
 	}
 	void MeshComponentService::BuildAABB(MeshComponent& component)
 	{
-		auto* frame = Core::ServiceLocator::Get<Resources::ResourceManager>()->GetActiveFrame();
+		auto* frame = Core::ServiceLocator::Get<Resources::ResourcesManager>()->GetActiveFrame();
 
 		if (!frame) 
 		{

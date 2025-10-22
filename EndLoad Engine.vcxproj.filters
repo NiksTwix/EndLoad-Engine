@@ -159,9 +159,6 @@
     <ClCompile Include="Engine\source\Systems\Input\InputSystem.cpp">
       <Filter>Engine\source\Systems\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\source\Services\ResourcesManager\ResourceManager.cpp">
-      <Filter>Engine\source\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\source\Systems\Graphics\Rendering\RenderSystem.cpp">
       <Filter>Engine\source\Systems\Graphics\Rendering</Filter>
     </ClCompile>
@@ -213,6 +210,9 @@
     <ClCompile Include="Engine\source\Systems\Coordinates\CoordinatesSystem.cpp">
       <Filter>Engine\source\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\source\Services\ResourcesManager\ResourcesManager.cpp">
+      <Filter>Engine\source\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\include\Systems\Graphics\GraphicsDevice\GraphicsData.hpp">
@@ -261,9 +261,6 @@
       <Filter>Engine\include\Systems\Input</Filter>
     </ClInclude>
     <ClInclude Include="Engine\include\Resources\IResource.hpp">
-      <Filter>Engine\include\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\include\Services\ResourcesManager\ResourceManager.hpp">
       <Filter>Engine\include\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Engine\include\Systems\Graphics\Rendering\RenderSystem.hpp">
@@ -320,7 +317,7 @@
     <ClInclude Include="Engine\include\Resources\TextureResource.hpp">
       <Filter>Engine\include\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\include\Components\IRComponentService.hpp">
+    <ClInclude Include="Engine\include\Components\ELComponentService.hpp">
       <Filter>Engine\include\Components</Filter>
     </ClInclude>
     <ClInclude Include="Engine\include\Systems\Physics\PhysicsSystem.hpp">
@@ -328,6 +325,12 @@
     </ClInclude>
     <ClInclude Include="Engine\include\Systems\Coordinates\CoordinatesSystem.hpp">
       <Filter>Engine\include\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Components.hpp">
+      <Filter>Engine\include\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Services\ResourcesManager\ResourcesManager.hpp">
+      <Filter>Engine\include\Resources</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

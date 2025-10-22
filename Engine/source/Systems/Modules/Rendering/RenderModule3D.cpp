@@ -75,7 +75,6 @@ namespace Rendering
 				Components::GlobalTransformComponent& gt = entitySpace.GetComponent<Components::GlobalTransformComponent>(entity_id);
 				if (SettingsFlags::UseCameraFrustrum && Math::LengthSquared(mesh.aabb.Size) > 0)
 				{
-					m_meshService->UpdateWorldAABB(mesh, gt.modelMatrix);	//TODO Replace with BuildAABB, UpdateCamera and Transforms in CoordinatesUpdateSystem (in the future)
 					if (!(m_cameraService->IsVisibleMesh(mesh, *camera)))
 					{
 						return;

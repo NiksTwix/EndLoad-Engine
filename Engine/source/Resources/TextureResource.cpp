@@ -2,7 +2,7 @@
 #include <stb_image.h>
 #include <Core\ServiceLocator.hpp>
 #include <Systems\Graphics\Windows\WindowsManager.hpp>
-#include <Services\ResourcesManager\ResourceManager.hpp>
+#include <Services\ResourcesManager\ResourcesManager.hpp>
 #include <Resources/TextureResource.hpp>
 
 
@@ -33,7 +33,7 @@ namespace Resources
 		//Calls graphic device to set up mesh
 
 		auto wm = Core::ServiceLocator::Get<Windows::WindowsManager>();
-		auto rm = Core::ServiceLocator::Get<ResourceManager>();
+		auto rm = Core::ServiceLocator::Get<ResourcesManager>();
 		if (!wm || !rm) return false;
 
 		//Getting current render device/context
@@ -54,7 +54,7 @@ namespace Resources
 	{
 		if (m_dataID == Definitions::InvalidID || (m_state != ResourceState::Initialized && m_state != ResourceState::NeedReinit)) return false;
 		auto wm = Core::ServiceLocator::Get<Windows::WindowsManager>();
-		auto rm = Core::ServiceLocator::Get<ResourceManager>();
+		auto rm = Core::ServiceLocator::Get<ResourcesManager>();
 		if (!wm || !rm) return false;
 
 		//Getting current render device/context

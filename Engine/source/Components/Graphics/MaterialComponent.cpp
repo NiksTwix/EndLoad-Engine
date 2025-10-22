@@ -3,20 +3,15 @@
 
 namespace Components
 {
-	void MaterialComponentService::Init()
+	MaterialComponentService::MaterialComponentService()
 	{
-	}
-	void MaterialComponentService::Update(ECS::EntitySpace* eSpace)
-	{
-		m_eSpace = eSpace;
-	}
-	void MaterialComponentService::Shutdown()
-	{
+		m_stringType = "Material";
+		m_ComponentType = typeid(MaterialComponent);
 	}
 
 	void MaterialComponentService::SetResourceShaderData(MaterialComponent& component, Resources::ResourceID shader_resource) const
 	{
-		auto* rm = Core::ServiceLocator::Get<Resources::ResourceManager>();
+		auto* rm = Core::ServiceLocator::Get<Resources::ResourcesManager>();
 		if (!rm) return; // TODO error
 		auto resourceFrame = rm->GetActiveFrame();
 		if (!resourceFrame) return; //TODO error
@@ -35,7 +30,7 @@ namespace Components
 
 	void MaterialComponentService::SetResourceMaterialData(MaterialComponent& component, Resources::ResourceID material_resource, bool generate_textures) const
 	{
-		auto* rm = Core::ServiceLocator::Get<Resources::ResourceManager>();
+		auto* rm = Core::ServiceLocator::Get<Resources::ResourcesManager>();
 		if (!rm) return; // TODO error
 		auto resourceFrame = rm->GetActiveFrame();
 		if (!resourceFrame) return; //TODO error
@@ -61,7 +56,7 @@ namespace Components
 	}
 	bool MaterialComponentService::UpdateResourceState(ECS::EntityID entity)
 	{
-		auto* rm = Core::ServiceLocator::Get<Resources::ResourceManager>();
+		auto* rm = Core::ServiceLocator::Get<Resources::ResourcesManager>();
 
 		MaterialComponent component = m_eSpace->GetComponent<MaterialComponent>(entity);
 

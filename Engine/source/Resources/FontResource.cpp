@@ -2,7 +2,7 @@
 #include <Services\Diagnostics\Logger\Logger.hpp>
 #include <Core\ServiceLocator.hpp>
 #include <Systems\Graphics\Windows\WindowsManager.hpp>
-#include <Services\ResourcesManager\ResourceManager.hpp>
+#include <Services\ResourcesManager\ResourcesManager.hpp>
 namespace Resources 
 {
 	bool Resources::FontResource::Init()
@@ -80,7 +80,7 @@ namespace Resources
 	bool FontResource::GenerateBitmap()
 	{
 		if (!face || Core::ServiceLocator::Get<Windows::WindowsManager>()->GetRenderWindow() == nullptr) return false;
-		auto active_window = Core::ServiceLocator::Get<Resources::ResourceManager>()->GetActiveWindow();
+		auto active_window = Core::ServiceLocator::Get<Resources::ResourcesManager>()->GetActiveWindow();
 
 		if (active_window == Definitions::InvalidID) return false;
 
@@ -148,7 +148,7 @@ namespace Resources
 	}
 	bool FontResource::Uninit()
 	{
-		auto active_window = Core::ServiceLocator::Get<Resources::ResourceManager>()->GetActiveWindow();
+		auto active_window = Core::ServiceLocator::Get<Resources::ResourcesManager>()->GetActiveWindow();
 
 		if (active_window == Definitions::InvalidID || active_window != m_ownerWindow) return false;
 

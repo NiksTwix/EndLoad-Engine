@@ -33,9 +33,10 @@ namespace Components
 
 	};
 
-	class CameraComponentService: public ECS::IComponentService
+	class CameraComponentService: public ELComponentService
 	{
 	public:
+		CameraComponentService();
 		CameraComponent CreateCamera(int width, int height, ProjectionType projection_type, float fov = 90, float ortho_size = 10.0f);
 
 		void UpdateProjectionMatrix(CameraComponent& cam, int width, int height, ProjectionType projection_type, float fov = 90);
@@ -48,9 +49,6 @@ namespace Components
 
 		void UpdateFrustumCulling(CameraComponent& cam);
 		void UpdateCameraData(Scenes::SceneContext* context, ECS::EntityID entity);
-		void Init() override;
-		void Update(ECS::EntitySpace* eSpace) override;
-		void Shutdown() override;
 
 		bool IsVisibleMesh(const Components::MeshComponent& mesh, const CameraComponent& camera);
 	};

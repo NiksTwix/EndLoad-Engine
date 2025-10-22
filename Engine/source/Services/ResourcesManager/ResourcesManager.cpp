@@ -1,10 +1,10 @@
-#include <Services\ResourcesManager\ResourceManager.hpp>
+#include <Services\ResourcesManager\ResourcesManager.hpp>
 
 
 namespace Resources
 {
 
-	void ResourceManager::Shutdown()
+	void ResourcesManager::Shutdown()
 	{
 		for (auto& k:m_resources) 
 		{
@@ -14,11 +14,11 @@ namespace Resources
 		m_isValid = false;
 	}
 
-	void ResourceManager::AttachStaticResources(const std::vector<std::shared_ptr<Resources::IResource>>& resources)
+	void ResourcesManager::AttachStaticResources(const std::vector<std::shared_ptr<Resources::IResource>>& resources)
 	{
 		if (m_activeWindow == Definitions::InvalidID) 
 		{
-			Diagnostics::Logger::Get().SendMessage("(ResourceManager) Invalid active window.");
+			Diagnostics::Logger::Get().SendMessage("(ResourcesManager) Invalid active window.");
 			return;
 		}
 
@@ -29,24 +29,24 @@ namespace Resources
 	}
 
 
-	ResourceID ResourceManager::AttachResourceToFrame(std::shared_ptr<IResource> resource)
+	ResourceID ResourcesManager::AttachResourceToFrame(std::shared_ptr<IResource> resource)
 	{
 		auto frame = GetActiveFrame();
 		if (!frame)
 		{
-			Diagnostics::Logger::Get().SendMessage("(ResourceManager) Attaching of resource failed: active frame is invalid.", Diagnostics::MessageType::Error);
+			Diagnostics::Logger::Get().SendMessage("(ResourcesManager) Attaching of resource failed: active frame is invalid.", Diagnostics::MessageType::Error);
 			return Definitions::InvalidID; 
 		}
 		return frame->AddStaticResource(resource);
 	}
 
-	ResourcesFrame* ResourceManager::GetActiveFrame()
+	ResourcesFrame* ResourcesManager::GetActiveFrame()
 	{
 		if (m_activeWindow == Definitions::InvalidID) return nullptr;
 		return m_resources.count(m_activeWindow) ? m_resources.at(m_activeWindow).get() : nullptr;
 	}
 
-	void ResourceManager::SetActiveWindow(Windows::WindowID new_active_window)
+	void ResourcesManager::SetActiveWindow(Windows::WindowID new_active_window)
 	{
 		m_activeWindow = new_active_window;
 		if (m_resources.count(m_activeWindow) == 0 && m_activeWindow != Definitions::InvalidID) 
@@ -55,7 +55,7 @@ namespace Resources
 		}
 	}
 
-	void ResourceManager::ClearWindowData(Windows::WindowID id)
+	void ResourcesManager::ClearWindowData(Windows::WindowID id)
 	{
 		if (m_resources.count(id))
 		{
@@ -64,7 +64,7 @@ namespace Resources
 		}
 	}
 
-	void ResourceManager::ClearWindowCache(Windows::WindowID id)
+	void ResourcesManager::ClearWindowCache(Windows::WindowID id)
 	{
 		if (m_resources.count(id))
 		{
@@ -72,7 +72,7 @@ namespace Resources
 		}
 	}
 
-	void ResourceManager::Init()
+	void ResourcesManager::Init()
 	{
 		if (m_isValid) return; m_isValid = true;
 	}

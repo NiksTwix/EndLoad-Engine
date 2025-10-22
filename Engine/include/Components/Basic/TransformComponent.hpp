@@ -1,8 +1,7 @@
 ﻿#pragma once
 #include <ELMath\include\Basis.hpp>
 #include <ELMath\include\MathFunctions.hpp>
-#include <ELECS\ECS.hpp>
-
+#include <Components/ELComponentService.hpp>
 
 namespace Scenes 
 {
@@ -28,7 +27,7 @@ namespace Components
 	};
 
 
-	class TransformComponentService : public ECS::IComponentService
+	class TransformComponentService : public ELComponentService
 	{
 	private:
 		static void MergeTransforms(LocalTransformComponent& child, const LocalTransformComponent& parent);
@@ -38,9 +37,6 @@ namespace Components
 	public:
 		TransformComponentService();
 
-		virtual void Init() override;
-		virtual void Shutdown() override;
-
 		void UpdateSingleGlobalTransform(ECS::EntityID id, Scenes::SceneContext& context);
 		void UpdateGlobalTransforms();
 		void Translate(ECS::EntityID entity, Math::Vector3 translation);
@@ -49,9 +45,6 @@ namespace Components
 		void RotateGlobal(ECS::EntityID entity, Math::Vector3 axis, float value);
 		Math::Matrix4x4 GetModelMatrix(LocalTransformComponent& transform);
 		Math::Matrix4x4 GetModelMatrix(GlobalTransformComponent& transform);
-
-		void Update(ECS::EntitySpace* eSpace) override;
-
 		//std::unordered_map<std::string, ECS::ESDL::ESDLType> GetComponentFields(void* component) override;
 		//void AddComponentByFields(ECS::EntityID id, std::unordered_map<std::string, ECS::ESDL::ESDLType> field) override;
 	};

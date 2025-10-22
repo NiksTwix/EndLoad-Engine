@@ -2,7 +2,7 @@
 #include "Window.hpp"
 #include <Core\IServices.hpp>
 #include <Core\ServiceLocator.hpp>
-#include <Services/ResourcesManager/ResourceManager.hpp>
+#include <Services/ResourcesManager/ResourcesManager.hpp>
 
 
 
@@ -39,7 +39,7 @@ namespace Windows
 		template<typename GraphicsDevice>
 		std::shared_ptr<Window> CreateWindow(Math::Vector2 resolution, std::string title)
 		{
-			auto* resource_manager = Core::ServiceLocator::Get<Resources::ResourceManager>();
+			auto* resource_manager = Core::ServiceLocator::Get<Resources::ResourcesManager>();
 			std::shared_ptr<Window> window = std::make_shared<Window>(resolution, title);
 
 			window->SetGraphicsDevice<GraphicsDevice>();

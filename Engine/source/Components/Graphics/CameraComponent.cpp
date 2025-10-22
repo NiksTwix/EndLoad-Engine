@@ -3,21 +3,11 @@
 #include <Services\Scenes\SceneContext.hpp>
 namespace Components 
 {
-    void CameraComponentService::Init()
+    CameraComponentService::CameraComponentService()
     {
-
+        m_stringType = "Camera";
+        m_ComponentType = typeid(CameraComponent);
     }
-
-
-    void CameraComponentService::Shutdown()
-    {
-    }
-
-    void CameraComponentService::Update(ECS::EntitySpace* eSpace)
-    {
-        m_eSpace = eSpace;
-    }
-
 
     CameraComponent CameraComponentService::CreateCamera(int width, int height, ProjectionType projection_type, float fov, float ortho_size)
     {

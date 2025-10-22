@@ -11,15 +11,6 @@ namespace Components
 		m_ComponentType = typeid(LocalTransformComponent);
 	}
 
-	void TransformComponentService::Init()
-	{
-
-	}
-
-	void TransformComponentService::Shutdown()
-	{
-	}
-
 	void TransformComponentService::UpdateSingleGlobalTransform(ECS::EntityID id, Scenes::SceneContext& context)
 	{
 		LocalTransformComponent local = LocalTransformComponent(m_eSpace->GetComponent<LocalTransformComponent>(id));
@@ -185,10 +176,5 @@ namespace Components
 				dirty_queue.push(child);
 			}
 		}
-	}
-
-	void TransformComponentService::Update(ECS::EntitySpace* eSpace)
-	{
-		m_eSpace = eSpace;
 	}
 }

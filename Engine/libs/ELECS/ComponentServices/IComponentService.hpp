@@ -28,24 +28,27 @@ namespace ECS
 		EntitySpace* m_eSpace = nullptr;
 
 	public:
-		IComponentService() {}
+		IComponentService() = default;
 		~IComponentService() = default;
 
 		IComponentService(const IComponentService&) = delete;
 		IComponentService& operator=(const IComponentService&) = delete;
 
-		virtual void Init() = 0;
+		virtual void Init() {};
 
-		virtual void Update(EntitySpace* eSpace) = 0;
-		virtual void Shutdown() = 0;
+		virtual void Update(EntitySpace* eSpace)	//If overwrite set m_eSpace = eSpace;
+		{
+			m_eSpace = eSpace;
+		}
+		virtual void Shutdown() {};
 
 		std::type_index GetComponentType() { return m_ComponentType; }
 		std::string GetStringComponentType() { return m_stringType; }
 		//Serialization
 
-		virtual std::unordered_map<std::string, ECS::ESDL::ESDLType> GetComponentFields(void* component) = 0;			//Return data fields of components
+		virtual std::unordered_map<std::string, ECS::ESDL::ESDLType> GetComponentFields(void* component) { return std::unordered_map<std::string, ECS::ESDL::ESDLType>(); };		//Return data fields of components
 		
-		virtual void AddComponentByFields(EntityID id, std::unordered_map<std::string, ECS::ESDL::ESDLType> fields) = 0;
+		virtual void AddComponentByFields(EntityID id, std::unordered_map<std::string, ECS::ESDL::ESDLType> fields) {};
 
 		virtual void UpdateComponent(EntityID entity) {};
 	};

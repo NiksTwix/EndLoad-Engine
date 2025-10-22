@@ -1,5 +1,5 @@
 #include <Services\Scenes\SceneManager.hpp>
-//#include <Components\Components.hpp>
+#include <Components\Components.hpp>
 
 namespace Scenes 
 {
@@ -49,10 +49,10 @@ namespace Scenes
 
 		ECS::CSL& csl = scene->GetEntitySpace().GetServiceLocator();
 
-		//csl.Register<LocalTransformComponent, TransformService>();
-		//csl.Register<CameraComponent, CameraService>();
-		//csl.Register<MeshComponent, MeshService>();
-		//csl.Register<MaterialComponent, MaterialService>();
+		csl.Register<Components::LocalTransformComponent, Components::TransformComponentService>();
+		csl.Register<Components::CameraComponent, Components::CameraComponentService>();
+		csl.Register<Components::MeshComponent, Components::MeshComponentService>();
+		csl.Register<Components::MaterialComponent, Components::MaterialComponentService>();
 		//csl.Register<SpriteComponent, SpriteService>();
 		//csl.Register<ScriptComponent, ScriptService>();
 		//csl.Register<ELScriptComponent, ELScriptService>();

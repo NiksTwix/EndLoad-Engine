@@ -2,7 +2,7 @@
 #include <Services/Importing/AssimpLoader.hpp>
 #include <Services/Diagnostics/Logger/Logger.hpp>
 #include <Systems\Graphics\Windows\WindowsManager.hpp>
-#include <Services\ResourcesManager\ResourceManager.hpp>
+#include <Services\ResourcesManager\ResourcesManager.hpp>
 #include <Core\ServiceLocator.hpp>
 #include <ELDCL\include\Loading\Loader.hpp>
 #include <Services/Importing/Base64Decoder.hpp>
@@ -318,7 +318,7 @@ namespace Resources
 		//Calls graphic device to set up mesh
         
 		auto wm = Core::ServiceLocator::Get<Windows::WindowsManager>();
-		auto rm = Core::ServiceLocator::Get<ResourceManager>();
+		auto rm = Core::ServiceLocator::Get<ResourcesManager>();
 		if (!wm || !rm) return false;
 
 		//Getting current render device/context
@@ -339,7 +339,7 @@ namespace Resources
 	{
 		if (m_dataID == Definitions::InvalidID || (m_state != ResourceState::Initialized && m_state != ResourceState::NeedReinit)) return false;
 		auto wm = Core::ServiceLocator::Get<Windows::WindowsManager>();
-		auto rm = Core::ServiceLocator::Get<ResourceManager>();
+		auto rm = Core::ServiceLocator::Get<ResourcesManager>();
 		if (!wm || !rm) return false;
 
 		//Getting current render device/context
@@ -356,7 +356,7 @@ namespace Resources
 	}
 	void MeshResource::Release()
 	{
-		Uninit();	// ResourceManager also calls Uninit() before clearing, but we must provide resource clearing;
+		Uninit();	// ResourcesManager also calls Uninit() before clearing, but we must provide resource clearing;
 
 		m_data = Graphics::MeshData();
 

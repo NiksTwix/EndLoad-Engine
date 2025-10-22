@@ -1,5 +1,5 @@
 #pragma once
-#include <Components/IRComponentService.hpp>
+#include <Components/ELComponentService.hpp>
 #include <Systems/Graphics/GraphicsDevice/GraphicsData.hpp>
 #include <Resources/MeshResource.hpp>
 namespace Components
@@ -23,10 +23,7 @@ namespace Components
 	class MeshComponentService : public IRComponentService
 	{
 	public:
-		void Init() override;
-		void Update(ECS::EntitySpace* eSpace) override;
-		void Shutdown() override;
-
+		MeshComponentService();
 		void SetResourceData(MeshComponent& component, Resources::ResourceID new_resource) const;
 		bool UpdateResourceState(ECS::EntityID entity) override;
 

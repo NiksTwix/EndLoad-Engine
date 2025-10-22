@@ -141,7 +141,7 @@ namespace Windows
 		if (m_closed) return;
 		//Resource's clearing
 
-		//Call ResourceManager to resource clear of this window
+		//Call ResourcesManager to resource clear of this window
 
 
 		glfwDestroyWindow(m_window);

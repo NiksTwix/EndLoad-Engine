@@ -6,7 +6,7 @@ namespace Windows
 {
 	void WindowsManager::HandleClosedWindows()
 	{
-		auto* resource_manager = Core::ServiceLocator::Get<Resources::ResourceManager>();
+		auto* resource_manager = Core::ServiceLocator::Get<Resources::ResourcesManager>();
 
 		for (auto& [id, window] : m_windows)
 		{
@@ -45,7 +45,7 @@ namespace Windows
 			return;
 		}
 		m_renderWindow = m_windows[windowId].get();
-		Core::ServiceLocator::Get<Resources::ResourceManager>()->SetActiveWindow(windowId);
+		Core::ServiceLocator::Get<Resources::ResourcesManager>()->SetActiveWindow(windowId);
 		m_windows[windowId]->MakeCurrent();
 	}
 	void WindowsManager::Update()

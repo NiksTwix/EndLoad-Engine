@@ -3,6 +3,7 @@
 #include <Systems/Graphics/Rendering/RenderSystem.hpp>
 #include <Systems/Physics/PhysicsSystem.hpp>
 #include <Systems/Coordinates/CoordinatesSystem.hpp>
+#include <Services/ResourcesManager/ResourcesManager.hpp>
 #include <Core/EngineCore.hpp>
 
 using namespace Core;
@@ -77,12 +78,16 @@ void EngineCore::Init()
 {
 	Diagnostics::Logger::Get().SendMessage("(Core) Core initialization has started.", Diagnostics::MessageType::Info);
 
-	//System registration
+	//Services registration
+	ServiceLocator::Set<Resources::ResourcesManager, Resources::ResourcesManager>();
+	ServiceLocator::Set<Scenes::SceneManager, Scenes::SceneManager>();
+
+	//Systems registration
 	ServiceLocator::Set<Windows::WindowsManager, Windows::WindowsManager>();
 	
 	ServiceLocator::Set<Input::InputSystem, Input::InputSystem>();
 	ServiceLocator::Set<Coordinates::CoordinatesSystem, Coordinates::CoordinatesSystem>();
-	ServiceLocator::Set < Rendering::RenderSystem, Rendering::RenderSystem>();
+	ServiceLocator::Set <Rendering::RenderSystem, Rendering::RenderSystem>();
 	ServiceLocator::Set<Physics::PhysicsSystem,Physics::PhysicsSystem>();
 	Diagnostics::Logger::Get().SendMessage("(Core) Core initialization has ended.", Diagnostics::MessageType::Info);
 }

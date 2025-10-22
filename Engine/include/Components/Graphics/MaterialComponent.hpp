@@ -1,5 +1,5 @@
 #pragma once
-#include <Components/IRComponentService.hpp>
+#include <Components/ELComponentService.hpp>
 #include <Systems/Graphics/GraphicsDevice/GraphicsData.hpp>
 #include <Resources/ShaderResource.hpp>
 #include <Resources/MaterialResource.hpp>
@@ -22,9 +22,7 @@ namespace Components
 	class MaterialComponentService : public IRComponentService
 	{
 	public:
-		void Init() override;
-		void Update(ECS::EntitySpace* eSpace) override;
-		void Shutdown() override;
+		MaterialComponentService();
 		void SetResourceShaderData(MaterialComponent& component, Resources::ResourceID shader_resource) const;
 		void SetResourceMaterialData(MaterialComponent& component, Resources::ResourceID material_resource, bool generate_textures = false) const;
 		bool UpdateResourceState(ECS::EntityID entity) override;

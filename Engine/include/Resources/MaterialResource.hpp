@@ -71,11 +71,11 @@ struct MaterialComponent {
 
     // ֱûסענûו דועעונû
     const MaterialData* GetMaterialData() const {
-        return ResourceManager::Get()->GetResource<MaterialResource>(materialDataId);
+        return ResourcesManager::Get()->GetResource<MaterialResource>(materialDataId);
     }
 
     const TextureResource* GetAlbedoTexture() const {
-        return ResourceManager::Get()->GetResource<TextureResource>(albedoTextureId);
+        return ResourcesManager::Get()->GetResource<TextureResource>(albedoTextureId);
     }
 };
 */

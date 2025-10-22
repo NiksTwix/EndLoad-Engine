@@ -145,7 +145,7 @@
     <ClCompile Include="Engine\source\Services\Diagnostics\ProcessObserver\ProcessObserver.cpp" />
     <ClCompile Include="Engine\source\Services\Importing\AssimpLoader.cpp" />
     <ClCompile Include="Engine\source\Services\Importing\Base64Decoder.cpp" />
-    <ClCompile Include="Engine\source\Services\ResourcesManager\ResourceManager.cpp" />
+    <ClCompile Include="Engine\source\Services\ResourcesManager\ResourcesManager.cpp" />
     <ClCompile Include="Engine\source\Services\Scenes\SceneManager.cpp" />
     <ClCompile Include="Engine\source\Systems\Coordinates\CoordinatesSystem.cpp" />
     <ClCompile Include="Engine\source\Systems\Graphics\GraphicsDevice\OpenGL\OpenGLDevice.cpp" />
@@ -159,11 +159,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\include\Components\Basic\TransformComponent.hpp" />
+    <ClInclude Include="Engine\include\Components\Components.hpp" />
     <ClInclude Include="Engine\include\Components\Graphics\CameraComponent.hpp" />
     <ClInclude Include="Engine\include\Components\Graphics\MaterialComponent.hpp" />
     <ClInclude Include="Engine\include\Components\Graphics\MeshComponent.hpp" />
     <ClInclude Include="Engine\include\Components\Graphics\SpriteComponent.hpp" />
-    <ClInclude Include="Engine\include\Components\IRComponentService.hpp" />
+    <ClInclude Include="Engine\include\Components\ELComponentService.hpp" />
     <ClInclude Include="Engine\include\Core\EngineCore.hpp" />
     <ClInclude Include="Engine\include\Core\IServices.hpp" />
     <ClInclude Include="Engine\include\Core\ServiceLocator.hpp" />
@@ -179,7 +180,7 @@
     <ClInclude Include="Engine\include\Services\Diagnostics\ProcessObserver\ProcessObserver.hpp" />
     <ClInclude Include="Engine\include\Services\Importing\AssimpLoader.hpp" />
     <ClInclude Include="Engine\include\Services\Importing\Base64Decoder.hpp" />
-    <ClInclude Include="Engine\include\Services\ResourcesManager\ResourceManager.hpp" />
+    <ClInclude Include="Engine\include\Services\ResourcesManager\ResourcesManager.hpp" />
     <ClInclude Include="Engine\include\Services\Scenes\SceneContext.hpp" />
     <ClInclude Include="Engine\include\Services\Scenes\SceneManager.hpp" />
     <ClInclude Include="Engine\include\SpecialHeaders\Definitions.hpp" />

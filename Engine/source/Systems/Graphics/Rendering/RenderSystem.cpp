@@ -4,7 +4,7 @@
 #include <Core\ServiceLocator.hpp>
 #include <Services\Diagnostics\Logger\Logger.hpp>
 #include <Services\Diagnostics\ProcessObserver\ProcessObserver.hpp>
-#include <Services/ResourcesManager/ResourceManager.hpp>
+#include <Services/ResourcesManager/ResourcesManager.hpp>
 #include <Systems/Modules/Rendering/RenderModule3D.hpp>
 namespace Rendering
 {
@@ -58,7 +58,7 @@ namespace Rendering
 					if (viewport) RenderScene(viewport, scene);
 				}
 				window->SwapFrameBuffers();
-				Core::ServiceLocator::Get<Resources::ResourceManager>()->ClearWindowCache(window->GetID());
+				Core::ServiceLocator::Get<Resources::ResourcesManager>()->ClearWindowCache(window->GetID());
 			}
 			catch (const std::exception& e) {
 				Diagnostics::Logger::Get().SendMessage("(RenderSystem) Rendering error (Window " + std::to_string(windowId) + "): " + e.what() + ".", Diagnostics::MessageType::Error);
@@ -70,7 +70,7 @@ namespace Rendering
 	{
 		auto* wm = Core::ServiceLocator::Get<Windows::WindowsManager>();
 		auto* sm = Core::ServiceLocator::Get<Scenes::SceneManager>();
-		auto* rm = Core::ServiceLocator::Get<Resources::ResourceManager>();
+		auto* rm = Core::ServiceLocator::Get<Resources::ResourcesManager>();
 		auto& l = Diagnostics::Logger::Get();
 
 		if (!wm || !sm)
@@ -116,7 +116,7 @@ namespace Rendering
 			{
 				auto r_window = wm->GetRenderWindow();
 				wm->SetRenderWindow(window);
-				auto* rm = Core::ServiceLocator::Get<Resources::ResourceManager>();
+				auto* rm = Core::ServiceLocator::Get<Resources::ResourcesManager>();
 				rm->GetActiveFrame()->ClearStaticResources();
 				if (r_window != nullptr) wm->SetRenderWindow(r_window->GetID());
 			}
@@ -157,7 +157,6 @@ namespace Rendering
 	{
 		if (m_firstFrame) FirstFrameInitialization();
 		float delta_time = Diagnostics::ProcessObserver::GetFrameTimeMSST();      
-		scene->GetEntitySpace().UpdateAllServices();
 		if (!scene || !viewport) return;
 		auto& CSL = scene->GetEntitySpace().GetServiceLocator();
 

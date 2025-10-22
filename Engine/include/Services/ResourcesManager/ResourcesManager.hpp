@@ -152,7 +152,7 @@ namespace Resources
 		void CleanupUnusedResources();
 	};
 
-	class ResourceManager : public Core::IService 
+	class ResourcesManager : public Core::IService 
 	{
 	private:
 		Windows::WindowID m_activeWindow = Definitions::InvalidID;
@@ -170,7 +170,7 @@ namespace Resources
 
 			if (!resource->Load(path)) 
 			{
-				Diagnostics::Logger::Get().SendMessage("(ResourceManager) Loaging of resource on path \"" + path + "\" failed.", Diagnostics::MessageType::Error);
+				Diagnostics::Logger::Get().SendMessage("(ResourcesManager) Loaging of resource on path \"" + path + "\" failed.", Diagnostics::MessageType::Error);
 				return nullptr;
 			}
 			return resource;
