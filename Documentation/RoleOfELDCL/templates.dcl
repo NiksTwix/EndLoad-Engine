@@ -17,12 +17,12 @@ tag::mesh Mesh1
 {
 	key Name: "Mesh1";
 	DecodingFormat: "base64"; //or "text"
-	Vertices: "AACAPwAAAEAAAIBCAACARQA=...";		//Vector3
+	Positions: "AACAPwAAAEAAAIBCAACARQA=...";		//Vector3
 	Normals: "AACAPwAAAEAAAIBCAACARQA=...";			//Vector3
 	TextureCoordinates: "AACAPwAAAEAAAIBCAACARQA=...";	//Vector2
 	Indices: "AAAAAAEAAgA..."; 
 	HasTangents: false;
-
+	HasBitangents: false;
 	Tangents: "AACAPwAAAEAAAIBCAACARQA=...";		//Vector3
 	Bitangents: "AACAPwAAAEAAAIBCAACARQA=...";		//Vector3
 	

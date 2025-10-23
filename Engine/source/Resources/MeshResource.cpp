@@ -9,7 +9,10 @@
 
 namespace Resources
 {
-	MeshResource::~MeshResource()
+    MeshResource::MeshResource()
+    {
+    }
+    MeshResource::~MeshResource()
 	{
 		Release();
 	}
@@ -45,7 +48,7 @@ namespace Resources
         }
 
         std::vector<std::string> field_names = {
-            "DecodingFormat", "Name", "Vertices", "Indices", "Normals",
+            "DecodingFormat", "Name", "Positions", "Indices", "Normals",
             "Tangents", "Bitangents", "VertexCount", "TextureCoordinates", "IndexCount", "HasTangents"
         };
 
@@ -69,38 +72,38 @@ namespace Resources
         }
 
         // Декодируем основные данные
-        std::vector<Math::Vector3> vertices;
+        std::vector<Math::Vector3> positions;
         std::vector<Math::Vector3> normals;
         std::vector<Math::Vector2> texture_coords;
         std::vector<Definitions::uint> indices;
 
-        if (fields["Vertices"] != nullptr && !fields["Vertices"]->value.strVal.empty()) {
-            std::string vertices_data = fields["Vertices"]->value.strVal;
+        if (fields["Positions"] != nullptr && !fields["Positions"]->value.strVal.empty()) {
+            std::string positions_data = fields["Positions"]->value.strVal;
             if (decoding_format == "base64") {
-                std::vector<float> raw_vertices = Importing::Base64Decoder::Get().DecodeFloatArray(vertices_data);
-                if (raw_vertices.size() >= vertex_count * 3) {
-                    vertices.reserve(vertex_count); 
+                std::vector<float> raw_positions = Importing::Base64Decoder::Get().DecodeFloatArray(positions_data);
+                if (raw_positions.size() >= vertex_count * 3) {
+                    positions.reserve(vertex_count); 
 
                     for (size_t i = 0; i < vertex_count * 3; i += 3)  
                     {
                         Math::Vector3 current;
-                        current.x = raw_vertices[i];
-                        current.y = raw_vertices[i + 1];
-                        current.z = raw_vertices[i + 2];
-                        vertices.push_back(current);
+                        current.x = raw_positions[i];
+                        current.y = raw_positions[i + 1];
+                        current.z = raw_positions[i + 2];
+                        positions.push_back(current);
                     }
                 }
                 else {
                     Diagnostics::Logger::Get().SendMessage(
-                        "(MeshResource) Vertex data size mismatch. Expected: " +
+                        "(MeshResource) Positions data size mismatch. Expected: " +
                         std::to_string(vertex_count * 3) + ", got: " +
-                        std::to_string(raw_vertices.size()),
+                        std::to_string(raw_positions.size()),
                         Diagnostics::MessageType::Warning
                     );
                 }
             }
             else {
-                vertices = Math::FromStringToV3(vertices_data, ',');
+                positions = Math::FromStringToV3(positions_data, ',');
             }
         }
 
@@ -181,7 +184,7 @@ namespace Resources
         std::vector<Math::Vector3> tangents;
         std::vector<Math::Vector3> bitangents;
         bool has_tangents = (fields["HasTangents"] != nullptr && fields["HasTangents"]->value.boolVal);
-
+        bool has_bitangents = (fields["HasBitangents"] != nullptr && fields["HasBitangents"]->value.boolVal);
         if (has_tangents) {
             if (fields["Tangents"] != nullptr && !fields["Tangents"]->value.strVal.empty()) {
                 std::string tangents_data = fields["Tangents"]->value.strVal;
@@ -210,8 +213,10 @@ namespace Resources
                 }
                 else {
                     tangents = Math::FromStringToV3(tangents_data, ',');
-                }  
+                }
             }
+        }
+        if (has_bitangents) {
             if (fields["Bitangents"] != nullptr && !fields["Bitangents"]->value.strVal.empty()) {
                 std::string bitangents_data = fields["Bitangents"]->value.strVal;
                 if (decoding_format == "base64") {
@@ -243,10 +248,10 @@ namespace Resources
             }
         }
 
-        if (vertices.size() != normals.size()) {
+        if (positions.size() != normals.size()) {
             Diagnostics::Logger::Get().SendMessage(
                 "(MeshResource) Vertex and normal count mismatch! Vertices: " +
-                std::to_string(vertices.size()) + ", Normals: " +
+                std::to_string(positions.size()) + ", Normals: " +
                 std::to_string(normals.size()),
                 Diagnostics::MessageType::Warning
             );
@@ -258,7 +263,7 @@ namespace Resources
         for (size_t i = 0; i < vertex_count; i++) {
             Math::Vertex vertex;
 
-            vertex.position = (i < vertices.size()) ? vertices[i] : Math::Vector3();
+            vertex.position = (i < positions.size()) ? positions[i] : Math::Vector3();
             vertex.normal = (i < normals.size()) ? normals[i] : Math::Vector3();
             vertex.texCoord = (i < texture_coords.size()) ? texture_coords[i] : Math::Vector2();
 

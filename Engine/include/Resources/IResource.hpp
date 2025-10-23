@@ -7,7 +7,7 @@
 namespace Resources
 {
 	enum class ResourceState {
-		NotLoaded,
+		NotLoaded = 0,
 		Loaded,     // Data loaded
 		Initialized, // Inited in memory
 		NeedReinit,
@@ -55,7 +55,7 @@ namespace Resources
 	protected:
 		std::string m_resourceName = "IResource";
 		std::string m_path;
-		ResourceState m_state;
+		ResourceState m_state =  ResourceState::NotLoaded;
 		Windows::WindowID m_ownerWindow = Definitions::InvalidID; // Place of init
 		template<typename T>
 		bool ValidateData(const std::any& data) const {

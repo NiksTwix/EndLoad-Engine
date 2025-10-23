@@ -1,12 +1,11 @@
 #include <Services/Importing/AssimpLoader.hpp>
 #include <Services/Diagnostics/Logger/Logger.hpp>
-
+#include <ELMath/include/MathFunctions.hpp>
+#include <Services/Importing/Base64Decoder.hpp>
 namespace Importing 
 {
     const aiScene* AssimpLoader::LoadAssimpScene(const std::string& path)const
     {
-        Assimp::Importer importer;
-
         // Более полный набор флагов обработки
         unsigned int flags =
             aiProcess_Triangulate |           // Все примитивы в треугольники
@@ -23,12 +22,12 @@ namespace Importing
             aiProcess_OptimizeMeshes        // Оптимизация мешей
             ;            
 
-        const aiScene* scene = importer.ReadFile(path, flags);
+        const aiScene* scene = importer->ReadFile(path, flags);
 
         if (!scene) {
             Diagnostics::Logger::Get().SendMessage(
                 "(AssimpLoader) Failed to load scene: " + path +
-                " Error: " + importer.GetErrorString(),
+                " Error: " + importer->GetErrorString(),
                 Diagnostics::MessageType::Error
             );
             return nullptr;
@@ -47,7 +46,7 @@ namespace Importing
             " Materials: " + std::to_string(scene->mNumMaterials),
             Diagnostics::MessageType::Info
         );
-
+        //importer.FreeScene();
         return scene;
     }
     Graphics::MaterialData  AssimpLoader::ExtractMaterialData(const aiMaterial* aiMat) const {
@@ -97,57 +96,7 @@ namespace Importing
     }
 
     void AssimpLoader::ExtractTextures(const aiMaterial* aiMat, Graphics::MaterialData& material) const {
-        // Albedo/Diffuse texture
-        //if (aiMat->GetTextureCount(aiTextureType_DIFFUSE) > 0) {
-        //    aiString path;
-        //    if (aiMat->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
-        //        material.raw_textures[Graphics::TextureType::ALBEDO = ProcessTexturePath(path.C_Str());
-        //    }
-        //}
-        //else if (aiMat->GetTextureCount(aiTextureType_BASE_COLOR) > 0) {
-        //    aiString path;
-        //    if (aiMat->GetTexture(aiTextureType_BASE_COLOR, 0, &path) == AI_SUCCESS) {
-        //        material.albedoTexture = ProcessTexturePath(path.C_Str());
-        //    }
-        //}
-        //
-        //// Normal map
-        //if (aiMat->GetTextureCount(aiTextureType_NORMALS) > 0) {
-        //    aiString path;
-        //    if (aiMat->GetTexture(aiTextureType_NORMALS, 0, &path) == AI_SUCCESS) {
-        //        material.normalTexture = ProcessTexturePath(path.C_Str());
-        //    }
-        //}
-        //
-        //// Metallic/Roughness (может быть объединена)
-        //if (aiMat->GetTextureCount(aiTextureType_METALNESS) > 0) {
-        //    aiString path;
-        //    if (aiMat->GetTexture(aiTextureType_METALNESS, 0, &path) == AI_SUCCESS) {
-        //        material.metallicTexture = ProcessTexturePath(path.C_Str());
-        //    }
-        //}
-        //else if (aiMat->GetTextureCount(aiTextureType_UNKNOWN) > 0) {
-        //    // Иногда PBR текстуры лежат в UNKNOWN
-        //    aiString path;
-        //    if (aiMat->GetTexture(aiTextureType_UNKNOWN, 0, &path) == AI_SUCCESS) {
-        //        material.metallicTexture = ProcessTexturePath(path.C_Str());
-        //    }
-        //}
-        //// Emissive
-        //if (aiMat->GetTextureCount(aiTextureType_EMISSIVE) > 0) {
-        //    aiString path;
-        //    if (aiMat->GetTexture(aiTextureType_EMISSIVE, 0, &path) == AI_SUCCESS) {
-        //        material.emissionTexture = ProcessTexturePath(path.C_Str());
-        //    }
-        //}
-        //
-        //// Ambient Occlusion
-        //if (aiMat->GetTextureCount(aiTextureType_AMBIENT_OCCLUSION) > 0) {
-        //    aiString path;
-        //    if (aiMat->GetTexture(aiTextureType_AMBIENT_OCCLUSION, 0, &path) == AI_SUCCESS) {
-        //        material.occlusionTexture = ProcessTexturePath(path.C_Str());
-        //    }
-        //}
+
     }
 
     std::string AssimpLoader::ProcessTexturePath(const std::string& rawPath) const {
@@ -157,8 +106,13 @@ namespace Importing
     }
     Graphics::MeshData AssimpLoader::ExtractMeshGeometry(const aiMesh* ai_mesh) const
     {
+        if (!ai_mesh || ai_mesh->mNumVertices == 0) {
+            return Graphics::MeshData();
+        }
+
         std::vector<Math::Vertex> vertices;
         std::vector<Definitions::uint> indices;
+
         // Извлекаем вершины
         vertices.reserve(ai_mesh->mNumVertices);
         for (unsigned int i = 0; i < ai_mesh->mNumVertices; i++) {
@@ -170,20 +124,20 @@ namespace Importing
             vertex.position.z = ai_mesh->mVertices[i].z;
 
             // Нормали (если есть)
-            if (ai_mesh->HasNormals()) {
+            if (ai_mesh->HasNormals() && ai_mesh->mNormals) {
                 vertex.normal.x = ai_mesh->mNormals[i].x;
                 vertex.normal.y = ai_mesh->mNormals[i].y;
                 vertex.normal.z = ai_mesh->mNormals[i].z;
             }
 
             // Текстурные координаты (берем первый UV набор)
-            if (ai_mesh->HasTextureCoords(0)) {
+            if (ai_mesh->HasTextureCoords(0) && ai_mesh->mTextureCoords[0]) {
                 vertex.texCoord.x = ai_mesh->mTextureCoords[0][i].x;
                 vertex.texCoord.y = ai_mesh->mTextureCoords[0][i].y;
             }
 
             // Тангенты/битангенты (если есть)
-            if (ai_mesh->HasTangentsAndBitangents()) {
+            if (ai_mesh->HasTangentsAndBitangents() && ai_mesh->mTangents && ai_mesh->mBitangents) {
                 vertex.tangent.x = ai_mesh->mTangents[i].x;
                 vertex.tangent.y = ai_mesh->mTangents[i].y;
                 vertex.tangent.z = ai_mesh->mTangents[i].z;
@@ -197,17 +151,31 @@ namespace Importing
         }
 
         // Извлекаем индексы
-        indices.reserve(ai_mesh->mNumFaces * 3); // Все лица треугольные
-        for (unsigned int i = 0; i < ai_mesh->mNumFaces; i++) {
-            const aiFace& face = ai_mesh->mFaces[i];
-            // Assimp гарантирует треугольники из-за aiProcess_Triangulate
-            for (unsigned int j = 0; j < face.mNumIndices; j++) {
-                indices.push_back(face.mIndices[j]);
+        if (ai_mesh->mNumFaces > 0 && ai_mesh->mFaces) {
+            indices.reserve(ai_mesh->mNumFaces * 3);
+
+            for (unsigned int i = 0; i < ai_mesh->mNumFaces; i++) {
+                const aiFace& face = ai_mesh->mFaces[i];
+
+                // Проверяем корректность данных грани
+                if (!face.mIndices || face.mNumIndices == 0) {
+                    continue;
+                }
+
+                // Проверяем, что индексы в допустимом диапазоне
+                for (unsigned int j = 0; j < face.mNumIndices; j++) {
+                    if (face.mIndices[j] < ai_mesh->mNumVertices) {
+                        indices.push_back(face.mIndices[j]);
+                    }
+                    else {
+                        // Логируем ошибку или обрабатываем некорректный индекс
+                        continue;
+                    }
+                }
             }
         }
 
-        Graphics::MeshData meshData(vertices, indices);
-        return meshData;
+        return Graphics::MeshData(vertices, indices);
     }
 
     MeshImportResult AssimpLoader::LoadSingleMesh(const std::string& path) const {
@@ -220,7 +188,7 @@ namespace Importing
 
         // Берем первый меш
         const aiMesh* ai_mesh = scene->mMeshes[0];
-
+        if (!ai_mesh) return result;
         // Извлекаем геометрию
         result.mesh = ExtractMeshGeometry(ai_mesh);
 
@@ -233,6 +201,144 @@ namespace Importing
 
         // Проверяем на наличие костей (для анимации)
         //result.hasSkeleton = (ai_mesh->HasBones());
+
+        return result;
+    }
+    std::shared_ptr<DCL::Container> AssimpELDCLConverter::MeshToEDCLBlock(MeshImportResult& data, bool base64)
+    {
+        std::shared_ptr<DCL::Container> mesh = std::make_shared<DCL::Container>();
+
+        mesh->tag = "mesh";
+        mesh->name = "Mesh";
+
+        DCL::Field decfield("DecodingFormat", base64 ? "base64" : "text");
+
+        mesh->ordered_fields.push_back(decfield);
+
+        std::vector<float> positions_raw_data;
+        std::vector<float> normals_raw_data;
+        std::vector<float> bitangens_raw_data;
+        std::vector<float> tangens_raw_data;
+        std::vector<float> textcoords_raw_data;
+
+        bool has_tangent = true;
+        bool has_bitangent = true;
+        for (auto& v : data.mesh.vertices)
+        {
+            auto array = v.position.ToArray();
+            positions_raw_data.insert(positions_raw_data.end(), array.begin(), array.end());
+            array = v.normal.ToArray();
+            normals_raw_data.insert(normals_raw_data.end(), array.begin(), array.end());
+            array = v.texCoord.ToArray();
+            textcoords_raw_data.insert(textcoords_raw_data.end(), array.begin(), array.end());
+            array = v.tangent.ToArray();
+            tangens_raw_data.insert(tangens_raw_data.end(), array.begin(), array.end());
+            array = v.bitangent.ToArray();
+            bitangens_raw_data.insert(bitangens_raw_data.end(), array.begin(), array.end());
+            if (has_tangent && Math::LengthSquared(v.tangent) == 0) has_tangent = false;
+            if (has_bitangent && Math::LengthSquared(v.bitangent) == 0) has_bitangent = false;
+        }
+        //Bitangents or tangents are invalid
+        if (!has_bitangent) bitangens_raw_data.clear();
+        if (!has_tangent) tangens_raw_data.clear();
+        mesh->ordered_fields.push_back(DCL::Field("HasBitangents", has_bitangent));
+        mesh->ordered_fields.push_back(DCL::Field("Tangents", has_tangent));
+        if (base64)
+        {
+            std::string coded_v = Base64Decoder::Get().CodeFloatArray(positions_raw_data);
+            std::string coded_n = Base64Decoder::Get().CodeFloatArray(normals_raw_data);
+            std::string coded_t = Base64Decoder::Get().CodeFloatArray(textcoords_raw_data);
+
+            std::string coded_ta = Base64Decoder::Get().CodeFloatArray(tangens_raw_data);
+            std::string coded_bta = Base64Decoder::Get().CodeFloatArray(bitangens_raw_data);
+            std::string coded_i = Base64Decoder::Get().CodeUIntArray(data.mesh.indices);
+            mesh->ordered_fields.push_back(DCL::Field("Positions", coded_v));
+            mesh->ordered_fields.push_back(DCL::Field("Normals", coded_n));
+            mesh->ordered_fields.push_back(DCL::Field("TextureCoordinates", coded_t));
+            mesh->ordered_fields.push_back(DCL::Field("Tangents", coded_ta));
+            mesh->ordered_fields.push_back(DCL::Field("Bitangents", coded_bta));
+            mesh->ordered_fields.push_back(DCL::Field("Indices", coded_i));
+            mesh->ordered_fields.push_back(DCL::Field("IndexCount", (int)data.mesh.GetIndexCount()));
+            mesh->ordered_fields.push_back(DCL::Field("VertexCount", (int)data.mesh.GetVertexCount()));
+        }
+        if (!base64)
+        {
+            std::string coded_v;
+            for (float v : positions_raw_data)
+            {
+                coded_v += std::to_string(v);
+                coded_v += ",";
+            }
+            if (coded_v.size() > 0) coded_v.pop_back();
+
+            std::string coded_n;
+            for (float v : normals_raw_data)
+            {
+                coded_n += std::to_string(v);
+                coded_n += ",";
+            }
+            if (coded_n.size() > 0) coded_n.pop_back();
+            std::string coded_t;
+            for (float v : textcoords_raw_data)
+            {
+                coded_t += std::to_string(v);
+                coded_t += ",";
+            }
+            if (coded_t.size() > 0) coded_t.pop_back();
+            std::string coded_ta;
+            for (float v : tangens_raw_data)
+            {
+                coded_ta += std::to_string(v);
+                coded_ta += ",";
+            }
+            if (coded_ta.size() > 0) coded_ta.pop_back();
+            std::string coded_bta;
+            for (float v : bitangens_raw_data)
+            {
+                coded_bta += std::to_string(v);
+                coded_bta += ",";
+            }
+            if (coded_bta.size() > 0) coded_bta.pop_back();
+            std::string coded_i;
+            for (Definitions::uint v : data.mesh.indices)
+            {
+                coded_i += std::to_string(v);
+                coded_i += ",";
+            }
+            if (coded_i.size() > 0) coded_i.pop_back();
+            mesh->ordered_fields.push_back(DCL::Field("Positions", coded_v));
+            mesh->ordered_fields.push_back(DCL::Field("Normals", coded_n));
+            mesh->ordered_fields.push_back(DCL::Field("TextureCoordinates", coded_t));
+            mesh->ordered_fields.push_back(DCL::Field("Tangents", coded_ta));
+            mesh->ordered_fields.push_back(DCL::Field("Bitangents", coded_bta));
+            mesh->ordered_fields.push_back(DCL::Field("Indices", coded_i));
+            mesh->ordered_fields.push_back(DCL::Field("IndexCount", (int)data.mesh.GetIndexCount()));
+            mesh->ordered_fields.push_back(DCL::Field("VertexCount", (int)data.mesh.GetVertexCount()));
+        }
+        
+        return mesh;
+    }
+    std::shared_ptr<DCL::Container> AssimpELDCLConverter::MIRtoELDCLBlock(MeshImportResult& data, bool base64)
+    {
+        std::shared_ptr<DCL::Container> container = std::make_shared<DCL::Container>();
+        auto mesh = MeshToEDCLBlock(data, base64);
+        container->ordered_fields.push_back(DCL::Field("Mesh", mesh));
+        //MATERIAL
+        std::shared_ptr<DCL::Container> material = std::make_shared<DCL::Container>();
+
+
+
+
+        return container;
+    }
+    std::pair<std::string, std::string> AssimpELDCLConverter::MIRtoELDCLText(MeshImportResult& data, bool base64)
+    {
+        std::pair<std::string, std::string> result;
+
+        auto container = MIRtoELDCLBlock(data, base64);
+
+        auto* mesh_field = container->FindField("Mesh");
+        if (mesh_field) result.first = DCL::Serializator::Get().Serialize(mesh_field->container);
 
         return result;
     }
