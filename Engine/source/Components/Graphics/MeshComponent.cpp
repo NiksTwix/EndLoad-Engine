@@ -35,7 +35,7 @@ namespace Components
 	bool MeshComponentService::UpdateResourceState(ECS::EntityID entity)
 	{
 		auto* rm = Core::ServiceLocator::Get<Resources::ResourcesManager>();
-		MeshComponent component = m_eSpace->GetComponent<MeshComponent>(entity);
+		MeshComponent& component = m_eSpace->GetComponent<MeshComponent>(entity);
 		if (!rm) return false; // TODO error
 		auto resourceFrame = rm->GetActiveFrame();
 		if (!resourceFrame) return false; //TODO error

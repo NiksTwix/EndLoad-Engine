@@ -18,9 +18,13 @@ namespace Windows
 		{
 			for (auto id : m_closedWindows)
 			{
-				m_windows.erase(id);
+				m_renderWindow = m_windows[id].get();
+				Core::ServiceLocator::Get<Resources::ResourcesManager>()->SetActiveWindow(id);
+				m_windows[id]->MakeCurrent();
 				RemoveInputFrame(id);
 				if (resource_manager) resource_manager->ClearWindowData(id);
+				GetWindow(id)->Destroy();
+				m_windows.erase(id);
 			}
 			m_closedWindows.clear();
 		}

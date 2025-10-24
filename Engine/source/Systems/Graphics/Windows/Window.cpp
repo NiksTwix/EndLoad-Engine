@@ -48,6 +48,11 @@ namespace Windows
 			return false;
 		}
 
+		glfwMakeContextCurrent(m_window);
+
+		if (!m_graphics_device->IsValid())m_graphics_device->Init();
+
+
 		m_id = m_nextID++;
 
 		m_prevresolution = m_resolution;
@@ -72,32 +77,32 @@ namespace Windows
 			if (window) window->OnFocusChanged(focused);
 			});
 
-		glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mode)
+		glfwSetKeyCallback(m_window, [](GLFWwindow* glfwWin, int key, int scancode, int action, int mode)
 			{
 				Input::InputSystem* Input_ = Core::ServiceLocator::Get<Input::InputSystem>();
 
-				if (Input_)Input_->KeyCallback(window, key, scancode, action, mode);
+				if (Input_)Input_->KeyCallback(glfwWin, key, scancode, action, mode);
 
 			});
-		glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double xpos, double ypos)
-			{
-				Input::InputSystem* Input_ = Core::ServiceLocator::Get<Input::InputSystem>();
-
-
-				if (Input_)Input_->MouseMovingCallback(window, xpos, ypos);
-
-			});
-		glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int button, int action, int mode)
+		glfwSetCursorPosCallback(m_window, [](GLFWwindow* glfwWin, double xpos, double ypos)
 			{
 				Input::InputSystem* Input_ = Core::ServiceLocator::Get<Input::InputSystem>();
 
 
-				if (Input_)Input_->MouseButtonCallback(window, button, action, mode);
+				if (Input_)Input_->MouseMovingCallback(glfwWin, xpos, ypos);
+
+			});
+		glfwSetMouseButtonCallback(m_window, [](GLFWwindow* glfwWin, int button, int action, int mode)
+			{
+				Input::InputSystem* Input_ = Core::ServiceLocator::Get<Input::InputSystem>();
+
+
+				if (Input_)Input_->MouseButtonCallback(glfwWin, button, action, mode);
 			});
 
-		glfwSetWindowSizeCallback(m_window, [](GLFWwindow* window, int width, int height)
+		glfwSetWindowSizeCallback(m_window, [](GLFWwindow* glfwWin, int width, int height)
 			{
-				auto w = glfwGetWindowUserPointer(window);
+				auto w = glfwGetWindowUserPointer(glfwWin);
 				//if (width == 0 || height == 0) w->collapsed = true;
 				//else
 				//{
@@ -106,10 +111,10 @@ namespace Windows
 				//}
 			}
 		);
-		glfwSetWindowCloseCallback(m_window, [](GLFWwindow* window)
+		glfwSetWindowCloseCallback(m_window, [](GLFWwindow* glfwWin)
 			{
-				//WindowEvent we(static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window))->GetID(), WindowEvent::WindowEventType::CLOSE);
-				//ServiceLocator::Get<EventManager>()->Emit<WindowEvent>(we);
+				auto* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWin));
+				window->Close();
 			});
 	}
 
@@ -128,7 +133,6 @@ namespace Windows
 		if (m_graphics_device == nullptr) 
 		{
 			///if (!device->IsValid()) device->ClearState();
-			if (!device->IsValid())device->Init();
 
 			m_graphics_device = device;
 		}
@@ -144,9 +148,14 @@ namespace Windows
 		//Call ResourcesManager to resource clear of this window
 
 
-		glfwDestroyWindow(m_window);
+		//
 		m_isValid = false;
 		m_closed = true;
+	}
+
+	void Window::Destroy()
+	{
+		glfwDestroyWindow(m_window);
 	}
 
 	void Window::SwapFrameBuffers() 

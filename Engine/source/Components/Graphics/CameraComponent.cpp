@@ -102,12 +102,13 @@ namespace Components
 
     void CameraComponentService::UpdateCameraData(Scenes::SceneContext* context, ECS::EntityID entity)
     {
-        if (!context) return;
+        if (!context || !context->GetEntitySpace().HasComponent<CameraComponent>(entity)) return;
         auto& camera = context->GetEntitySpace().GetComponent<CameraComponent>(entity);
         auto& global_transform = context->GetEntitySpace().GetComponent<GlobalTransformComponent>(entity);
 
         UpdateCameraVectors(camera, global_transform);
         if (camera.isDirty) {
+            UpdateProjectionMatrix(camera, camera.width, camera.height, camera.projectionType, camera.fov); //TODO optimize with dirty flags
             UpdateViewMatrix(camera, global_transform);
             UpdateFrustumCulling(camera);
             camera.isDirty = false;

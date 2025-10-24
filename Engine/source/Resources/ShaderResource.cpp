@@ -69,7 +69,7 @@ namespace Resources
 		}
 
 		m_path = path;
-		m_resourceName = shdf["Name"] ? shdf["Name"]->value.strVal : "SomeShader";
+		m_resourceName = shdf["Name"] ? shdf["Name"]->value.strVal : "Shader";
 		m_state = ResourceState::Loaded;
 		return true;
 	}

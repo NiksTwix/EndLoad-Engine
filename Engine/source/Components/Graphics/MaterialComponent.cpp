@@ -26,6 +26,7 @@ namespace Components
 		}
 
 		component.shaderID = res->GetShaderID();
+		component.shaderResource = shader_resource;
 	}
 
 	void MaterialComponentService::SetResourceMaterialData(MaterialComponent& component, Resources::ResourceID material_resource, bool generate_textures) const
@@ -39,10 +40,21 @@ namespace Components
 		if (!res)
 		{
 			component.materialResource = Definitions::InvalidID;
+			component.uniforms.clear();
 			return;
 		}
 
 		component.materialResource = material_resource;
+		component.uniforms["BaseColor"] = Graphics::UniformValue(res->GetData().baseColor);
+		component.uniforms["Metallic"] = Graphics::UniformValue(res->GetData().metallic);
+		component.uniforms["Roughness"] = Graphics::UniformValue(res->GetData().roughness);
+		component.uniforms["Emission"] = Graphics::UniformValue(res->GetData().emissionIntensity);
+		component.uniforms["EmissionColor"] = Graphics::UniformValue(res->GetData().emissiveColor);
+
+		component.uniforms["DoubleSided"] = Graphics::UniformValue(res->GetData().doubleSided);
+		component.uniforms["AlphaTest"] = Graphics::UniformValue(res->GetData().alphaTest);
+		component.uniforms["AlphaCutoff"] = Graphics::UniformValue(res->GetData().alphaCutoff);
+
 
 		if (!generate_textures) return;
 
@@ -58,7 +70,7 @@ namespace Components
 	{
 		auto* rm = Core::ServiceLocator::Get<Resources::ResourcesManager>();
 
-		MaterialComponent component = m_eSpace->GetComponent<MaterialComponent>(entity);
+		MaterialComponent& component = m_eSpace->GetComponent<MaterialComponent>(entity);
 
 		if (!rm) return false; // TODO error
 		auto resourceFrame = rm->GetActiveFrame();

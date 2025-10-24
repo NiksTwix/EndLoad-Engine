@@ -4,9 +4,6 @@
 
 namespace Graphics 
 {
-
-	bool OpenGLDevice::m_glewInitialized = false;
-
 	Definitions::uint OpenGLDevice::CompileShader(GLenum type, const std::string& source)
 	{
 		GLuint shader = glCreateShader(type);
@@ -51,17 +48,56 @@ namespace Graphics
 		api = GraphicsAPI::OpenGL;
 	}
 
+	OpenGLDevice::~OpenGLDevice()
+	{
+		//TODO Clearing
+		std::vector<MeshID> meshes;
+		for (auto& mesh : m_meshes) 
+		{
+			meshes.push_back(mesh.first);
+		}
+		std::vector<TextureID> textures;
+		for (auto& texture : m_textures)
+		{
+			textures.push_back(texture.first);
+		}
+		std::vector<MeshID> shaders;
+		for (auto& shader : m_shaders)
+		{
+			shaders.push_back(shader.first);
+		}
+		for (auto mesh : meshes) DestroyMesh(mesh);
+		for (auto texture : textures) DestroyTexture(texture);
+		for (auto shader : shaders) DestroyShader(shader);
+	}
+
 	void OpenGLDevice::Init()
 	{
 		if (m_IsValid) return;
-		if (!m_glewInitialized) 
-		{
-			if (!glewInit()) 
-			{
-				 
-				return;
-			}
+
+		// Проверка контекста
+		if (!glfwGetCurrentContext()) {
+			Diagnostics::Logger::Get().SendMessage("OpenGLDevice: No active GL context!", Diagnostics::MessageType::Error);
+			return;
 		}
+
+		// Инициализация GLEW
+		glewExperimental = GL_TRUE;  // Важно для core profile!
+		GLenum err = glewInit();
+
+		if (err != GLEW_OK) {
+			std::string error = reinterpret_cast<const char*>(glewGetErrorString(err));
+			Diagnostics::Logger::Get().SendMessage("OpenGLDevice: GLEW Init Failed: " + error, Diagnostics::MessageType::Error);
+			return;
+		}
+
+		// Проверка, что GLEW загрузил функции
+		if (!glGenVertexArrays) {
+			Diagnostics::Logger::Get().SendMessage("OpenGLDevice: GLEW loaded but functions missing", Diagnostics::MessageType::Error);
+			return;
+		}
+
+		Diagnostics::Logger::Get().SendMessage("OpenGLDevice: GLEW initialized successfully", Diagnostics::MessageType::Info);
 		m_IsValid = true;
 	}
 	void OpenGLDevice::ClearState()
@@ -141,6 +177,11 @@ namespace Graphics
 		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Math::Vertex), (void*)offsetof(Math::Vertex, texCoord));
 
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Math::Vertex), (void*)offsetof(Math::Vertex, tangent));
+
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Math::Vertex), (void*)offsetof(Math::Vertex, bitangent));
 		glBindVertexArray(0);
 
 		auto error = glGetError();
@@ -371,7 +412,7 @@ namespace Graphics
 		}
 		else 
 		{
-			Diagnostics::Logger::Get().SendMessage("(OpenGLDevice) Shader's uniform set attemp is failed: invalid uniform name \"" + name + "\" of shader with id " + std::to_string(shader) + ".", Diagnostics::MessageType::Error);
+			//Diagnostics::Logger::Get().SendMessage("(OpenGLDevice) Shader's uniform set attemp is failed: invalid uniform name \"" + name + "\" of shader with id " + std::to_string(shader) + ".", Diagnostics::MessageType::Error);
 		}
 	}
 

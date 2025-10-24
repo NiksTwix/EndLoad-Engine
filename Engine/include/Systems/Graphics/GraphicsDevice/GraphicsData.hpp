@@ -3,6 +3,7 @@
 #include <Vertex.hpp>
 #include <Vector4.hpp>
 #include <Matrix4x4.hpp>
+#include <string>
 // This file contains special structs for graphics
 
 namespace Graphics
@@ -50,7 +51,7 @@ namespace Graphics
         STREAM
     };
 
-    enum  TextureType
+    enum TextureType
     {
         //Use << or >> in shader
         ALBEDO = 1 << 0, //SLOT = 0  // texture_exists 00000001 =1
@@ -60,6 +61,27 @@ namespace Graphics
         EMISSION = 1 << 4,   // texture_exists 00010000 = 16
         OCCLUSION = 1 << 5,  // texture_exists 00100000 = 32
     };
+    inline std::string TextureTypeToString(TextureType type)
+    {
+        switch (type)
+        {
+        case Graphics::ALBEDO:
+            return "ALBEDO";
+        case Graphics::NORMAL:
+            return "NORMAL";
+        case Graphics::METALLIC:
+            return "METALLIC";
+        case Graphics::ROUGHNESS:
+            return "ROUGHNESS";
+        case Graphics::EMISSION:
+            return "EMISSION";
+        case Graphics::OCCLUSION:
+            return "OCCLUSION";
+        default:
+            return "ALBEDO";
+        }
+    }
+
 
     struct UniformValue
     {
@@ -72,7 +94,7 @@ namespace Graphics
             VECTOR2,
             VECTOR3,
             VECTOR4,
-            MATRIX4x4
+            MATRIX4x4,
         };
 
         union

@@ -36,7 +36,9 @@ void EngineCore::Mainloop()
 	try
 	{
 		m_isRunning = true;
-		while (!m_stoped)
+
+		auto* windows_manager = ServiceLocator::Get<Windows::WindowsManager>();
+		while (!m_stoped && windows_manager->GetWindowsCount() > 0)
 		{
 			for (auto system : ServiceLocator::GetSystemList())
 			{
@@ -48,10 +50,7 @@ void EngineCore::Mainloop()
 			}
 
 			m_ThreadPool.WaitForCompletion();
-
 			Diagnostics::ProcessObserver::Get().CalculateDelta();
-
-			
 		}
 		/*
 			Sync: WindowsManager

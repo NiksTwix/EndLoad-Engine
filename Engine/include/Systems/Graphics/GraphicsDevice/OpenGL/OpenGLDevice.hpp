@@ -29,7 +29,6 @@ namespace Graphics
 		std::unordered_map<MeshID, MeshBuffersData> m_meshes;
 		std::unordered_map<TextureID, GLuint> m_textures;
 		std::unordered_map<ShaderID, Definitions::uint> m_shaders;
-		static bool m_glewInitialized;
 
 
 		Definitions::uint CompileShader(GLenum type, const std::string& source);
@@ -38,7 +37,7 @@ namespace Graphics
 	public:
 
 		OpenGLDevice();
-
+		~OpenGLDevice();
 		void Init() override;
 		void ClearState() override;
 		void ClearFrameBuffer(Math::Vector4 color) override;

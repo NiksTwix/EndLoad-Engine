@@ -72,7 +72,7 @@ namespace Resources
             material_data.name = fields["Name"]->value.strVal;
         }
         std::vector<std::string> parameters = {
-                "AlbedoColor", "EmissionColor", "Roughness", "Metallic",
+                "BaseColor", "EmissionColor", "Roughness", "Metallic",
                 "Emission", "DoubleSided", "AlphaTest", "AlphaCutOff"
         };
         // Обрабатываем параметры
@@ -80,8 +80,8 @@ namespace Resources
             auto params = fields["Parameters"]->container->FindFields(parameters);
 
             // Base Color (Albedo)
-            if (params["AlbedoColor"] != nullptr && params["AlbedoColor"]->value.arrayVal) {
-                auto& color_array = *params["AlbedoColor"]->value.arrayVal;
+            if (params["BaseColor"] != nullptr && params["BaseColor"]->value.arrayVal) {
+                auto& color_array = *params["BaseColor"]->value.arrayVal;
                 if (color_array.size() >= 3) {
                     material_data.baseColor.x = color_array.at(0).numberVal;
                     material_data.baseColor.y = color_array.at(1).numberVal;

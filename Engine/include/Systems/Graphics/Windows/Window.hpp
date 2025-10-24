@@ -94,5 +94,7 @@ namespace Windows
 		void Close();	//Context's shutdown (ClearState), window's closing
 
 	    GLFWwindow* GetNativeHandle() const { return m_window; }; // For glfw events 
+
+		void Destroy();
 	};
 }

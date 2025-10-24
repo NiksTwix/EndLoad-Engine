@@ -217,7 +217,7 @@ namespace Input
     void InputSystem::MouseButtonCallback(GLFWwindow* window, int button, int action, int mode)
     {
         Windows::WindowID windowId = GetWindowIdFromGLFW(window);
-        if (windowId == 0) return;
+        if (windowId == Definitions::InvalidID) return;
 
         InputFrame& frame = GetOrCreateFrame(windowId);
 

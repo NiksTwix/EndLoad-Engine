@@ -19,12 +19,12 @@ namespace Scenes
 		return scenes.at(id).get();
 	}
 
-	SceneID SceneManager::CreateContext(std::string name)
+	SceneContext* SceneManager::CreateContext(std::string name)
 	{
 		auto id = last_id++;
 		scenes.try_emplace(id, std::make_unique<SceneContext>(name, id));
 		RegisterBasicCS(scenes[id].get());
-		return id;
+		return scenes[id].get();
 	}
 
 	void SceneManager::DeleteContext(SceneID id)

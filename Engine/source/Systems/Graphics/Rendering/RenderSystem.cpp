@@ -55,7 +55,12 @@ namespace Rendering
 				auto* scene = Core::ServiceLocator::Get<Scenes::SceneManager>()->GetContext(sceneId);
 				
 				for (auto viewport : scene->GetViewportService().GetViewports()) {
-					if (viewport) RenderScene(viewport, scene);
+					if (viewport)
+					{
+						auto rw = wm->GetRenderWindow();
+						rw->GetGraphicsDevice()->SetRenderViewport(viewport);
+						RenderScene(viewport, scene);
+					}
 				}
 				window->SwapFrameBuffers();
 				Core::ServiceLocator::Get<Resources::ResourcesManager>()->ClearWindowCache(window->GetID());
@@ -88,19 +93,30 @@ namespace Rendering
 			l.SendMessage("(RenderSystem) Failed to attach scene to window: Scene " + std::to_string(scene) + " is invalid.", Diagnostics::MessageType::Error);
 			return;
 		}
+
+		auto* new_scene = sm->GetContext(scene);
+
+		if (new_scene->GetState() == Scenes::SceneState::Attached) 
+		{
+			l.SendMessage("(RenderSystem) Scene with id " + std::to_string(m_scenes[window]) + " has already attached.", Diagnostics::MessageType::Error);
+			return;
+		}
+
 		if (m_scenes.count(window) > 0)
 		{
 			l.SendMessage("(RenderSystem) Scene with id " + std::to_string(m_scenes[window]) + " will be replaced by scene " + std::to_string(scene) + ".", Diagnostics::MessageType::Warning);
+			DetachSceneFromWindow(window);
 		}
 		m_scenes[window] = scene;
 
 		auto r_window = wm->GetRenderWindow();
 		
 		wm->SetRenderWindow(window);
+
 		
-		rm->AttachStaticResources(sm->GetContext(scene)->GetStaticResources());
-		
-		if (r_window != nullptr) wm->SetRenderWindow(r_window->GetID());
+		rm->AttachStaticResources(new_scene->GetStaticResources());
+		new_scene->SetState(Scenes::SceneState::Attached);
+		//if (r_window != nullptr) wm->SetRenderWindow(r_window->GetID());
 		l.SendMessage("(RenderSystem) Scene with id " + std::to_string(scene) + " has been successfully attached to window " + std::to_string(window) + ".", Diagnostics::MessageType::Info);
 		m_scenes_changed = true;
 	}
@@ -109,6 +125,10 @@ namespace Rendering
 		if (m_scenes.count(window))
 		{
 			m_scenes_changed = true;
+			auto* current_scene = Core::ServiceLocator::Get<Scenes::SceneManager>()->GetContext(m_scenes[window]);
+
+			if (current_scene) current_scene->SetState(Scenes::SceneState::NotAttached);
+
 			m_scenes.erase(window);
 
 			auto* wm = Core::ServiceLocator::Get<Windows::WindowsManager>();
@@ -118,7 +138,7 @@ namespace Rendering
 				wm->SetRenderWindow(window);
 				auto* rm = Core::ServiceLocator::Get<Resources::ResourcesManager>();
 				rm->GetActiveFrame()->ClearStaticResources();
-				if (r_window != nullptr) wm->SetRenderWindow(r_window->GetID());
+				//if (r_window != nullptr) wm->SetRenderWindow(r_window->GetID());
 			}
 		}
 	}
@@ -139,16 +159,16 @@ namespace Rendering
 	void RenderSystem::FirstFrameInitialization()
 	{
 		if (!m_firstFrame) return;
-		//auto mrm = std::make_shared<MeshRenderModule>();
-		//mrm->SetPriority(0);
-		//
+		auto rm3 = std::make_shared<RenderModule3D>();
+		rm3->SetPriority(0);
+		
 		//auto srm = std::make_shared<SpriteRenderModule>();
 		//srm->SetPriority(1);
 		//
 		//auto uirm = std::make_shared<UIRenderModule>();
 		//uirm->SetPriority(0);
 
-		//AddModule(mrm);
+		AddModule(rm3);
 		//AddModule(srm);
 		//AddModule(uirm);
 		m_firstFrame = false;
@@ -156,23 +176,15 @@ namespace Rendering
 	void RenderSystem::RenderScene(Viewports::Viewport* viewport, Scenes::SceneContext* scene)
 	{
 		if (m_firstFrame) FirstFrameInitialization();
+		if (scene->GetEntitySpace().GetTree().GetNodesCount() == 0) return;
 		float delta_time = Diagnostics::ProcessObserver::GetFrameTimeMSST();      
 		if (!scene || !viewport) return;
 		auto& CSL = scene->GetEntitySpace().GetServiceLocator();
-
-		//CSL.Register<LocalTransformComponent, TransformService>()->UpdateGlobalTransforms();
 		auto* m_cameraService = CSL.GetByService<Components::CameraComponentService>();
-		//m_context->SetViewport(viewport);  //Óñòàíîâêà âàéïîðòà
-
-
 		auto cam = viewport->GetCamera().GetEntityID();
 		if (cam != Definitions::InvalidID) {
-			//m_cameraService->UpdateProjectionMatrix(*cam, viewport->GetResolution().x, viewport->GetResolution().y, cam->Projection_Type, cam->FOV);
-			m_cameraService->UpdateCameraData(scene, cam);	//WARNING РАССИНХРОН С ТРАНСФОРМАМИ (ОНИ ОБНОВЛЯЮТСЯ В ФИЗИКЕ!), отставание на 1 кадр, можно перенести в отдельную систему Transform+Camera ну, понятно думаю
+			m_cameraService->UpdateCameraData(scene, cam);
 		}
-
-		//m_cameraService->SetRenderCamera(viewport->GetCamera().GetEntityID());                  
-		//m_cameraService->UpdateAllCameras(*scene);
 		UpdateModules();
 
 		//CSL.Register<ScriptComponent, ScriptService>()->InvokeProcess(*scene, delta_time);        

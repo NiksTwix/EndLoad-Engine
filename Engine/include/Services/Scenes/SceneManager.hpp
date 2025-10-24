@@ -23,7 +23,7 @@ namespace Scenes
 
 		SceneContext* GetContext(SceneID id) const;
 
-		SceneID CreateContext(std::string name);
+		SceneContext* CreateContext(std::string name);
 
 		void DeleteContext(SceneID id);
 

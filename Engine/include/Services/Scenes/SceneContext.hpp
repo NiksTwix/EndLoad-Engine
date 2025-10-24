@@ -4,6 +4,7 @@
 #include <ELECS\ECS.hpp>
 #include <Systems\Graphics\Viewports\Viewport.hpp>
 #include <Resources\IResource.hpp>
+#include <Services\ResourcesManager\ResourcesManager.hpp>	//Bad practive, but this class is only in header
 /*
 	SceneContext controls scene and entities
 */
@@ -11,6 +12,12 @@
 namespace Scenes 
 {
 	class SceneLoader;
+
+	enum class SceneState
+	{
+		NotAttached = 0,
+		Attached,
+	};
 
 	class SceneContext
 	{
@@ -28,6 +35,8 @@ namespace Scenes
 
 		std::vector<std::shared_ptr<Resources::IResource>> staticResources;
 
+		SceneState m_state = SceneState::NotAttached;
+
 		void ClearStaticResources()
 		{
 			for (auto r : staticResources)
@@ -44,9 +53,14 @@ namespace Scenes
 		SceneContext(SceneContext&&) = default;
 		SceneContext& operator=(SceneContext&&) = default;
 
+
+		void SetState(SceneState new_state) { m_state = new_state; }
+		SceneState GetState() const { return m_state; }
+
 		void AttachStaticResource(std::shared_ptr<Resources::IResource> resource) 
 		{
 			staticResources.push_back(resource);
+			if (m_state == SceneState::Attached) Core::ServiceLocator::Get<Resources::ResourcesManager>()->AttachResourceToFrame(resource);	//WARNING Attachs resource to ACTIVE resource frame
 		}
 
 		std::vector<std::shared_ptr<Resources::IResource>>  GetStaticResources() const

@@ -33,12 +33,14 @@ namespace Rendering
 	void RenderModule3D::BuildCommands()
 	{
 		auto& entitySpace = m_currentScene->GetEntitySpace();
-
+		auto viewport = m_windowManager->GetRenderWindow()->GetGraphicsDevice()->GetRenderViewport();
+		if (!viewport) return;
+		auto camera = viewport->GetCamera();
+		if (!camera) return;
 		ECS::View<Components::LocalTransformComponent, Components::MeshComponent, Components::MaterialComponent> view(entitySpace.GetRegistry());
 
 		
-		auto camera = m_windowManager->GetRenderWindow()->GetGraphicsDevice()->GetRenderViewport()->GetCamera();
-		if (!camera) return;
+		
 		
 		view.Each([&](auto& entity_id, Components::LocalTransformComponent& localt, Components::MeshComponent& mesh, Components::MaterialComponent& material)
 			{
@@ -59,14 +61,15 @@ namespace Rendering
 				command.shader_id = material.shaderID;
 				command.uniforms = material.uniforms;
 				//Add new uniforms
-				command.uniforms["texture_exists"] = Graphics::UniformValue((Definitions::uint)0);
+				command.uniforms["TextureExists"] = Graphics::UniformValue((Definitions::uint)0);
 				for (auto& text : material.texturesID) 
 				{
 					if (text.second == Definitions::InvalidID) 
 					{
 						continue;
 					}
-					command.uniforms["texture_exists"] = Graphics::UniformValue((command.uniforms["texture_exists"].GetUInt() | text.first));	// 00000000 + 00000001
+					command.uniforms["TextureExists"] = Graphics::UniformValue((command.uniforms["TextureExists"].GetUInt() | text.first));	// 00000000 + 00000001
+					command.uniforms[Graphics::TextureTypeToString(text.first)] = text.first;	//Set slot of texture: ALBEDO-0,NORMAL-1
 					command.textures.push_back({ text.second,text.first });	//TextureID, TextureType (enum class) -> slot
 				}
 
