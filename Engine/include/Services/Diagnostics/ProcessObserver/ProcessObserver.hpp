@@ -51,5 +51,6 @@ namespace Diagnostics
 
 		static float GetFPSST() { return Get().GetFPS(); }
 		static float GetFrameTimeMSST() { return Get().GetFrameTimeMS(); }
+		static float GetFrameTimeST() { return Get().GetFrameTime(); }
 	};
 }

@@ -21,9 +21,9 @@ int main()
 	
 	Core::EngineCore& core = Core::EngineCore::Get();
 	
-	for (int i = 0; i < 6; i++) 
+	for (int i = 0; i < 1; i++) 
 	{
-		auto window = Core::ServiceLocator::Get<Windows::WindowsManager>()->CreateWindow<Graphics::OpenGLDevice>(Math::Vector2(500), "title");
+		auto window = Core::ServiceLocator::Get<Windows::WindowsManager>()->CreateWindow<Graphics::OpenGLDevice>(Math::Vector2(900), "title");
 
 		auto scene = Core::ServiceLocator::Get<Scenes::SceneManager>()->CreateContext("Scene1");
 		auto mesh = std::make_shared<Resources::MeshResource>();
@@ -35,14 +35,18 @@ int main()
 		scene->AttachStaticResource(mesh);
 		scene->AttachStaticResource(shader);
 		scene->AttachStaticResource(material);
-		auto Viewport = scene->GetViewportService().Create(Math::Vector2(500));
+		auto Viewport = scene->GetViewportService().Create(Math::Vector2(900));
 		Viewport->SetBackgroundColor(Math::Vector4(1.0, 0.8, 0.8, 1.0f));
 
 		auto entity1 = scene->GetEntitySpace().CreateEntity();
-		auto camera = scene->GetEntitySpace().GetServiceLocator().GetByService<Components::CameraComponentService>()->CreateCamera(500, 500, Components::ProjectionType::Perspective);
+		auto camera = scene->GetEntitySpace().GetServiceLocator().GetByService<Components::CameraComponentService>()->CreateCamera(900, 900, Components::ProjectionType::Perspective);
 		Components::LocalTransformComponent ltc;
 		scene->GetEntitySpace().AddComponent<Components::CameraComponent>(entity1, camera);
 		scene->GetEntitySpace().AddComponent<Components::LocalTransformComponent>(entity1, ltc);
+
+		auto script = scene->GetEntitySpace().GetServiceLocator().GetByService<Components::ELScriptComponentService>()->Create("D:\\EndLoadEngine\\EndLoad Engine\\TestAssets\\CameraController.els");
+		scene->GetEntitySpace().AddComponent<Components::ELScriptComponent>(entity1, script);
+
 
 		auto entity2 = scene->GetEntitySpace().CreateEntity();
 		Core::ServiceLocator::Get<Rendering::RenderSystem>()->AttachSceneToWindow(window->GetID(), scene->GetID());
@@ -70,8 +74,8 @@ int main()
 	core.Start();
 
 
-	int i = 0;
-	Core::ServiceLocator::Get<Rendering::RenderSystem>()->DetachSceneFromWindow(1);	//Resource must be free after work. WM offen does it
+	///int i = 0;
+	///Core::ServiceLocator::Get<Rendering::RenderSystem>()->DetachSceneFromWindow(1);	//Resource must be free after work. WM offen does it
 	//Detaching is very important. Without him resource free error (in reosource Unnit method)
 
 

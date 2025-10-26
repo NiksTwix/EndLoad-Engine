@@ -99,7 +99,12 @@ namespace Components
 		}
 	}
 
-
+	void TransformComponentService::TranslateLocal(ECS::EntityID entity, Math::Vector3 translation)
+	{
+		auto& translated = m_eSpace->GetComponent<LocalTransformComponent>(entity);
+		translated.origin += translated.basis.GetRotation() * translation;
+		MarkDirty(entity);
+	}
 	void TransformComponentService::Translate(ECS::EntityID entity, Math::Vector3 translation)
 	{
 		auto& translated = m_eSpace->GetComponent<LocalTransformComponent>(entity);

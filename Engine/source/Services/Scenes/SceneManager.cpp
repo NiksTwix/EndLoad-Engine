@@ -55,7 +55,7 @@ namespace Scenes
 		csl.Register<Components::MaterialComponent, Components::MaterialComponentService>();
 		//csl.Register<SpriteComponent, SpriteService>();
 		//csl.Register<ScriptComponent, ScriptService>();
-		//csl.Register<ELScriptComponent, ELScriptService>();
+		csl.Register<Components::ELScriptComponent, Components::ELScriptComponentService>();
 		//csl.Register<UIElementComponent, UIElementService>();
 		//csl.Register<TextRenderComponent, TextRenderService>();
 		//csl.Register<EventContainerComponent, EventContainerService>();

@@ -1,0 +1,40 @@
+
+
+var speed = 10;
+
+func print(value)
+{
+	print_value value
+}
+
+func process(delta)
+{
+	var direction = [0,0,0]
+	if (is_action_pressed("W"))
+	{
+		direction[2] = direction[2]- speed * delta;
+	}
+	if (is_action_pressed("S"))
+	{
+		direction[2] = direction[2]+ speed * delta;
+	}
+
+	if (is_action_pressed("D"))
+	{
+		direction[0] = direction[0] + speed * delta;
+	}
+
+	if (is_action_pressed("A"))
+	{
+		direction[0] = direction[0] - speed * delta;
+	}
+
+	var mouse_delta = get_mouse_delta();
+	var r_dir_x = [0,1,0];
+	var r_dir_y = [1,0,0];
+	rotate(1,r_dir_x,-mouse_delta[0]*delta/10)
+	rotate(1,r_dir_y,-mouse_delta[1]*delta/10)
+
+	translate(1,direction)
+}
+print_value "ELScript executed"

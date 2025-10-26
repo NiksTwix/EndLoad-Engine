@@ -6,6 +6,7 @@
 #include <Services\Diagnostics\ProcessObserver\ProcessObserver.hpp>
 #include <Services/ResourcesManager/ResourcesManager.hpp>
 #include <Systems/Modules/Rendering/RenderModule3D.hpp>
+#include <Components/Scripting/ELScriptComponent.hpp>
 namespace Rendering
 {
 	RenderSystem::RenderSystem()
@@ -177,7 +178,7 @@ namespace Rendering
 	{
 		if (m_firstFrame) FirstFrameInitialization();
 		if (scene->GetEntitySpace().GetTree().GetNodesCount() == 0) return;
-		float delta_time = Diagnostics::ProcessObserver::GetFrameTimeMSST();      
+		float delta_time = Diagnostics::ProcessObserver::GetFrameTimeST();      
 		if (!scene || !viewport) return;
 		auto& CSL = scene->GetEntitySpace().GetServiceLocator();
 		auto* m_cameraService = CSL.GetByService<Components::CameraComponentService>();
@@ -188,6 +189,6 @@ namespace Rendering
 		UpdateModules();
 
 		//CSL.Register<ScriptComponent, ScriptService>()->InvokeProcess(*scene, delta_time);        
-		//CSL.Register<ELScriptComponent, ELScriptService>()->InvokeProcess(*scene, delta_time);
+		CSL.GetByService<Components::ELScriptComponentService>()->InvokeProcess(*scene, delta_time);
 	}
 }

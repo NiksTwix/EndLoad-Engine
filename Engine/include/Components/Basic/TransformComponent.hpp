@@ -40,6 +40,7 @@ namespace Components
 		void UpdateSingleGlobalTransform(ECS::EntityID id, Scenes::SceneContext& context);
 		void UpdateGlobalTransforms();
 		void Translate(ECS::EntityID entity, Math::Vector3 translation);
+		void TranslateLocal(ECS::EntityID entity, Math::Vector3 translation);
 		void Scale(ECS::EntityID entity, Math::Vector3 scale);
 		void RotateLocal(ECS::EntityID entity, Math::Vector3 axis, float value);
 		void RotateGlobal(ECS::EntityID entity, Math::Vector3 axis, float value);

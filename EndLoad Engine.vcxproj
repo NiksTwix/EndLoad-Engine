@@ -135,6 +135,7 @@
     <ClCompile Include="Engine\source\Components\Graphics\CameraComponent.cpp" />
     <ClCompile Include="Engine\source\Components\Graphics\MaterialComponent.cpp" />
     <ClCompile Include="Engine\source\Components\Graphics\MeshComponent.cpp" />
+    <ClCompile Include="Engine\source\Components\Scripting\ELScriptComponent.cpp" />
     <ClCompile Include="Engine\source\Core\EngineCore.cpp" />
     <ClCompile Include="Engine\source\Resources\FontResource.cpp" />
     <ClCompile Include="Engine\source\Resources\MaterialResource.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Engine\include\Components\Graphics\MeshComponent.hpp" />
     <ClInclude Include="Engine\include\Components\Graphics\SpriteComponent.hpp" />
     <ClInclude Include="Engine\include\Components\ELComponentService.hpp" />
+    <ClInclude Include="Engine\include\Components\Scripting\ELScriptComponent.hpp" />
     <ClInclude Include="Engine\include\Core\EngineCore.hpp" />
     <ClInclude Include="Engine\include\Core\IServices.hpp" />
     <ClInclude Include="Engine\include\Core\ServiceLocator.hpp" />

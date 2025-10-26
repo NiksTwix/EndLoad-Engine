@@ -6,3 +6,6 @@
 #include "Graphics/CameraComponent.hpp"
 #include "Graphics/MeshComponent.hpp"
 #include "Graphics/MaterialComponent.hpp"
+
+//SCRIPTING
+#include "Scripting/ELScriptComponent.hpp"

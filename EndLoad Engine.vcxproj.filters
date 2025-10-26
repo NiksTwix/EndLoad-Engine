@@ -213,6 +213,9 @@
     <ClCompile Include="Engine\source\Services\ResourcesManager\ResourcesManager.cpp">
       <Filter>Engine\source\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\source\Components\Scripting\ELScriptComponent.cpp">
+      <Filter>Engine\source\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\include\Systems\Graphics\GraphicsDevice\GraphicsData.hpp">
@@ -331,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="Engine\include\Services\ResourcesManager\ResourcesManager.hpp">
       <Filter>Engine\include\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\include\Components\Scripting\ELScriptComponent.hpp">
+      <Filter>Engine\include\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

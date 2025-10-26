@@ -2,6 +2,7 @@
 #include <Services\Diagnostics\Logger\Logger.hpp>
 #include <Systems/Input\InputSystem.hpp>
 
+
 namespace Input
 {
     InputSystem::InputSystem() : m_windowManager(nullptr), m_currentFocusedWindow(0)
@@ -191,16 +192,17 @@ namespace Input
     void InputSystem::MouseMovingCallback(GLFWwindow* window, double xpos, double ypos)
     {
         Windows::WindowID windowId = GetWindowIdFromGLFW(window);
-        if (windowId == 0) return;
+        if (windowId == Definitions::InvalidID) return;
 
         InputFrame& frame = GetOrCreateFrame(windowId);
+        frame.mouseDelta = Math::Vector2(xpos, ypos) - frame.currentMousePosition;
         frame.currentMousePosition = Math::Vector2(xpos, ypos);
     }
 
     void InputSystem::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
     {
         Windows::WindowID windowId = GetWindowIdFromGLFW(window);
-        if (windowId == 0) return;
+        if (windowId == Definitions::InvalidID) return;
 
         InputFrame& frame = GetOrCreateFrame(windowId);
         
@@ -234,7 +236,7 @@ namespace Input
     void InputSystem::ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
     {
         Windows::WindowID windowId = GetWindowIdFromGLFW(window);
-        if (windowId == 0) return;
+        if (windowId == Definitions::InvalidID) return;
 
         InputFrame& frame = GetOrCreateFrame(windowId);
         frame.scrollX = xoffset;
